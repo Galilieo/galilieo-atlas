@@ -41,6 +41,10 @@ function quote(value) {
   return JSON.stringify(value ?? '');
 }
 
+function secureUrl(value) {
+  return typeof value === 'string' ? value.replace(/^http:\/\//, 'https://') : '';
+}
+
 function renderTrack(track) {
   const id = String(track.id);
   const artist = (track.ar || track.artists || [])
@@ -53,7 +57,7 @@ function renderTrack(track) {
     title: track.name || '未知歌曲',
     artist: artist || '未知歌手',
     album: album.name || '',
-    cover: album.picUrl || '',
+    cover: secureUrl(album.picUrl),
     sourceUrl: `https://music.163.com/#/song?id=${id}`,
     audioUrl: `https://music.163.com/song/media/outer/url?id=${id}.mp3`,
   };
