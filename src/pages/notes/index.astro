@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import ArticleCard from '../../components/blog/ArticleCard.astro';
+import ArticleTagFilter from '../../components/blog/ArticleTagFilter.astro';
 import SectionHeading from '../../components/common/SectionHeading.astro';
 import SiteFooter from '../../components/layout/SiteFooter.astro';
 import SiteHeader from '../../components/layout/SiteHeader.astro';
@@ -8,7 +9,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const articles = (await getCollection('blog'))
   .filter((article) => !article.data.draft)
-  .sort((a, b) => a.data.order - b.data.order);
+  .sort((a, b) => (b.data.publishedAt ?? '').localeCompare(a.data.publishedAt ?? ''));
 ---
 
 <BaseLayout
@@ -18,15 +19,16 @@ const articles = (await getCollection('blog'))
 >
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <SiteHeader />
-  <main class="page-main" id="main-content">
+  <main class="page-main interior-page interior-page--blog" id="main-content">
     <SectionHeading
       eyebrow="Notes"
       title="项目之外，也记录那些仍在形成中的想法。"
       description="文章不追求包装成标准答案，更希望留下当时的判断过程和最后得到的经验。"
     />
+    {articles.length > 0 && <ArticleTagFilter articles={articles} />}
     {
       articles.length > 0 ? (
-        <div class="page-list">
+        <div class="article-grid" data-article-grid>
           {articles.map((article) => (
             <ArticleCard article={article} />
           ))}

@@ -19,7 +19,7 @@ export function initTheme(): Cleanup {
     const isDark = root.dataset.theme === 'dark';
     toggle?.setAttribute('aria-pressed', String(isDark));
     toggle?.setAttribute('aria-label', isDark ? '切换至浅色模式' : '切换至深色模式');
-    themeColor?.setAttribute('content', isDark ? '#191b1a' : '#f5f1e9');
+    themeColor?.setAttribute('content', isDark ? '#06101e' : '#f3f2ed');
   };
 
   const savedTheme = readSavedTheme();

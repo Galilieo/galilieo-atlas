@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>心屿动效原型 C · 微光感应</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        --paper: #f5f1e9;
+        --soft: #f8f5ee;
+        --ink: #1f211f;
+        --muted: #73766e;
+        --line: rgba(31, 33, 31, 0.18);
+        --blue: #3c61c9;
+        --blue-soft: #e7ecfa;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 34px;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      }
+      .prototype {
+        width: min(100%, 1020px);
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .toolbar button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 14px;
+        color: inherit;
+        background: transparent;
+        cursor: pointer;
+      }
+      .card {
+        --mx: 0px;
+        --my: 0px;
+        --px: 50%;
+        --py: 50%;
+        position: relative;
+        min-height: 700px;
+        overflow: hidden;
+        border: 1px solid rgba(31, 33, 31, 0.22);
+        background: rgba(248, 245, 238, 0.94);
+        box-shadow: 0 26px 70px rgba(58, 54, 46, 0.07);
+        transition:
+          transform 420ms var(--ease),
+          box-shadow 420ms var(--ease),
+          border-color 300ms;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(60, 97, 201, 0.46);
+        box-shadow: 0 34px 84px rgba(58, 54, 46, 0.11);
+      }
+      .copy {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 44px 42px 0;
+      }
+      h1 {
+        margin: 0;
+        font:
+          400 clamp(42px, 6vw, 65px)/0.95 Georgia,
+          serif;
+        letter-spacing: -0.055em;
+      }
+      h1 span {
+        margin-left: 8px;
+        font:
+          400 0.54em/1 'Microsoft YaHei',
+          sans-serif;
+        letter-spacing: -0.04em;
+      }
+      .subtitle {
+        margin: 18px 0 0;
+        color: #343733;
+        font:
+          18px Georgia,
+          'Microsoft YaHei',
+          serif;
+      }
+      .arrow {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        flex: none;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        font-size: 24px;
+        transition:
+          transform 240ms var(--ease),
+          background 240ms;
+      }
+      .card:hover .arrow {
+        transform: rotate(8deg) translate(2px, -2px);
+        background: var(--blue-soft);
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 30px 42px 0;
+      }
+      .tag {
+        padding: 8px 13px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: #575b54;
+        font-size: 11px;
+      }
+      .scene {
+        position: absolute;
+        inset: 250px 0 58px;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            circle at var(--px) var(--py),
+            rgba(255, 255, 255, 0.64),
+            transparent 24%
+          ),
+          radial-gradient(ellipse at 50% 55%, rgba(255, 255, 255, 0.42), transparent 48%);
+      }
+      .glint {
+        position: absolute;
+        left: var(--px);
+        top: var(--py);
+        width: 74px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(65, 74, 69, 0.24), transparent);
+        opacity: 0;
+        transform: translate(-50%, -50%) scaleX(0.6);
+        transition:
+          opacity 300ms,
+          transform 500ms var(--ease);
+        pointer-events: none;
+      }
+      .card:hover .glint {
+        opacity: 0.58;
+        transform: translate(-50%, -50%) scaleX(1);
+      }
+      .scene::after {
+        position: absolute;
+        top: 54%;
+        left: 50%;
+        width: 72%;
+        height: 29%;
+        border: 1px solid rgba(31, 33, 31, 0.055);
+        border-radius: 50%;
+        content: '';
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition:
+          opacity 500ms,
+          transform 900ms var(--ease);
+      }
+      .card:hover .scene::after {
+        opacity: 0.16;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+      .island {
+        position: absolute;
+        top: 47%;
+        left: 50%;
+        width: min(92%, 760px);
+        transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my)));
+        transition: transform 240ms ease-out;
+        animation: float 7.2s ease-in-out infinite;
+      }
+      .card:hover .island {
+        animation-play-state: paused;
+      }
+      .island img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: contrast(1.09) saturate(0.82);
+      }
+      .footer {
+        position: absolute;
+        inset: auto 0 0;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        border-top: 1px solid var(--line);
+        color: #96988f;
+        font:
+          10px Consolas,
+          monospace;
+      }
+      .paused * {
+        animation-play-state: paused !important;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(calc(-50% + var(--mx)), calc(-50% + var(--my)));
+        }
+        50% {
+          transform: translate(calc(-50% + var(--mx)), calc(-50% - 2px + var(--my)));
+        }
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 14px;
+        }
+        .card {
+          min-height: 560px;
+        }
+        .copy {
+          padding: 28px 22px 0;
+        }
+        h1 {
+          font-size: 40px;
+        }
+        h1 span {
+          display: block;
+          margin: 9px 0 0;
+        }
+        .tags {
+          padding: 22px 22px 0;
+        }
+        .scene {
+          inset: 225px 0 50px;
+        }
+        .island {
+          width: 112%;
+        }
+        .footer {
+          font-size: 8px;
+        }
+      }
+      @media (pointer: coarse) {
+        .glint {
+          display: none;
+        }
+        .scene {
+          --px: 50% !important;
+          --py: 50% !important;
+        }
+        .island {
+          --mx: 0px !important;
+          --my: 0px !important;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .island {
+          transform: translate(-50%, -50%) !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="prototype">
+      <div class="toolbar">
+        <span>C / 微光感应 · 交互更明显</span><button id="toggle">暂停动效</button>
+      </div>
+      <article class="card" id="card">
+        <div class="copy">
+          <div>
+            <h1>heart-island <span>心屿</span></h1>
+            <p class="subtitle">AI 情绪记录与匿名互助社区</p>
+          </div>
+          <span class="arrow">↗</span>
+        </div>
+        <div class="tags">
+          <span class="tag">Spring Boot</span><span class="tag">Vue 3</span
+          ><span class="tag">MySQL</span><span class="tag">LLM API</span>
+        </div>
+        <div class="scene">
+          <div class="glint"></div>
+          <div class="island">
+            <img src="../../src/assets/svg/island-reference-no-heart-vector.svg" alt="" />
+          </div>
+        </div>
+        <footer class="footer"><span>Building with purpose</span><span>demo v0.1</span></footer>
+      </article>
+    </main>
+    <script>
+      const card = document.querySelector('#card'),
+        button = document.querySelector('#toggle');
+      let tx = 0,
+        ty = 0,
+        x = 0,
+        y = 0,
+        raf = 0;
+      function tick() {
+        x += (tx - x) * 0.12;
+        y += (ty - y) * 0.12;
+        card.style.setProperty('--mx', x.toFixed(2) + 'px');
+        card.style.setProperty('--my', y.toFixed(2) + 'px');
+        raf = requestAnimationFrame(tick);
+      }
+      card.addEventListener('pointermove', (e) => {
+        if (!matchMedia('(pointer:fine)').matches) return;
+        const r = card.getBoundingClientRect(),
+          nx = (e.clientX - r.left) / r.width,
+          ny = (e.clientY - r.top) / r.height;
+        tx = (nx - 0.5) * 5;
+        ty = (ny - 0.5) * 3.5;
+        card.style.setProperty('--px', (nx * 100).toFixed(1) + '%');
+        card.style.setProperty('--py', Math.max(38, ny * 100).toFixed(1) + '%');
+      });
+      card.addEventListener('pointerleave', () => {
+        tx = ty = 0;
+        card.style.setProperty('--px', '50%');
+        card.style.setProperty('--py', '50%');
+      });
+      button.onclick = () => {
+        const p = card.classList.toggle('paused');
+        button.textContent = p ? '播放动效' : '暂停动效';
+      };
+      tick();
+    </script>
+  </body>
+</html>

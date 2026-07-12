@@ -1,0 +1,33 @@
+---
+import { siteConfig } from '../../config/site';
+---
+
+<section
+  class="home-status dashboard-card reveal"
+  id="home-status"
+  aria-label="站点状态"
+  data-home-environment
+  data-state="fallback"
+  data-default-location={siteConfig.author.location}
+  data-default-latitude={siteConfig.homeStatus.latitude}
+  data-default-longitude={siteConfig.homeStatus.longitude}
+  data-default-time-zone={siteConfig.homeStatus.timeZone}
+>
+  <div class="home-status__time">
+    <span data-home-time-label>Shanghai time</span>
+    <time data-home-time data-home-time-zone={siteConfig.homeStatus.timeZone} datetime=""
+      >--:--</time
+    >
+  </div>
+  <div class="home-status__item">
+    <i aria-hidden="true"></i>
+    <span data-home-location>{siteConfig.author.location}</span>
+  </div>
+  <div class="home-status__item home-status__weather" data-home-weather data-state="idle">
+    <span data-weather-summary>天气待同步</span>
+    <time hidden data-weather-updated datetime="">天气更新时间</time>
+  </div>
+  <div class="home-status__item home-status__item--meta">
+    <span>Static site · Astro 7</span>
+  </div>
+</section>

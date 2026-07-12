@@ -1,4 +1,8 @@
 import { initActiveSection } from './active-section';
+import { initArticleFilters } from './article-filter';
+import { initPersistentControls, syncPersistentControlViews } from './global-controls';
+import { initHomeDashboard } from './home-dashboard';
+import { initHomeLiveData } from './home-live-data';
 import { initIslandEffects } from './island-effects';
 import { initNavigation } from './navigation';
 import { initReveal } from './reveal';
@@ -9,12 +13,19 @@ let cleanupPage: Cleanup | undefined;
 /** 统一初始化当前 Astro 页面，并返回所有客户端行为的清理函数。 */
 function initPage(): Cleanup {
   cleanupPage?.();
+  // ClientRouter 会同步目标页的 <html> 属性；每次页面加载都恢复渐进增强标记。
+  document.documentElement.classList.add('js');
+  initPersistentControls();
+  syncPersistentControlViews();
 
   const cleanups: Cleanup[] = [
     initTheme(),
     initNavigation(),
     initReveal(),
     initActiveSection(),
+    initArticleFilters(),
+    initHomeDashboard(),
+    initHomeLiveData(),
     initIslandEffects(),
   ];
 

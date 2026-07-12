@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import TagList from '../common/TagList.astro';
 
 interface Props {
   article: CollectionEntry<'blog'>;
@@ -8,12 +9,37 @@ interface Props {
 const { article } = Astro.props;
 ---
 
-<article class="note-entry reveal">
-  <span class="note-number">{String(article.data.order).padStart(2, '0')}</span>
-  <div>
-    <span>{article.data.category}</span>
-    <h2><a href={`/notes/${article.id}/`}>{article.data.title}</a></h2>
-    <p>{article.data.description}</p>
-  </div>
-  <span class="note-entry__state">{article.data.publishedAt ?? article.data.homepageState}</span>
+<article
+  class="article-matrix-card reveal"
+  data-article-card
+  data-article-tags={JSON.stringify(article.data.tags)}
+>
+  <a class="article-matrix-card__link" href={`/notes/${article.id}/`}>
+    <div class="article-matrix-card__visual" aria-hidden="true">
+      {
+        article.data.cover && (
+          <img class="article-matrix-card__cover" src={article.data.cover.src} alt="" />
+        )
+      }
+      <span class="article-matrix-card__number">
+        {String(article.data.order).padStart(2, '0')}
+      </span>
+      <span class="article-matrix-card__category">{article.data.category}</span>
+    </div>
+    <div class="article-matrix-card__body">
+      <div class="article-matrix-card__topline">
+        <span>{article.data.category}</span>
+        <time datetime={article.data.publishedAt ?? undefined}>
+          {article.data.publishedAt ?? article.data.homepageState}
+        </time>
+      </div>
+      <h2>{article.data.title}</h2>
+      <p class="article-matrix-card__description">{article.data.description}</p>
+      <TagList items={article.data.tags} label={`${article.data.title}文章标签`} />
+      <footer class="article-matrix-card__footer">
+        <span>{article.data.readingTime ? `${article.data.readingTime} min` : 'Note'}</span>
+        <span class="article-matrix-card__arrow" aria-hidden="true">→</span>
+      </footer>
+    </div>
+  </a>
 </article>

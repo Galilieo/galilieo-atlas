@@ -8,7 +8,7 @@ export async function GET(context: { site?: URL }) {
     .sort((a, b) => String(b.data.publishedAt).localeCompare(String(a.data.publishedAt)));
 
   return rss({
-    title: `${siteConfig.name} — Portfolio & Notes`,
+    title: `${siteConfig.name} — Works, Notes & Explorations`,
     description: siteConfig.description,
     site: context.site ?? new URL(siteConfig.url),
     items: articles.map((article) => ({

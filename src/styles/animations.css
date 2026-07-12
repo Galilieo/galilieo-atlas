@@ -11,6 +11,57 @@
   transform: translateY(0);
 }
 
+.island-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+html:not(.js) .island-draw {
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+}
+
+[data-island-controller].is-visible .island-draw {
+  animation: islandPathDraw 1080ms var(--ease) var(--draw-delay, 0ms) both;
+}
+
+.island-contours--far {
+  animation: islandContourFar 16s ease-in-out 1.4s infinite;
+}
+
+.island-contours--mid {
+  animation: islandContourMid 13s ease-in-out 1.5s infinite;
+}
+
+.island-contours--near {
+  animation: islandTideBreath 10.5s ease-in-out 1.6s infinite;
+}
+
+.island-contours--far,
+.island-contours--mid,
+.island-contours--near {
+  animation-play-state: paused;
+}
+
+.island-scene[data-scene-active='true'] .island-contours--far,
+.island-scene[data-scene-active='true'] .island-contours--mid,
+.island-scene[data-scene-active='true'] .island-contours--near {
+  animation-play-state: running;
+}
+
+.island-scene[data-scene-active='false'] .island-contours--far,
+.island-scene[data-scene-active='false'] .island-contours--mid,
+.island-scene[data-scene-active='false'] .island-contours--near,
+.island-scene[data-scene-active='false'] .island-signal {
+  animation-play-state: paused !important;
+}
+
+[data-island-controller]:is(:hover, :focus-within)
+  .island-scene[data-scene-active='true']
+  .island-signal {
+  animation: islandSignal 2.8s var(--ease) both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -29,51 +80,72 @@
   }
 
   .island-art-shell,
-  .island-scene::before,
-  .island-scene::after {
+  .island-contours,
+  .island-draw,
+  .island-signal {
     animation: none !important;
+    transform: none !important;
+  }
+
+  .island-draw {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
   }
 }
 
-@keyframes islandShellFloat {
+@keyframes islandPathDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes islandContourFar {
   0%,
   100% {
-    transform: translate(
-      calc(-50% + var(--island-shift-x, 0px)),
-      calc(-50% + var(--island-shift-y, 0px))
-    );
-  }
-  50% {
-    transform: translate(
-      calc(-50% + var(--island-shift-x, 0px)),
-      calc(-50% - 2px + var(--island-shift-y, 0px))
-    );
-  }
-}
-
-@keyframes islandRippleEcho {
-  0% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.84);
-  }
-  18% {
-    opacity: 0.18;
-  }
-  72%,
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(1.08);
-  }
-}
-
-@keyframes waterLight {
-  0%,
-  100% {
-    opacity: 0.72;
-    transform: scale(1);
+    opacity: 0.82;
+    transform: translateX(-0.15%) scaleX(0.998);
   }
   50% {
     opacity: 1;
-    transform: scale(1.025);
+    transform: translateX(0.15%) scaleX(1.002);
+  }
+}
+
+@keyframes islandContourMid {
+  0%,
+  100% {
+    opacity: 0.9;
+    transform: scaleX(0.999) translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.003) translateY(0.35%);
+  }
+}
+
+@keyframes islandTideBreath {
+  0%,
+  100% {
+    opacity: 0.92;
+    transform: scale(0.998, 0.992);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.004, 1.012);
+  }
+}
+
+@keyframes islandSignal {
+  0% {
+    opacity: 0;
+    stroke-dashoffset: 1;
+  }
+  18%,
+  70% {
+    opacity: 0.42;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: -0.2;
   }
 }

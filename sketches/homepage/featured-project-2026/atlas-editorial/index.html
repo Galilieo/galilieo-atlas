@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Featured Project — Atlas</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #ebe7df;
+        color: #20221f;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        padding: 42px;
+        font-family: Arial, 'PingFang SC', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .sheet {
+        --x: 50%;
+        --y: 50%;
+        position: relative;
+        width: min(1120px, 100%);
+        min-height: 760px;
+        overflow: hidden;
+        background: #f7f3eb;
+        border: 1px solid rgba(32, 34, 31, 0.36);
+        box-shadow: 0 34px 90px rgba(34, 31, 25, 0.09);
+        isolation: isolate;
+      }
+      .sheet:before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            90deg,
+            transparent calc(25% - 0.5px),
+            rgba(32, 34, 31, 0.09) 25%,
+            transparent calc(25% + 0.5px)
+          ),
+          linear-gradient(
+            90deg,
+            transparent calc(75% - 0.5px),
+            rgba(32, 34, 31, 0.09) 75%,
+            transparent calc(75% + 0.5px)
+          ),
+          linear-gradient(
+            transparent calc(50% - 0.5px),
+            rgba(32, 34, 31, 0.08) 50%,
+            transparent calc(50% + 0.5px)
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+      .meta {
+        position: relative;
+        z-index: 4;
+        height: 58px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        border-bottom: 1px solid rgba(32, 34, 31, 0.16);
+        font:
+          10px/1.2 ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .meta span {
+        display: flex;
+        align-items: center;
+        padding: 0 18px;
+      }
+      .meta span:not(:last-child) {
+        border-right: 1px solid rgba(32, 34, 31, 0.12);
+      }
+      .meta span:nth-child(3) {
+        justify-content: center;
+      }
+      .meta span:last-child {
+        justify-content: flex-end;
+      }
+      .index {
+        color: #3c61c9;
+      }
+      .title {
+        position: relative;
+        z-index: 3;
+        margin: 34px 38px 0;
+        font-family: Georgia, 'Noto Serif SC', serif;
+        font-weight: 400;
+        font-size: clamp(58px, 8vw, 106px);
+        line-height: 0.84;
+        letter-spacing: -0.075em;
+      }
+      .title small {
+        display: block;
+        margin: 19px 0 0 7px;
+        font-family: Arial, 'PingFang SC', sans-serif;
+        font-size: 14px;
+        line-height: 1;
+        letter-spacing: 0.18em;
+        color: #66695f;
+      }
+      .atlas {
+        position: absolute;
+        z-index: 1;
+        inset: 108px -100px -82px 185px;
+        color: #252824;
+        transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .sheet:hover .atlas,
+      .sheet:focus-within .atlas {
+        transform: translate3d(-12px, -7px, 0) scale(1.018);
+      }
+      .atlas path,
+      .atlas ellipse {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .contour {
+        stroke: #777d73;
+        stroke-width: 1.05;
+        opacity: 0.45;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 0;
+        transition:
+          stroke-dashoffset 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.5s;
+      }
+      .sheet:hover .contour {
+        stroke-dashoffset: -0.065;
+        opacity: 0.66;
+      }
+      .ridge {
+        stroke: #20231f;
+        stroke-width: 2.2;
+      }
+      .shore {
+        stroke: #3c61c9;
+        stroke-width: 1.35;
+        opacity: 0.72;
+      }
+      .coordinate {
+        font:
+          10px ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        fill: #73766e;
+      }
+      .copy {
+        position: absolute;
+        z-index: 4;
+        left: 38px;
+        bottom: 98px;
+        width: 270px;
+      }
+      .copy p {
+        margin: 0 0 25px;
+        font-family: Georgia, 'Noto Serif SC', serif;
+        font-size: 22px;
+        line-height: 1.45;
+      }
+      .copy dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: 85px 1fr;
+        gap: 9px 10px;
+        font:
+          10px/1.5 ui-monospace,
+          monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .copy dt {
+        color: #989a91;
+      }
+      .copy dd {
+        margin: 0;
+      }
+      .enter {
+        position: absolute;
+        z-index: 5;
+        right: 0;
+        top: 58px;
+        width: 58px;
+        height: calc(100% - 58px);
+        border: 0;
+        border-left: 1px solid rgba(32, 34, 31, 0.16);
+        background: rgba(247, 243, 235, 0.74);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: inherit;
+      }
+      .enter span {
+        writing-mode: vertical-rl;
+        font:
+          10px ui-monospace,
+          monospace;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        transition: transform 0.35s;
+      }
+      .enter:hover span,
+      .enter:focus-visible span {
+        transform: translateY(-8px);
+      }
+      .enter:focus-visible {
+        outline: 2px solid #3c61c9;
+        outline-offset: -4px;
+      }
+      .legend {
+        position: absolute;
+        z-index: 4;
+        left: 0;
+        right: 58px;
+        bottom: 0;
+        height: 62px;
+        border-top: 1px solid rgba(32, 34, 31, 0.16);
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr;
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .legend span {
+        padding: 16px 18px;
+      }
+      .legend span + span {
+        border-left: 1px solid rgba(32, 34, 31, 0.12);
+      }
+      .mode {
+        position: absolute;
+        z-index: 5;
+        right: 78px;
+        top: 78px;
+        display: flex;
+        border: 1px solid rgba(32, 34, 31, 0.2);
+        background: #f7f3eb;
+      }
+      .mode button {
+        border: 0;
+        background: transparent;
+        padding: 8px 11px;
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+      }
+      .mode button[aria-pressed='true'] {
+        background: #20221f;
+        color: #f7f3eb;
+      }
+      .system-note {
+        opacity: 0;
+        transition: opacity 0.35s;
+      }
+      .sheet[data-mode='system'] .system-note {
+        opacity: 1;
+      }
+      .sheet[data-mode='system'] .world-note {
+        opacity: 0.18;
+      }
+      @media (max-width: 720px) {
+        body {
+          padding: 14px;
+        }
+        .sheet {
+          min-height: 720px;
+        }
+        .meta {
+          grid-template-columns: 1fr 1fr;
+        }
+        .meta span:nth-child(2),
+        .meta span:nth-child(3) {
+          display: none;
+        }
+        .title {
+          margin: 28px 22px 0;
+          font-size: 58px;
+        }
+        .atlas {
+          inset: 190px -220px 95px -120px;
+        }
+        .copy {
+          left: 22px;
+          bottom: 90px;
+          width: 240px;
+        }
+        .enter {
+          width: 48px;
+        }
+        .legend {
+          right: 48px;
+          grid-template-columns: 1fr 1fr;
+        }
+        .legend span:nth-child(n + 3) {
+          display: none;
+        }
+        .mode {
+          right: 66px;
+        }
+        .sheet:before {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+    <style>
+      .title {
+        font-size: clamp(54px, 7vw, 88px);
+        color: #282a26;
+      }
+      .atlas {
+        inset: 126px -54px -58px 258px;
+      }
+      .copy {
+        width: 310px;
+        padding: 10px 22px 10px 0;
+        background: linear-gradient(90deg, #f7f3eb 0 82%, transparent);
+      }
+      .copy p {
+        font-size: 20px;
+      }
+      .enter {
+        width: 64px;
+      }
+      .legend {
+        right: 64px;
+      }
+      .map-point {
+        fill: #3c61c9 !important;
+        stroke: #f7f3eb !important;
+        stroke-width: 2;
+      }
+      .north {
+        font:
+          18px Georgia,
+          serif;
+        fill: #20221f;
+      }
+      .scale {
+        stroke: #20221f;
+        stroke-width: 1.2;
+      }
+      .mode button:focus-visible {
+        outline: 2px solid #3c61c9;
+        outline-offset: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="sheet" data-mode="world" aria-label="Atlas 方案：编辑地图">
+      <header class="meta">
+        <span class="index">● Featured / 01</span><span>Independent product</span
+        ><span>Shanghai · 2026</span><span>Cartographic study</span>
+      </header>
+      <h1 class="title">heart—island<small>心屿 / A QUIET PLACE FOR MEMORY</small></h1>
+      <div class="mode" role="group" aria-label="切换项目视图">
+        <button type="button" aria-pressed="true" data-mode="world">WORLD</button
+        ><button type="button" aria-pressed="false" data-mode="system">SYSTEM</button>
+      </div>
+      <svg class="atlas" viewBox="0 0 1200 650" aria-hidden="true">
+        <g class="world-note">
+          <path
+            class="ridge"
+            style="fill: rgba(87, 105, 91, 0.055)"
+            d="M323 337C339 273 397 218 473 200C535 185 576 207 626 179C684 147 755 166 811 213C868 262 890 327 865 388C841 447 779 481 707 477C646 474 607 444 547 459C475 477 393 447 347 393C330 373 317 354 323 337Z"
+          />
+          <path
+            class="contour"
+            d="M365 341C378 292 423 250 481 237C532 226 574 246 617 220C662 193 718 202 765 238C814 276 834 327 815 373C796 418 747 443 693 438C642 434 611 414 561 426C504 439 442 420 401 385C381 367 361 354 365 341Z"
+          />
+          <path
+            class="contour"
+            d="M413 339C427 305 458 280 500 272C539 265 571 280 606 258C639 238 679 244 713 269C748 295 762 329 748 360C735 391 700 405 663 399C628 394 604 384 570 393C528 404 487 392 454 370C432 355 407 350 413 339Z"
+          />
+          <path
+            class="contour"
+            d="M465 333C476 311 497 297 524 295C550 293 571 303 596 288C619 275 646 279 669 296C691 312 699 333 691 350C682 370 659 376 636 370C613 364 598 360 576 368C551 377 524 369 505 357C486 345 460 343 465 333Z"
+          />
+          <path
+            class="shore"
+            d="M386 378C437 352 487 339 536 341C573 342 599 354 631 342C672 326 713 329 766 349"
+          />
+          <circle class="map-point" cx="386" cy="378" r="5" />
+          <circle class="map-point" cx="631" cy="342" r="5" />
+          <circle class="map-point" cx="766" cy="349" r="5" />
+          <text class="coordinate" x="345" y="401">QUIET HARBOR</text>
+          <text class="coordinate" x="601" y="322">MEMORY RIDGE</text>
+          <text class="coordinate" x="748" y="374">RESPONSE BAY</text>
+          <text class="north" x="900" y="196">N ↑</text>
+          <path class="scale" d="M850 454H950M850 448V460M900 448V460M950 448V460" />
+          <text class="coordinate" x="850" y="478">0 · 5 · 10 KM</text>
+        </g>
+        <g class="system-note">
+          <path
+            class="contour"
+            d="M240 190H1005M240 260H1005M240 330H1005M240 400H1005M320 120V530M490 120V530M660 120V530M830 120V530"
+          />
+          <circle cx="490" cy="260" r="11" fill="#3c61c9" />
+          <circle cx="660" cy="330" r="11" fill="#785760" />
+          <circle cx="830" cy="260" r="11" fill="#3c61c9" />
+          <path class="shore" d="M490 260L660 330L830 260" />
+          <text class="coordinate" x="450" y="242">VUE 3</text>
+          <text class="coordinate" x="626" y="362">SPRING</text>
+          <text class="coordinate" x="795" y="242">LLM API</text>
+        </g>
+      </svg>
+      <section class="copy">
+        <p>给情绪一个可以被安放、被回应，也能慢慢沉淀的地方。</p>
+        <dl>
+          <dt>Focus</dt>
+          <dd>Emotion & connection</dd>
+          <dt>Role</dt>
+          <dd>Design / Development</dd>
+          <dt>Status</dt>
+          <dd>Demo v0.1 · evolving</dd>
+        </dl>
+      </section>
+      <button class="enter" type="button" aria-label="进入项目">
+        <span>Enter the case ↗</span>
+      </button>
+      <footer class="legend">
+        <span>Spring Boot / Vue 3</span><span>Anonymous mutual aid</span
+        ><span>Long-term memory</span><span>LLM application</span>
+      </footer>
+    </article>
+    <script>
+      const sheet = document.querySelector('.sheet');
+      const modeButtons = document.querySelectorAll('.mode button[data-mode]');
+      modeButtons.forEach((b) =>
+        b.addEventListener('click', () => {
+          sheet.dataset.mode = b.dataset.mode;
+          modeButtons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        }),
+      );
+    </script>
+  </body>
+</html>

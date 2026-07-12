@@ -1,11 +1,142 @@
 ---
-import islandSvgUrl from '../../assets/svg/island-reference-no-heart-vector.svg?url';
-// 用途：原样输出心屿 SVG 与现有 Canvas 容器；数据来源：已确认岛屿素材；后续仅在素材确认后修改。
+// 用途：首页重点项目的品牌场景；手工 SVG 将岛屿岸线与潮汐等高线组织为同一视觉系统。
+interface Props {
+  idPrefix: string;
+}
+
+const { idPrefix } = Astro.props;
+const edgeFadeId = `${idPrefix}-edge-fade`;
+const tideFadeId = `${idPrefix}-tide-fade`;
+const contourFadeId = `${idPrefix}-contour-fade`;
 ---
 
-<div class="island-scene" aria-hidden="true">
+<div class="island-scene" data-scene-active="false" aria-hidden="true">
   <div class="island-art-shell">
-    <img class="island-art" src={islandSvgUrl} alt="" width="2240" height="436" decoding="async" />
-    <canvas class="island-fx-canvas" aria-hidden="true"></canvas>
+    <svg
+      class="island-art"
+      viewBox="0 0 1200 420"
+      width="1200"
+      height="420"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      focusable="false"
+      style={`--island-tide-stroke: url(#${tideFadeId})`}
+    >
+      <defs>
+        <linearGradient
+          id={edgeFadeId}
+          gradientUnits="userSpaceOnUse"
+          x1="0"
+          y1="0"
+          x2="1200"
+          y2="0"
+        >
+          <stop offset="0" stop-color="white" stop-opacity="0"></stop>
+          <stop offset="0.09" stop-color="white" stop-opacity="0.72"></stop>
+          <stop offset="0.22" stop-color="white"></stop>
+          <stop offset="0.78" stop-color="white"></stop>
+          <stop offset="0.91" stop-color="white" stop-opacity="0.72"></stop>
+          <stop offset="1" stop-color="white" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient
+          id={tideFadeId}
+          gradientUnits="userSpaceOnUse"
+          x1="233"
+          y1="0"
+          x2="971"
+          y2="0"
+        >
+          <stop offset="0" stop-color="currentColor" stop-opacity="0"></stop>
+          <stop offset="0.09" stop-color="currentColor" stop-opacity="0.72"></stop>
+          <stop offset="0.9" stop-color="currentColor" stop-opacity="0.72"></stop>
+          <stop offset="1" stop-color="currentColor" stop-opacity="0"></stop>
+        </linearGradient>
+        <mask id={contourFadeId} maskUnits="userSpaceOnUse" x="0" y="0" width="1200" height="420">
+          <rect width="1200" height="420" fill={`url(#${edgeFadeId})`}></rect>
+        </mask>
+      </defs>
+
+      <g class="island-contours island-contours--far" mask={`url(#${contourFadeId})`}>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 120ms"
+          d="M98 172 C184 124 286 98 390 120"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 170ms"
+          d="M786 116 C892 89 1008 111 1102 159"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 220ms"
+          d="M104 202 C142 126 252 90 366 133"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 270ms"
+          d="M813 132 C924 95 1047 127 1098 194"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 320ms"
+          d="M1098 194 C1074 267 989 320 850 350 C746 372 653 375 588 371 C447 368 326 354 230 323 C145 295 111 254 104 202"
+        ></path>
+      </g>
+
+      <g class="island-contours island-contours--mid" mask={`url(#${contourFadeId})`}>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 330ms"
+          d="M111 205 C149 146 270 111 374 151"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 380ms"
+          d="M808 150 C917 111 1038 140 1083 201"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 430ms"
+          d="M1083 201 C1037 266 917 311 757 329 C699 336 641 337 584 334 C430 332 291 318 201 281 C149 260 120 235 111 205"
+        ></path>
+      </g>
+
+      <g class="island-core">
+        <path
+          class="island-ridge island-draw"
+          pathLength="1"
+          style="--draw-delay: 420ms"
+          d="M386 204 C427 184 465 167 492 145 C521 122 536 94 563 88 C584 84 600 96 612 115 C619 124 627 128 635 119 C648 109 665 106 682 112 C705 118 714 136 733 151 C755 167 779 180 802 198"
+        ></path>
+      </g>
+
+      <g class="island-contours island-contours--near" mask={`url(#${contourFadeId})`}>
+        <path
+          class="island-tide-origin island-draw"
+          pathLength="1"
+          style="--draw-delay: 500ms"
+          d="M233 216 C322 249 438 263 563 260 C588 260 607 265 622 271 C637 263 657 258 682 258 C792 260 889 244 971 211"
+        ></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 570ms"
+          d="M166 225 C241 306 400 337 587 336 C781 334 956 301 1042 216"></path>
+        <path
+          class="island-draw"
+          pathLength="1"
+          style="--draw-delay: 630ms"
+          d="M128 231 C196 338 384 388 591 386 C812 384 1012 340 1078 226"></path>
+      </g>
+
+      <path
+        class="island-signal"
+        pathLength="1"
+        d="M233 216 C322 249 438 263 563 260 C588 260 607 265 622 271 C637 263 657 258 682 258 C792 260 889 244 971 211"
+      ></path>
+    </svg>
   </div>
 </div>

@@ -1,0 +1,85 @@
+---
+import { siteConfig } from '../../config/site';
+import { homeMusicPlaylistUrl, homeMusicTracks } from '../../data/music';
+
+const initialTrack = homeMusicTracks.find((track) => track.playable);
+---
+
+<aside class="home-utility reveal" aria-label="功能卡片" style="--delay: 120ms">
+  <article
+    class="home-utility__card home-utility__github"
+    data-github-activity
+    data-github-user={siteConfig.githubUsername}
+    data-state="idle"
+  >
+    <span>GitHub activity</span>
+    <div class="home-utility__activity" data-github-grid aria-label="GitHub 公开活动需要联网加载">
+    </div>
+    <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" data-github-profile>
+      <span data-github-summary>访问 GitHub 查看公开活动</span>
+      <span aria-hidden="true">↗</span>
+    </a>
+  </article>
+
+  <article
+    class="home-utility__card home-utility__music"
+    data-music-view="home"
+    data-state={initialTrack ? 'paused' : 'unavailable'}
+  >
+    <span>Listening shelf</span>
+    <a
+      class="home-utility__music-source"
+      href={homeMusicPlaylistUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-music-source>网易云 <span aria-hidden="true">↗</span></a
+    >
+    <div class="home-utility__track">
+      <figure class="home-utility__cover">
+        {
+          initialTrack && (
+            <img
+              src={initialTrack.cover}
+              alt={`${initialTrack.album} 专辑封面`}
+              referrerpolicy="no-referrer"
+              data-music-cover
+            />
+          )
+        }
+        <i aria-hidden="true">♪</i>
+      </figure>
+      <div>
+        <strong data-music-title>{initialTrack?.title ?? '暂无可播放曲目'}</strong>
+        <p data-music-artist>{initialTrack?.artist ?? '请检查网易云歌单'}</p>
+      </div>
+    </div>
+    <div class="home-utility__timeline">
+      <span data-music-current-time>00:00</span>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="0"
+        aria-label="音乐播放进度"
+        data-music-seek
+        disabled
+      />
+      <span data-music-duration>00:00</span>
+    </div>
+    <div class="home-utility__controls" aria-label="音乐播放控制">
+      <button
+        type="button"
+        data-music-control
+        data-music-action="previous"
+        disabled
+        aria-label="上一首">‹</button
+      >
+      <button type="button" data-music-control data-music-action="toggle" disabled aria-label="播放"
+        >▶</button
+      >
+      <button type="button" data-music-control data-music-action="next" disabled aria-label="下一首"
+        >›</button
+      >
+    </div>
+  </article>
+</aside>

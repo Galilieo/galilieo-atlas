@@ -16,13 +16,14 @@ const projects = (await getCollection('projects')).sort((a, b) => a.data.order -
 >
   <a class="skip-link" href="#main-content">跳到主要内容</a>
   <SiteHeader />
-  <main class="page-main" id="main-content">
+  <main class="page-main interior-page interior-page--projects" id="main-content">
     <SectionHeading
       eyebrow="Projects"
       title="项目不是功能清单，而是我解决问题的过程。"
+      titleLines={['项目不是功能清单，', '而是我解决问题的过程。']}
       description="这里只放真实完成、真实参与或正在持续开发的内容。"
     />
-    <div class="page-list">
+    <div class="project-grid">
       {projects.map((project) => <ProjectCard project={project} />)}
     </div>
   </main>

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>B · 前景穿水</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #ece9e2;
+        color: #292823;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      main {
+        width: min(1120px, 94vw);
+        padding: 26px;
+      }
+      .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-bottom: 14px;
+      }
+      .eyebrow {
+        font:
+          11px ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        color: #77736b;
+      }
+      .meta h1 {
+        margin: 5px 0 0;
+        font:
+          500 24px Georgia,
+          serif;
+      }
+      .meta p {
+        margin: 0;
+        max-width: 520px;
+        color: #716d65;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .frame {
+        border: 1px solid #c9c4ba;
+        background: #f8f6f1;
+        padding: 18px;
+        box-shadow: 0 22px 60px #423d3510;
+      }
+      .stage {
+        overflow: hidden;
+        background: radial-gradient(ellipse at 50% 62%, #fff 0, #f8f6f1 47%, #f5f2ec 100%);
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .back,
+      .front {
+        fill: none;
+        stroke: #88837a;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+      }
+      .back {
+        opacity: 0.24;
+      }
+      .island {
+        fill: none;
+        stroke: #625e58;
+        stroke-width: 3.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.68;
+      }
+      .knockout {
+        fill: none;
+        stroke: #f8f6f1;
+        stroke-width: 14;
+        stroke-linecap: round;
+      }
+      .front {
+        opacity: 0.5;
+        stroke-width: 2.8;
+      }
+      .construction .back {
+        stroke: #b89461;
+        opacity: 0.45;
+      }
+      .construction .island {
+        stroke: #356ae6;
+        opacity: 0.9;
+      }
+      .construction .front {
+        stroke: #da6b57;
+        opacity: 0.9;
+      }
+      .construction .knockout {
+        stroke: #8f8a81;
+        opacity: 0.25;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 14px;
+        color: #6f6b63;
+        font-size: 12px;
+      }
+      button {
+        border: 1px solid #bdb7ac;
+        background: transparent;
+        padding: 8px 12px;
+        color: inherit;
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: #69655e;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="meta">
+        <div>
+          <div class="eyebrow">CONCEPT B · STRONGER DEPTH</div>
+          <h1>前景穿水</h1>
+        </div>
+        <p>
+          岛屿先保持完整闭合，再由最近一圈前景涟漪用 knockout
+          穿过岸线，空间前后最明确，但实现层次更多。
+        </p>
+      </div>
+      <div class="frame">
+        <div class="stage" id="stage">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="心形负形岛屿和前景穿水涟漪">
+            <g class="back">
+              <path d="M42 116 C180 80 274 74 350 78 M650 78 C730 74 822 80 958 116" />
+              <path d="M72 146 C196 104 286 100 347 112 M653 112 C718 100 808 104 928 146" />
+              <ellipse cx="500" cy="172" rx="415" ry="122" />
+              <ellipse cx="500" cy="170" rx="350" ry="96" />
+              <ellipse cx="500" cy="168" rx="285" ry="70" />
+            </g>
+            <path
+              class="island"
+              d="M310 155 C350 142 390 115 430 105 C458 98 474 72 493 72 C505 72 512 82 519 94 C521 98 523 98 526 94 C534 82 542 72 554 72 C576 73 590 96 614 105 C648 116 675 142 690 155 C646 190 354 190 310 155 Z"
+            />
+            <path class="knockout" d="M728 157 C684 206 316 206 272 157" />
+            <path class="front" d="M728 157 C684 206 316 206 272 157" />
+          </svg>
+        </div>
+      </div>
+      <footer>
+        <span>前景水线真正切过岛屿底边，适合需要明确“浮出水面”的效果。</span
+        ><button type="button" id="toggle">显示结构</button>
+      </footer>
+    </main>
+    <script>
+      const s = document.querySelector('#stage'),
+        b = document.querySelector('#toggle');
+      b.onclick = () => {
+        s.classList.toggle('construction');
+        b.textContent = s.classList.contains('construction') ? '隐藏结构' : '显示结构';
+      };
+    </script>
+  </body>
+</html>

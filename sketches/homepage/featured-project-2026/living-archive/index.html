@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Featured Project — Living Archive</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #e8e4dc;
+        color: #20211f;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        padding: 42px;
+        font-family: Arial, 'PingFang SC', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .archive {
+        position: relative;
+        width: min(1120px, 100%);
+        min-height: 760px;
+        background: #f3f0e8;
+        border: 1px solid #20211f;
+        box-shadow: 14px 14px 0 rgba(32, 33, 31, 0.07);
+        overflow: hidden;
+      }
+      .head {
+        height: 76px;
+        display: grid;
+        grid-template-columns: 1.5fr 0.7fr 0.7fr;
+        border-bottom: 1px solid #20211f;
+      }
+      .head > div {
+        padding: 17px 20px;
+      }
+      .head > div + div {
+        border-left: 1px solid #20211f;
+      }
+      .label {
+        display: block;
+        margin-bottom: 6px;
+        color: #70736a;
+        font:
+          9.5px ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .value {
+        font:
+          12px ui-monospace,
+          monospace;
+        letter-spacing: 0.04em;
+      }
+      .brand {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .brand strong {
+        font:
+          22px Georgia,
+          'Noto Serif SC',
+          serif;
+        font-weight: 400;
+      }
+      .toggle {
+        display: flex;
+        border: 1px solid #20211f;
+      }
+      .toggle button {
+        border: 0;
+        background: none;
+        padding: 8px 10px;
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+      }
+      .toggle button + button {
+        border-left: 1px solid #20211f;
+      }
+      .toggle button[aria-pressed='true'] {
+        background: #20211f;
+        color: #f3f0e8;
+      }
+      .toggle button:focus-visible {
+        outline: 2px solid #3c61c9;
+        outline-offset: 3px;
+      }
+      .body {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        min-height: 620px;
+      }
+      .specimen {
+        position: relative;
+        min-width: 0;
+        border-right: 1px solid #20211f;
+        overflow: hidden;
+      }
+      .specimen h1 {
+        position: relative;
+        z-index: 3;
+        margin: 28px 28px 0;
+        font:
+          400 clamp(56px, 8.5vw, 112px)/0.85 Georgia,
+          'Noto Serif SC',
+          serif;
+        letter-spacing: -0.075em;
+      }
+      .specimen h1 span {
+        display: block;
+        margin: 16px 0 0 6px;
+        font:
+          12px Arial,
+          'PingFang SC',
+          sans-serif;
+        letter-spacing: 0.14em;
+        color: #686a63;
+      }
+      .diagram {
+        position: absolute;
+        inset: 166px -80px 18px -75px;
+        width: calc(100% + 155px);
+        height: calc(100% - 166px);
+        transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .archive:hover .diagram {
+        transform: translateY(-6px);
+      }
+      .diagram path,
+      .diagram circle {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .grid {
+        stroke: #20211f;
+        stroke-width: 0.7;
+        opacity: 0.12;
+      }
+      .land {
+        stroke: #20211f;
+        stroke-width: 2;
+      }
+      .water {
+        stroke: #3c61c9;
+        stroke-width: 1.2;
+        opacity: 0.62;
+      }
+      .node {
+        stroke: #785760;
+        stroke-width: 1.3;
+      }
+      .world-layer,
+      .system-layer {
+        transition: opacity 0.35s;
+      }
+      .archive[data-view='system'] .world-layer {
+        opacity: 0.12;
+      }
+      .archive[data-view='world'] .system-layer {
+        opacity: 0;
+      }
+      .archive[data-view='system'] .system-layer {
+        opacity: 1;
+      }
+      .note {
+        font:
+          10.5px ui-monospace,
+          monospace;
+        letter-spacing: 0.08em;
+        fill: #555850;
+      }
+      .rail {
+        display: flex;
+        flex-direction: column;
+      }
+      .intro {
+        padding: 28px;
+        border-bottom: 1px solid #20211f;
+      }
+      .intro p {
+        margin: 0;
+        font:
+          21px/1.52 Georgia,
+          'Noto Serif SC',
+          serif;
+      }
+      .entries {
+        margin: 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .entry {
+        display: grid;
+        grid-template-columns: 50px 1fr;
+        align-content: center;
+        flex: 1;
+        gap: 12px;
+        padding: 18px 22px;
+        border-bottom: 1px solid rgba(32, 33, 31, 0.25);
+        transition:
+          background 0.25s,
+          padding-left 0.35s;
+      }
+      .entry:hover {
+        padding-left: 28px;
+        background: #e8e9df;
+      }
+      .entry dt {
+        font:
+          10px ui-monospace,
+          monospace;
+        color: #3c61c9;
+      }
+      .entry dd {
+        margin: 0;
+      }
+      .entry strong {
+        display: block;
+        margin-bottom: 5px;
+        font:
+          13.5px Arial,
+          'PingFang SC',
+          sans-serif;
+        font-weight: 500;
+      }
+      .entry small {
+        display: block;
+        color: #646760;
+        font:
+          11px/1.5 ui-monospace,
+          monospace;
+      }
+      .foot {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+        gap: 20px;
+        padding: 18px 22px;
+      }
+      .foot p {
+        margin: 0;
+        color: #60635d;
+        font:
+          10px/1.65 ui-monospace,
+          monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+      .open {
+        width: 142px;
+        height: 48px;
+        border: 1px solid #20211f;
+        background: #3c61c9;
+        color: #fff;
+        cursor: pointer;
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition:
+          transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+          background 0.2s;
+      }
+      .open:hover,
+      .open:focus-visible {
+        transform: translateY(-4px);
+        background: #20211f;
+      }
+      .serial {
+        position: absolute;
+        left: 10px;
+        bottom: 12px;
+        writing-mode: vertical-rl;
+        font:
+          8px ui-monospace,
+          monospace;
+        letter-spacing: 0.14em;
+        color: #86887f;
+      }
+      @media (max-width: 760px) {
+        body {
+          padding: 14px;
+        }
+        .archive {
+          min-height: 820px;
+        }
+        .head {
+          grid-template-columns: 1fr auto;
+        }
+        .head > div:nth-child(2) {
+          display: none;
+        }
+        .body {
+          grid-template-columns: 1fr;
+        }
+        .specimen {
+          min-height: 450px;
+          border-right: 0;
+          border-bottom: 1px solid #20211f;
+        }
+        .specimen h1 {
+          font-size: 63px;
+        }
+        .diagram {
+          inset: 170px -85px 5px -110px;
+        }
+        .rail {
+          min-height: 400px;
+        }
+        .intro p {
+          font-size: 18px;
+        }
+        .entries {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .entry:nth-child(n + 3) {
+          display: none;
+        }
+        .foot {
+          padding-top: 16px;
+        }
+        .open {
+          width: 126px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="archive" data-view="world" aria-label="Living Archive 方案：活体档案">
+      <header class="head">
+        <div class="brand">
+          <div>
+            <span class="label">Featured project / Archive 01</span
+            ><strong>heart-island 心屿</strong>
+          </div>
+          <div class="toggle" role="group" aria-label="切换档案视图">
+            <button aria-pressed="true" data-view="world">CONCEPT</button
+            ><button aria-pressed="false" data-view="system">SYSTEM</button>
+          </div>
+        </div>
+        <div><span class="label">Discipline</span><span class="value">Product / AI</span></div>
+        <div><span class="label">Released</span><span class="value">Demo v0.1</span></div>
+      </header>
+      <div class="body">
+        <section class="specimen">
+          <h1>living<br />archive<span>FOR FEELINGS THAT SHOULD NOT DISAPPEAR</span></h1>
+          <svg class="diagram" viewBox="0 0 820 520" aria-hidden="true">
+            <g class="grid">
+              <path
+                d="M0 70H820M0 140H820M0 210H820M0 280H820M0 350H820M0 420H820M70 0V520M140 0V520M210 0V520M280 0V520M350 0V520M420 0V520M490 0V520M560 0V520M630 0V520M700 0V520M770 0V520"
+              />
+            </g>
+            <g class="world-layer">
+              <path
+                class="land"
+                d="M208 295C259 271 309 244 345 209C379 176 398 146 430 141C456 137 473 153 487 176C497 191 508 197 520 184C539 165 563 164 587 176C616 191 634 218 661 238C687 257 713 273 738 291"
+              />
+              <path
+                class="water"
+                d="M95 329C202 376 325 388 423 380C454 377 474 384 493 393C514 382 538 377 571 378C660 381 746 363 815 326"
+              />
+              <path class="water" d="M54 350C177 431 338 446 499 430C652 416 773 387 844 331" />
+              <circle class="node" cx="493" cy="393" r="14" />
+              <text class="note" x="340" y="112">MEMORY / 01</text>
+              <text class="note" x="645" y="218">RESPONSE / 02</text>
+              <text class="note" x="86" y="317">ANONYMITY / 03</text>
+            </g>
+            <g class="system-layer">
+              <circle class="node" cx="270" cy="320" r="32" />
+              <circle class="node" cx="430" cy="220" r="32" />
+              <circle class="node" cx="595" cy="320" r="32" />
+              <circle class="node" cx="430" cy="410" r="32" />
+              <path
+                class="water"
+                d="M302 304L398 237M462 237L563 304M578 350L456 397M404 397L286 350"
+              />
+              <text class="note" x="240" y="324">VUE</text>
+              <text class="note" x="395" y="224">SPRING</text>
+              <text class="note" x="565" y="324">MYSQL</text>
+              <text class="note" x="402" y="414">LLM</text>
+            </g></svg
+          ><span class="serial">ARCHIVE / HI-2026-001</span>
+        </section>
+        <aside class="rail">
+          <div class="intro">
+            <span class="label">Project thesis</span>
+            <p>不是一次性的聊天窗口，而是一处能保存情绪上下文、允许匿名回应的长期空间。</p>
+          </div>
+          <dl class="entries">
+            <div class="entry">
+              <dt>01</dt>
+              <dd><strong>情绪记录</strong><small>Context that can accumulate</small></dd>
+            </div>
+            <div class="entry">
+              <dt>02</dt>
+              <dd><strong>匿名互助</strong><small>Connection without exposure</small></dd>
+            </div>
+            <div class="entry">
+              <dt>03</dt>
+              <dd><strong>轻量记忆</strong><small>Continuity across sessions</small></dd>
+            </div>
+            <div class="entry">
+              <dt>04</dt>
+              <dd><strong>持续迭代</strong><small>Built as a long-term project</small></dd>
+            </div>
+          </dl>
+          <footer class="foot">
+            <p>Design / Development<br />Spring Boot · Vue 3 · LLM API</p>
+            <button class="open" aria-label="打开项目">Open project ↗</button>
+          </footer>
+        </aside>
+      </div>
+    </article>
+    <script>
+      const a = document.querySelector('.archive');
+      const viewButtons = document.querySelectorAll('.toggle button[data-view]');
+      viewButtons.forEach((b) =>
+        b.addEventListener('click', () => {
+          a.dataset.view = b.dataset.view;
+          viewButtons.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        }),
+      );
+    </script>
+  </body>
+</html>

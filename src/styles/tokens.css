@@ -22,6 +22,74 @@
   --green-light: #8c9c75;
   --green-dark: #5e7358;
   --sun-glow: #fff7d6;
+  --home-bg: #f3f2ed;
+  --home-bg-secondary: #eaeff2;
+  --home-surface: rgba(248, 248, 245, 0.48);
+  --home-surface-strong: rgba(255, 255, 255, 0.56);
+  --home-surface-mobile: rgba(248, 248, 245, 0.68);
+  --home-surface-strong-mobile: rgba(255, 255, 255, 0.76);
+  --home-surface-soft: #e5ebef;
+  --home-border: rgba(255, 255, 255, 0.4);
+  --home-border-strong: rgba(155, 174, 191, 0.48);
+  --home-panel-highlight: rgba(255, 255, 255, 0.52);
+  --home-panel-blur: 14px;
+  --home-panel-saturation: 112%;
+  --home-text: #182235;
+  --home-text-secondary: #5e6978;
+  --home-text-muted: #616d7b;
+  --home-accent: #4b62cf;
+  --home-accent-hover: #3d54bb;
+  --home-accent-soft: #e3e7fa;
+  --home-accent-border: #aeb9ed;
+  --home-on-accent: #ffffff;
+  --home-glow: rgba(91, 110, 214, 0.18);
+  --home-media-text: #f8faff;
+  --home-media-muted: rgba(236, 242, 255, 0.76);
+  --home-media-border: rgba(255, 255, 255, 0.24);
+  --home-media-scrim: linear-gradient(
+    180deg,
+    transparent 18%,
+    rgba(8, 15, 30, 0.2) 45%,
+    rgba(5, 11, 23, 0.92) 100%
+  );
+  --home-demo-background-overlay: linear-gradient(
+    180deg,
+    rgba(243, 242, 237, 0.34) 0%,
+    rgba(243, 242, 237, 0.46) 42%,
+    rgba(243, 242, 237, 0.66) 100%
+  );
+  --home-panel-shadow:
+    0 24px 64px rgba(52, 69, 82, 0.13), 0 8px 22px rgba(52, 69, 82, 0.07),
+    inset 0 1px 0 var(--home-panel-highlight);
+  --interior-bg: #edf1f2;
+  --interior-surface: rgba(247, 248, 247, 0.7);
+  --interior-surface-strong: rgba(250, 250, 248, 0.86);
+  --interior-surface-soft: rgba(228, 235, 239, 0.74);
+  --interior-border: rgba(255, 255, 255, 0.5);
+  --interior-border-strong: rgba(143, 165, 184, 0.48);
+  --interior-highlight: rgba(255, 255, 255, 0.72);
+  --interior-overlay: linear-gradient(
+    180deg,
+    rgba(237, 241, 242, 0.48) 0%,
+    rgba(237, 241, 242, 0.68) 34%,
+    rgba(237, 241, 242, 0.9) 100%
+  );
+  --interior-shadow:
+    0 24px 64px rgba(52, 69, 82, 0.12), 0 8px 24px rgba(52, 69, 82, 0.07),
+    inset 0 1px 0 var(--interior-highlight);
+  --home-sky-top: #dce7ee;
+  --home-sky-bottom: #f4f1e9;
+  --home-sea-near: #afc3cd;
+  --home-sea-far: #d6e0e2;
+  --home-mist: #e8e9e4;
+  --home-rock: #8b9290;
+  --home-green: #748477;
+  --home-warm-light: #b79c72;
+  --home-scene-overlay: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--home-sky-top) 58%, transparent),
+    color-mix(in srgb, var(--home-sky-bottom) 72%, transparent)
+  );
   --display: 'Instrument Serif', 'Noto Serif SC', 'Songti SC', serif;
   --serif: 'Noto Serif SC', 'Songti SC', serif;
   --sans: 'Plus Jakarta Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
@@ -54,6 +122,74 @@ html[data-theme='dark'] {
   --green-light: #728268;
   --green-dark: #475a45;
   --sun-glow: #d6c793;
+  --home-bg: #06101e;
+  --home-bg-secondary: #091727;
+  --home-surface: rgba(10, 25, 43, 0.58);
+  --home-surface-strong: rgba(15, 32, 54, 0.7);
+  --home-surface-mobile: rgba(10, 25, 43, 0.58);
+  --home-surface-strong-mobile: rgba(15, 32, 54, 0.7);
+  --home-surface-soft: #102034;
+  --home-border: rgba(178, 201, 237, 0.12);
+  --home-border-strong: rgba(138, 167, 211, 0.26);
+  --home-panel-highlight: rgba(194, 214, 247, 0.1);
+  --home-panel-blur: 18px;
+  --home-panel-saturation: 116%;
+  --home-text: #eef3fc;
+  --home-text-secondary: #a5b0c2;
+  --home-text-muted: #7f8da3;
+  --home-accent: #7d8cff;
+  --home-accent-hover: #9aa6ff;
+  --home-accent-soft: #1c2852;
+  --home-accent-border: #5368c9;
+  --home-on-accent: #06101e;
+  --home-glow: rgba(117, 137, 255, 0.32);
+  --home-media-text: #f5f7ff;
+  --home-media-muted: rgba(226, 233, 249, 0.74);
+  --home-media-border: rgba(173, 193, 230, 0.24);
+  --home-media-scrim: linear-gradient(
+    180deg,
+    transparent 15%,
+    rgba(2, 8, 18, 0.22) 43%,
+    rgba(2, 7, 16, 0.94) 100%
+  );
+  --home-demo-background-overlay: linear-gradient(
+    180deg,
+    rgba(6, 16, 30, 0.54) 0%,
+    rgba(6, 16, 30, 0.72) 42%,
+    rgba(6, 16, 30, 0.88) 100%
+  );
+  --home-panel-shadow:
+    0 28px 72px rgba(0, 5, 15, 0.32), 0 8px 24px rgba(0, 5, 15, 0.18),
+    inset 0 1px 0 var(--home-panel-highlight);
+  --interior-bg: #07111f;
+  --interior-surface: rgba(10, 25, 43, 0.66);
+  --interior-surface-strong: rgba(11, 27, 47, 0.86);
+  --interior-surface-soft: rgba(15, 34, 55, 0.74);
+  --interior-border: rgba(175, 199, 235, 0.14);
+  --interior-border-strong: rgba(133, 164, 209, 0.3);
+  --interior-highlight: rgba(195, 216, 247, 0.1);
+  --interior-overlay: linear-gradient(
+    180deg,
+    rgba(6, 16, 30, 0.46) 0%,
+    rgba(6, 16, 30, 0.7) 34%,
+    rgba(6, 16, 30, 0.94) 100%
+  );
+  --interior-shadow:
+    0 28px 72px rgba(0, 5, 15, 0.3), 0 8px 24px rgba(0, 5, 15, 0.18),
+    inset 0 1px 0 var(--interior-highlight);
+  --home-sky-top: #030a16;
+  --home-sky-bottom: #0b1b32;
+  --home-sea-near: #07182b;
+  --home-sea-far: #102944;
+  --home-mist: #23344d;
+  --home-rock: #18283c;
+  --home-green: #172e2b;
+  --home-warm-light: #d6aa68;
+  --home-scene-overlay: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--home-sky-top) 24%, transparent),
+    color-mix(in srgb, var(--home-sky-bottom) 72%, transparent)
+  );
 }
 
 /* Portfolio completion — editorial sections, HD island and restrained motion. */

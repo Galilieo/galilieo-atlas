@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Featured Project — Tidal Aperture</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #e9e5dd;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        padding: 42px;
+        color: #ece9e1;
+        font-family: Arial, 'PingFang SC', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .portal {
+        --px: 72%;
+        --py: 46%;
+        position: relative;
+        width: min(1120px, 100%);
+        min-height: 760px;
+        overflow: hidden;
+        background: #18201f;
+        box-shadow: 0 36px 100px rgba(22, 29, 28, 0.22);
+        isolation: isolate;
+      }
+      .portal:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.18;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+        mix-blend-mode: soft-light;
+      }
+      .visual {
+        position: absolute;
+        z-index: 0;
+        inset: 0 0 0 31%;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            circle at var(--px) var(--py),
+            rgba(178, 205, 191, 0.32),
+            transparent 19%
+          ),
+          radial-gradient(circle at 64% 38%, #526f68 0, #263b38 35%, #14201f 73%);
+        clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
+        transition: clip-path 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .portal:hover .visual,
+      .portal:focus-within .visual {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+      .sea {
+        position: absolute;
+        inset: 9% -12% -10% -9%;
+        width: 121%;
+        height: 101%;
+        color: #d5ddd5;
+      }
+      .sea path {
+        fill: none;
+        vector-effect: non-scaling-stroke;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .ring {
+        stroke: rgba(226, 235, 226, 0.2);
+        stroke-width: 1.2;
+        transform-origin: center;
+        transition:
+          transform 1.1s cubic-bezier(0.22, 1, 0.36, 1),
+          stroke 0.5s;
+      }
+      .portal:hover .ring:nth-child(1) {
+        transform: scale(1.025);
+      }
+      .portal:hover .ring:nth-child(2) {
+        transform: scale(0.985);
+      }
+      .portal:hover .ring:nth-child(3) {
+        transform: scale(1.012);
+      }
+      .ridge {
+        stroke: #f2eee3;
+        stroke-width: 2.3;
+      }
+      .coast {
+        stroke: #9bb7aa;
+        stroke-width: 1.5;
+      }
+      .glow {
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        left: var(--px);
+        top: var(--py);
+        transform: translate(-50%, -50%);
+        border: 1px solid rgba(228, 239, 230, 0.14);
+        box-shadow: 0 0 100px rgba(151, 195, 174, 0.11);
+        pointer-events: none;
+      }
+      .side {
+        position: relative;
+        z-index: 3;
+        width: 36%;
+        min-height: 760px;
+        padding: 30px 34px;
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid rgba(236, 233, 225, 0.16);
+        background: linear-gradient(90deg, #18201f 86%, rgba(24, 32, 31, 0.8));
+      }
+      .eyebrow,
+      .count,
+      .facts,
+      .cta {
+        font:
+          10px/1.5 ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .top {
+        display: flex;
+        justify-content: space-between;
+        color: #a9afa9;
+      }
+      .signal {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 9px;
+        border-radius: 50%;
+        background: #89aaff;
+        box-shadow: 0 0 0 5px rgba(137, 170, 255, 0.08);
+      }
+      h1 {
+        margin: 128px -130px 0 0;
+        position: relative;
+        z-index: 5;
+        font-family: Georgia, 'Noto Serif SC', serif;
+        font-size: clamp(62px, 7.5vw, 102px);
+        font-weight: 400;
+        line-height: 0.82;
+        letter-spacing: -0.07em;
+      }
+      h1 small {
+        display: block;
+        margin: 20px 0 0 4px;
+        font-family: Arial, 'PingFang SC', sans-serif;
+        font-size: 17px;
+        letter-spacing: 0.08em;
+        color: #b9c0b8;
+      }
+      .summary {
+        margin: 42px 0 0;
+        max-width: 245px;
+        color: #c8cbc5;
+        font-family: Georgia, 'Noto Serif SC', serif;
+        font-size: 18px;
+        line-height: 1.6;
+      }
+      .bottom {
+        margin-top: auto;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 10px;
+        color: #d6d8d2;
+      }
+      .facts span:nth-child(odd) {
+        color: #727d78;
+      }
+      .cta {
+        margin-top: 28px;
+        width: max-content;
+        padding: 11px 0 7px;
+        border: 0;
+        border-bottom: 1px solid #d5ddd5;
+        background: none;
+        color: #f4f0e7;
+        cursor: pointer;
+      }
+      .cta i {
+        display: inline-block;
+        font-style: normal;
+        transition: transform 0.3s;
+      }
+      .cta:hover i,
+      .cta:focus-visible i {
+        transform: translate(7px, -2px);
+      }
+      .stamp {
+        position: absolute;
+        z-index: 4;
+        right: 28px;
+        top: 26px;
+        width: 112px;
+        height: 112px;
+        border: 1px solid rgba(236, 233, 225, 0.25);
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font:
+          9px/1.55 ui-monospace,
+          monospace;
+        letter-spacing: 0.13em;
+        text-transform: uppercase;
+        transform: rotate(9deg);
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .portal:hover .stamp {
+        transform: rotate(0deg);
+      }
+      .caption {
+        position: absolute;
+        z-index: 4;
+        right: 28px;
+        bottom: 25px;
+        text-align: right;
+        font:
+          9px/1.7 ui-monospace,
+          monospace;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #a9b4ad;
+      }
+      @media (max-width: 720px) {
+        body {
+          padding: 14px;
+        }
+        .portal {
+          min-height: 760px;
+        }
+        .side {
+          width: 100%;
+          min-height: 760px;
+          padding: 24px;
+          background: linear-gradient(
+            180deg,
+            rgba(24, 32, 31, 0.9),
+            rgba(24, 32, 31, 0.62) 65%,
+            #18201f
+          );
+          border: 0;
+        }
+        .visual {
+          inset: 35% 0 0;
+          clip-path: none;
+        }
+        .stamp {
+          width: 84px;
+          height: 84px;
+        }
+        .top {
+          padding-right: 105px;
+        }
+        h1 {
+          margin: 98px 0 0;
+          font-size: 62px;
+        }
+        .summary {
+          font-size: 16px;
+        }
+        .facts {
+          display: none;
+        }
+        .bottom {
+          margin-bottom: 2px;
+        }
+        .caption {
+          display: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+        .visual {
+          background: radial-gradient(circle at 70% 45%, #526f68 0, #263b38 35%, #14201f 73%);
+        }
+      }
+    </style>
+    <style>
+      .portal {
+        background: #111918;
+        box-shadow: 0 30px 86px rgba(22, 29, 28, 0.18);
+      }
+      .portal:focus-visible {
+        outline: 2px solid #9bb7aa;
+        outline-offset: 5px;
+      }
+      .visual {
+        inset: 0 0 0 27%;
+        background: #15201f;
+        clip-path: none;
+      }
+      .portal:hover .visual,
+      .portal:focus-within .visual {
+        clip-path: none;
+      }
+      .aperture-window {
+        position: absolute;
+        left: 58%;
+        top: 49%;
+        width: min(590px, 72vw);
+        aspect-ratio: 1;
+        overflow: hidden;
+        border: 1px solid rgba(223, 234, 224, 0.24);
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background:
+          radial-gradient(
+            circle at var(--px) var(--py),
+            rgba(174, 205, 189, 0.24),
+            transparent 27%
+          ),
+          linear-gradient(145deg, #516b64, #1c302e 48%, #0f1918);
+        box-shadow:
+          0 0 0 22px rgba(219, 230, 220, 0.018),
+          0 0 0 54px rgba(219, 230, 220, 0.012);
+        transition:
+          width 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.9s;
+      }
+      .portal:hover .aperture-window,
+      .portal:focus-within .aperture-window {
+        width: min(625px, 76vw);
+        box-shadow:
+          0 0 0 30px rgba(219, 230, 220, 0.022),
+          0 0 0 70px rgba(219, 230, 220, 0.014);
+      }
+      .aperture-window:after {
+        content: 'TIDE / 03';
+        position: absolute;
+        right: 9%;
+        top: 50%;
+        padding: 6px 0;
+        color: rgba(240, 238, 230, 0.7);
+        border-top: 1px solid rgba(240, 238, 230, 0.34);
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.14em;
+      }
+      .sea {
+        inset: 7% -31% -6% -31%;
+        width: 162%;
+        height: 95%;
+      }
+      .glow {
+        display: none;
+      }
+      .side {
+        width: 34%;
+        padding: 30px 38px;
+        border-right-color: rgba(236, 233, 225, 0.12);
+        background: linear-gradient(90deg, #111918 86%, rgba(17, 25, 24, 0.88));
+      }
+      h1 {
+        width: 730px;
+        margin: 136px -390px 0 0;
+        font-size: clamp(62px, 8.4vw, 110px);
+        white-space: nowrap;
+      }
+      h1 small {
+        white-space: normal;
+      }
+      .summary {
+        margin-top: 38px;
+        max-width: 270px;
+        font-size: 19px;
+      }
+      .bottom {
+        margin-top: 34px;
+      }
+      .facts {
+        display: none;
+      }
+      .cta {
+        min-height: 44px;
+        margin-top: 0;
+        padding: 11px 8px 7px 0;
+      }
+      .stamp,
+      .caption {
+        display: none;
+      }
+      .portal:before {
+        content: 'A DIGITAL ISLAND SHAPED BY MEMORY';
+        position: absolute;
+        z-index: 4;
+        right: 28px;
+        top: 28px;
+        font:
+          9px ui-monospace,
+          monospace;
+        letter-spacing: 0.14em;
+        color: #9ba8a1;
+      }
+      @media (max-width: 720px) {
+        .visual {
+          inset: 30% 0 0;
+        }
+        .side {
+          width: 100%;
+          background: linear-gradient(
+            180deg,
+            rgba(17, 25, 24, 0.97) 0 45%,
+            rgba(17, 25, 24, 0.72) 70%,
+            #111918
+          );
+        }
+        .aperture-window {
+          left: 62%;
+          top: 58%;
+          width: 520px;
+        }
+        .portal:before {
+          display: none;
+        }
+        h1 {
+          width: auto;
+          margin-right: -70px;
+          font-size: 58px;
+        }
+        .bottom {
+          margin-top: 28px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="portal" tabindex="0" aria-label="Tidal Aperture 方案：潮汐窗口">
+      <div class="visual">
+        <div class="aperture-window">
+          <svg class="sea" viewBox="0 0 1200 700" aria-hidden="true">
+            <path
+              class="ring"
+              d="M15 372C162 206 339 162 494 239C562 273 622 289 692 259C843 194 1028 269 1207 421"
+            />
+            <path
+              class="ring"
+              d="M-42 450C153 281 366 246 529 308C590 331 653 337 717 314C872 258 1060 347 1242 505"
+            />
+            <path
+              class="ring"
+              d="M-89 522C145 371 385 341 564 387C629 404 691 406 758 386C920 338 1111 430 1281 587"
+            />
+            <path
+              class="ridge"
+              d="M316 397C377 362 433 323 479 276C517 237 548 198 584 191C616 184 637 204 654 232C667 253 681 260 697 242C720 216 751 215 782 232C819 253 844 290 879 320C912 348 947 372 980 394"
+            />
+            <path
+              class="coast"
+              d="M202 449C331 505 475 521 594 511C629 508 657 515 681 528C707 512 739 505 780 506C892 509 1003 487 1091 441"
+            />
+          </svg>
+        </div>
+      </div>
+      <section class="side">
+        <div class="top">
+          <span class="eyebrow"><i class="signal"></i>Featured project</span
+          ><span class="count">01 / 2026</span>
+        </div>
+        <h1>heart—island<small>心屿</small></h1>
+        <p class="summary">一座随情绪记录与匿名回应，持续改变潮位的数字岛屿。</p>
+        <div class="bottom">
+          <button class="cta">Launch experience <i>↗</i></button>
+        </div>
+      </section>
+    </article>
+    <script>
+      const p = document.querySelector('.portal');
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        let frame = 0,
+          lastEvent;
+        p.addEventListener('pointermove', (e) => {
+          lastEvent = e;
+          if (frame) return;
+          frame = requestAnimationFrame(() => {
+            const r = p.getBoundingClientRect();
+            p.style.setProperty('--px', `${((lastEvent.clientX - r.left) / r.width) * 100}%`);
+            p.style.setProperty('--py', `${((lastEvent.clientY - r.top) / r.height) * 100}%`);
+            frame = 0;
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

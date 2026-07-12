@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Galilieo 首页最终原型 v1 · 平板评审</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 26px 18px 56px;
+        display: grid;
+        justify-items: center;
+        gap: 16px;
+        color: #dce6f6;
+        background: #07111f;
+        font-family: Inter, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      }
+      header {
+        text-align: center;
+      }
+      h1 {
+        margin: 0;
+        font-family: Georgia, 'Noto Serif SC', serif;
+        font-size: 24px;
+        font-weight: 400;
+      }
+      p {
+        margin: 6px 0 0;
+        color: #91a1b8;
+        font-size: 12px;
+      }
+      .frame {
+        width: 1054px;
+        max-width: 100%;
+        padding: 14px;
+        border: 1px solid #314660;
+        border-radius: 28px;
+        background: #0c192a;
+        box-shadow: 0 30px 90px rgba(0, 0, 0, 0.42);
+        overflow: auto;
+      }
+      iframe {
+        width: 1024px;
+        height: 768px;
+        display: block;
+        border: 0;
+        border-radius: 16px;
+        background: #f3f2ed;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>1024 × 768 平板评审视图</h1>
+      <p>真实 iframe 视口，用于检查 Hero 两列、状态下移与项目两列。</p>
+    </header>
+    <div class="frame">
+      <iframe
+        src="homepage-final-prototype-v1.html?theme=light"
+        title="Galilieo 首页平板原型"
+      ></iframe>
+    </div>
+  </body>
+</html>

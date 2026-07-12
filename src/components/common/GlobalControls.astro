@@ -1,0 +1,162 @@
+---
+import { homeMusicPlaylistUrl, homeMusicTracks } from '../../data/music';
+
+const initialTrack = homeMusicTracks.find((track) => track.playable);
+const playableTracks = homeMusicTracks.filter((track) => track.playable);
+---
+
+<div class="global-controls" transition:persist="global-controls" data-global-controls>
+  <aside
+    class="global-music"
+    data-global-music
+    data-playlist={JSON.stringify(homeMusicTracks)}
+    data-state={initialTrack ? 'paused' : 'unavailable'}
+    data-open="false"
+    aria-label="全局音乐播放器"
+  >
+    <button
+      class="global-music__orb"
+      type="button"
+      aria-label="打开全局音乐播放器"
+      aria-controls="global-music-panel"
+      aria-expanded="false"
+      data-global-music-toggle
+    >
+      {
+        initialTrack && (
+          <img
+            src={initialTrack.cover}
+            alt=""
+            width="52"
+            height="52"
+            referrerpolicy="no-referrer"
+            data-music-cover
+          />
+        )
+      }
+      <span aria-hidden="true" data-music-orb-icon>▶</span>
+    </button>
+
+    <a
+      class="global-music__nojs"
+      href={homeMusicPlaylistUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="在网易云打开 Galilieo Atlas 歌单"
+    >
+      {
+        initialTrack && (
+          <img
+            src={initialTrack.cover}
+            alt=""
+            width="52"
+            height="52"
+            referrerpolicy="no-referrer"
+          />
+        )
+      }
+    </a>
+
+    <section
+      class="global-music__panel"
+      id="global-music-panel"
+      aria-hidden="true"
+      data-global-music-panel
+    >
+      <header class="global-music__header">
+        <div>
+          <span>Music · Galilieo Atlas</span>
+          <strong>随手听</strong>
+        </div>
+        <div class="global-music__header-actions">
+          <a
+            href={homeMusicPlaylistUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="在网易云打开歌单">↗</a
+          >
+          <button type="button" aria-label="收起音乐播放器" data-global-music-close>×</button>
+        </div>
+      </header>
+
+      <div class="global-music__now">
+        <figure>
+          {
+            initialTrack && (
+              <img
+                src={initialTrack.cover}
+                alt={`${initialTrack.album} 专辑封面`}
+                width="58"
+                height="58"
+                referrerpolicy="no-referrer"
+                data-music-cover
+              />
+            )
+          }
+        </figure>
+        <div>
+          <span data-music-status>准备播放</span>
+          <strong data-music-title>{initialTrack?.title ?? '暂无可播放曲目'}</strong>
+          <p data-music-artist>{initialTrack?.artist ?? '请检查网易云歌单'}</p>
+        </div>
+        <span data-music-position
+          >{playableTracks.length > 0 ? `1 / ${playableTracks.length}` : '0 / 0'}</span
+        >
+      </div>
+
+      <div class="global-music__timeline">
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="0"
+          disabled
+          aria-label="音乐播放进度"
+          data-music-seek
+        />
+        <div><span data-music-current-time>00:00</span><span data-music-duration>00:00</span></div>
+      </div>
+
+      <div class="global-music__transport" aria-label="全局音乐播放控制">
+        <button type="button" disabled aria-label="上一首" data-music-action="previous">‹</button>
+        <button type="button" disabled aria-label="播放" data-music-action="toggle">▶</button>
+        <button type="button" disabled aria-label="下一首" data-music-action="next">›</button>
+      </div>
+
+      <div class="global-music__playlist">
+        <div class="global-music__playlist-heading">
+          <span>歌单</span><span>{homeMusicTracks.length} tracks</span>
+        </div>
+        <ol>
+          {
+            homeMusicTracks.map((track, index) => (
+              <li>
+                <button
+                  type="button"
+                  disabled={!track.playable}
+                  data-music-track-index={index}
+                  aria-current={index === 0 ? 'true' : undefined}
+                >
+                  <span>{String(index + 1).padStart(2, '0')}</span>
+                  <span>
+                    <>
+                      <strong>{track.title}</strong>
+                      <small>{track.artist}</small>
+                    </>
+                  </span>
+                  {!track.playable && <span>暂不可播放</span>}
+                </button>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+
+      <audio preload="metadata" data-music-audio></audio>
+    </section>
+  </aside>
+
+  <a class="back-to-top" href="#top" aria-label="回到页面顶部" data-back-to-top>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 14 5-5 5 5"></path></svg>
+  </a>
+</div>

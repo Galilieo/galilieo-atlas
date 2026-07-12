@@ -17,12 +17,24 @@
 
 .site-nav a:focus-visible,
 .button:focus-visible,
-.featured-project:focus-visible,
 .project-entry__action:focus-visible,
-.contact-links a:focus-visible,
 .site-footer a:focus-visible,
 .menu-toggle:focus-visible,
 .theme-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.featured-projects__card a:focus-visible,
+.latest-posts__card a:focus-visible,
+.latest-posts__more a:focus-visible,
+.featured-projects__more a:focus-visible,
+.hero-profile-card__main-link:focus-visible,
+.hero-profile-card__stats a:focus-visible,
+.hero-profile-card__contacts a:focus-visible,
+.hero-utility__github a:focus-visible,
+.about-preview__more:focus-visible,
+.archive-entry a:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
 }

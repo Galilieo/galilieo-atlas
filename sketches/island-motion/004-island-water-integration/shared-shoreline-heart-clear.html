@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>A2 · 明确心形共享岸线</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #ece9e2;
+        color: #292823;
+        font-family: Inter, system-ui, sans-serif;
+      }
+      main {
+        width: min(1120px, 94vw);
+        padding: 26px;
+      }
+      .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-bottom: 14px;
+      }
+      .eyebrow {
+        font:
+          11px ui-monospace,
+          monospace;
+        letter-spacing: 0.12em;
+        color: #77736b;
+      }
+      .meta h1 {
+        margin: 5px 0 0;
+        font:
+          500 24px Georgia,
+          serif;
+      }
+      .meta p {
+        margin: 0;
+        max-width: 520px;
+        color: #716d65;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .frame {
+        border: 1px solid #c9c4ba;
+        background: #f8f6f1;
+        padding: 18px;
+        box-shadow: 0 22px 60px #423d3510;
+      }
+      .stage {
+        position: relative;
+        overflow: hidden;
+        background: radial-gradient(ellipse at 50% 62%, #fff 0, #f8f6f1 47%, #f5f2ec 100%);
+      }
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .rings {
+        fill: none;
+        stroke: #88837a;
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        opacity: 0.24;
+      }
+      .shared {
+        fill: none;
+        stroke: #625e58;
+        stroke-width: 3.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.68;
+      }
+      .heart-guide {
+        opacity: 0;
+        fill: #356ae6;
+      }
+      .construction .rings {
+        stroke: #c78d4c;
+        opacity: 0.48;
+      }
+      .construction .shared {
+        stroke: #356ae6;
+        opacity: 0.9;
+      }
+      .construction .heart-guide {
+        opacity: 1;
+      }
+      footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 14px;
+        color: #6f6b63;
+        font-size: 12px;
+      }
+      button {
+        border: 1px solid #bdb7ac;
+        background: transparent;
+        padding: 8px 12px;
+        color: inherit;
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: #69655e;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="meta">
+        <div>
+          <div class="eyebrow">CONCEPT A2 · CLEARER HEART CLEFT</div>
+          <h1>明确心形 · 共享岸线</h1>
+        </div>
+        <p>岸线结构与 A 完全相同，只收窄并加深中央负形，用于比较心形暗示强度。</p>
+      </div>
+      <div class="frame">
+        <div class="stage" id="stage">
+          <svg viewBox="0 0 1000 360" role="img" aria-label="较明确的心形负形岛屿与共享岸线涟漪">
+            <g class="rings">
+              <path d="M42 116 C180 80 274 74 350 78 M650 78 C730 74 822 80 958 116" />
+              <path d="M72 146 C196 104 286 100 347 112 M653 112 C718 100 808 104 928 146" />
+              <path d="M85 171 C128 82 288 62 365 119 M635 119 C715 62 872 82 915 171" />
+              <path d="M915 171 C870 302 130 302 85 171" />
+              <path d="M855 171 C816 268 184 268 145 171" />
+              <path d="M790 169 C758 238 242 238 210 169" />
+            </g>
+            <path
+              class="shared"
+              d="M330 155 C370 142 390 115 430 105 C458 98 474 72 493 72 C505 72 512 85 519 100 C521 106 524 106 527 100 C534 85 542 72 554 72 C576 73 590 96 614 105 C640 116 660 140 670 155 C630 188 370 188 330 155 Z"
+            />
+            <g class="heart-guide">
+              <circle cx="493" cy="72" r="4" />
+              <circle cx="523" cy="106" r="4" />
+              <circle cx="554" cy="72" r="4" />
+            </g>
+          </svg>
+        </div>
+      </div>
+      <footer>
+        <span>心形提示更明确，但仍不绘制独立心形图标。</span
+        ><button type="button" id="toggle">显示结构</button>
+      </footer>
+    </main>
+    <script>
+      const s = document.querySelector('#stage'),
+        b = document.querySelector('#toggle');
+      b.onclick = () => {
+        s.classList.toggle('construction');
+        b.textContent = s.classList.contains('construction') ? '隐藏结构' : '显示结构';
+      };
+    </script>
+  </body>
+</html>

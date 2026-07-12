@@ -1,0 +1,105 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+
+const latestPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft && post.data.publishedAt)
+  .sort((a, b) => String(b.data.publishedAt).localeCompare(String(a.data.publishedAt)))
+  .slice(0, 3);
+---
+
+<section
+  class="dashboard-card home-carousel home-notes reveal"
+  id="blog"
+  aria-labelledby="latest-posts-title"
+  aria-roledescription="carousel"
+  data-home-carousel
+  data-home-autoplay="7600"
+  style="--delay: 240ms"
+>
+  <a class="home-carousel__section-link" href="/blog/" aria-label="查看全部文章"></a>
+  <header class="home-carousel__header">
+    <div>
+      <p>Latest notes</p>
+      <h2 id="latest-posts-title">最近笔记</h2>
+    </div>
+  </header>
+
+  {
+    latestPosts.length > 0 ? (
+      <div class="home-carousel__viewport">
+        {latestPosts.map((post, index) => (
+          <article
+            class="home-carousel__slide"
+            data-home-slide
+            hidden={index !== 0}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${index + 1} / ${latestPosts.length}`}
+          >
+            <a class="home-carousel__card-link" href={`/notes/${post.id}/`}>
+              <div
+                class:list={[
+                  'home-carousel__media',
+                  'home-notes__media',
+                  `home-carousel__media--tone-${(index + 1) % 3}`,
+                ]}
+              >
+                {post.data.cover ? (
+                  <Image
+                    class="home-carousel__cover"
+                    src={post.data.cover}
+                    alt=""
+                    widths={[360, 520, 720]}
+                    sizes="(max-width: 999px) 100vw, 36vw"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                  />
+                ) : (
+                  <span class="home-carousel__placeholder" aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                )}
+              </div>
+              <div class="home-carousel__scrim" aria-hidden="true" />
+              <div class="home-carousel__content home-notes__content">
+                <div class="home-carousel__eyebrow">
+                  <span>{post.data.category}</span>
+                  {post.data.publishedAt && (
+                    <time datetime={post.data.publishedAt}>{post.data.publishedAt}</time>
+                  )}
+                </div>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.description}</p>
+                <ul aria-label="文章标签">
+                  {post.data.tags.slice(0, 2).map((tag) => (
+                    <li>{tag}</li>
+                  ))}
+                </ul>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="home-carousel__empty">第一批文章正在整理中。</p>
+    )
+  }
+
+  {
+    latestPosts.length > 1 && (
+      <div class="home-carousel__dots" aria-label="选择文章">
+        {latestPosts.map((post, index) => (
+          <button
+            type="button"
+            data-home-dot
+            data-home-index={index}
+            aria-label={`显示文章：${post.data.title}`}
+            aria-current={index === 0 ? 'true' : 'false'}
+          >
+            <span />
+          </button>
+        ))}
+      </div>
+    )
+  }
+</section>

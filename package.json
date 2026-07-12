@@ -10,6 +10,9 @@
     "preview": "astro preview",
     "check": "astro check",
     "lint": "eslint .",
+    "check:home": "node scripts/check-home-structure.mjs",
+    "sync:music": "node scripts/sync-netease-playlist.mjs 18145116776",
+    "verify": "node scripts/verify.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {

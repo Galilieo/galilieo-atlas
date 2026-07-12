@@ -1,48 +1,121 @@
 ---
-// 用途：首页个人介绍和信息摘要；数据来源：现有真实个人文案；后续个人介绍在本文件修改。
+// 用途：关于页个人档案、真实介绍与成长时间线；后续个人介绍在本文件修改。
+import { siteConfig } from '../../config/site';
 ---
 
-<section class="content-preview" id="about" aria-labelledby="about-title">
-  <article class="about-preview reveal">
-    <div class="section-label"><i></i> 01 / About</div>
-    <h2 id="about-title">还在成长，但已经开始在真实产品里解决问题。</h2>
-    <p>
-      我是
-      Galilieo，目前就读于软件工程专业。相比只学习某一种框架，我更希望理解一个产品从页面、接口和数据，到
-      AI 能力接入与最终交付的完整过程。
-    </p>
-    <p>
-      目前的实习让我接触到真实 AI 聊天产品的前端与移动端开发。我会参与问题排查、交互修复、Android 与
-      iOS 差异处理、自测和代码协作。这些经历也让我开始真正理解，项目开发并不只是把代码写出来。
-    </p>
-    <p>
-      在实习之外，我持续开发个人项目「心屿」。它最初是一个 Spring Boot 与 Vue 3
-      项目，现在正在逐步加入多轮对话、记忆、情绪报告、RAG 和工具调用能力。
-    </p>
-    <p>
-      我的目标不是把自己限制在普通前端或普通 Java CRUD 开发，而是逐步走向 AI 应用开发、Agent 和 AI
-      全栈方向。
-    </p>
-  </article>
+<section class="about-dossier" aria-labelledby="about-title">
+  <header class="about-dossier__identity reveal">
+    <div class="about-dossier__identity-content">
+      <div class="about-dossier__mark" aria-hidden="true">G</div>
+      <div>
+        <p class="about-dossier__eyebrow">Identity / About</p>
+        <h1 id="about-title">{siteConfig.author.name}</h1>
+        <p class="about-dossier__role">{siteConfig.author.role}</p>
+      </div>
+    </div>
+  </header>
 
-  <aside class="profile-facts reveal" aria-label="个人信息摘要">
-    <dl>
-      <div>
-        <dt>当前身份</dt>
-        <dd>软件工程专业学生 / 开发实习生</dd>
-      </div>
-      <div>
-        <dt>主要方向</dt>
-        <dd>AI 应用开发 / Agent / RAG / AI 全栈</dd>
-      </div>
-      <div>
-        <dt>当前项目</dt>
-        <dd>heart-island 心屿</dd>
-      </div>
-      <div>
-        <dt>近期关注</dt>
-        <dd>多轮对话、长期记忆、SSE、RAG、Tool Calling</dd>
-      </div>
-    </dl>
-  </aside>
+  <div class="about-dossier__grid">
+    <article class="about-dossier__story reveal">
+      <p class="about-dossier__section-label">Narrative / 01</p>
+      <h2>还在成长，但已经开始在真实产品里解决问题。</h2>
+      <p>
+        我是
+        Galilieo，目前就读于软件工程专业。相比只学习某一种框架，我更希望理解一个产品从页面、接口和数据，到
+        AI 能力接入与最终交付的完整过程。
+      </p>
+      <p>
+        目前的实习让我接触到真实 AI 聊天产品的前端与移动端开发。我会参与问题排查、交互修复、Android
+        与 iOS 差异处理、自测和代码协作。这些经历也让我开始真正理解，项目开发并不只是把代码写出来。
+      </p>
+      <p>
+        在实习之外，我持续开发个人项目「心屿」。它最初是一个 Spring Boot 与 Vue 3
+        项目，现在正在逐步加入多轮对话、记忆、情绪报告、RAG 和工具调用能力。
+      </p>
+      <p>
+        我的目标不是把自己限制在普通前端或普通 Java CRUD 开发，而是逐步走向 AI 应用开发、Agent 和 AI
+        全栈方向。
+      </p>
+    </article>
+
+    <aside class="about-dossier__facts reveal" aria-label="个人信息摘要">
+      <p class="about-dossier__section-label">Facts / 02</p>
+      <dl>
+        <div>
+          <dt>当前身份</dt>
+          <dd>软件工程专业学生 / 开发实习生</dd>
+        </div>
+        <div>
+          <dt>主要方向</dt>
+          <dd>AI 应用开发 / Agent / RAG / AI 全栈</dd>
+        </div>
+        <div>
+          <dt>当前项目</dt>
+          <dd>heart-island 心屿</dd>
+        </div>
+        <div>
+          <dt>近期关注</dt>
+          <dd>多轮对话、长期记忆、SSE、RAG、Tool Calling</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+
+  <section class="about-dossier__timeline reveal" aria-labelledby="about-timeline-title">
+    <p class="about-dossier__section-label">Timeline / 03</p>
+    <h2 id="about-timeline-title">从学习、构建到真实产品实践。</h2>
+    <ol class="about-dossier__timeline-list">
+      <li class="about-dossier__milestone" data-timeline-step>
+        <span class="about-dossier__timeline-node" aria-hidden="true"></span>
+        <div class="about-dossier__milestone-meta">
+          <p class="about-dossier__milestone-date">
+            <time datetime="2024-09">2024.09</time><span>— 至今</span>
+          </p>
+          <p class="about-dossier__milestone-phase">01 / Learning</p>
+        </div>
+        <div class="about-dossier__milestone-copy">
+          <h3>软件工程学习</h3>
+          <p>从前后端基础出发，持续理解页面、接口、数据与交付之间的完整关系。</p>
+        </div>
+      </li>
+      <li class="about-dossier__milestone" data-timeline-step>
+        <span class="about-dossier__timeline-node" aria-hidden="true"></span>
+        <div class="about-dossier__milestone-meta">
+          <p class="about-dossier__milestone-date">
+            <time datetime="2026-04">2026.04</time><span>— 至今</span>
+          </p>
+          <p class="about-dossier__milestone-phase">02 / Building</p>
+        </div>
+        <div class="about-dossier__milestone-copy">
+          <h3>持续开发心屿</h3>
+          <p>围绕情绪记录、AI 回复、社区互动和长期记忆逐步构建个人长期项目。</p>
+        </div>
+      </li>
+      <li class="about-dossier__milestone" data-timeline-step>
+        <span class="about-dossier__timeline-node" aria-hidden="true"></span>
+        <div class="about-dossier__milestone-meta">
+          <p class="about-dossier__milestone-date">
+            <time datetime="2026-06">2026.06</time><span>— 至今</span>
+          </p>
+          <p class="about-dossier__milestone-phase">03 / Practice</p>
+        </div>
+        <div class="about-dossier__milestone-copy">
+          <h3>AI 产品开发实习</h3>
+          <p>参与跨平台 AI 聊天产品的页面维护、问题排查、移动端适配与自测协作。</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <footer class="about-dossier__contact reveal">
+    <div>
+      <p class="about-dossier__section-label">Contact / 04</p>
+      <h2>继续交流或查看正在构建的内容。</h2>
+    </div>
+    <div class="about-dossier__links">
+      <a href={siteConfig.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a href={`mailto:${siteConfig.email}`}>Email</a>
+      <a href={siteConfig.heartIsland} target="_blank" rel="noopener noreferrer">心屿 ↗</a>
+    </div>
+  </footer>
 </section>

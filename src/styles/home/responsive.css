@@ -1,0 +1,182 @@
+/* Homepage dashboard responsive layout. */
+@media (max-width: 999px) {
+  body:has(#main-content > .home-dashboard) {
+    --home-page: min(100% - 36px, 820px);
+  }
+
+  .home-dashboard {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'profile'
+      'utility'
+      'projects'
+      'notes'
+      'status';
+  }
+
+  .home-profile,
+  .home-utility {
+    min-height: auto;
+  }
+
+  .home-utility {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: none;
+  }
+
+  .home-status {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-status > div:nth-child(3) {
+    border-top: 1px solid var(--home-border);
+    border-left: 0;
+  }
+
+  .home-status > div:nth-child(4) {
+    border-top: 1px solid var(--home-border);
+  }
+}
+
+@media (max-width: 767px) {
+  .home-dashboard {
+    padding: 40px 0 54px;
+  }
+
+  .home-profile,
+  .home-carousel {
+    border-radius: 18px;
+  }
+
+  .home-profile__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .home-utility {
+    grid-template-columns: 1fr;
+  }
+
+  .home-utility__card,
+  .dashboard-card {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .home-carousel__card-link,
+  .home-carousel__content,
+  .home-carousel__media .island-scene {
+    min-height: 220px;
+  }
+
+  .home-carousel {
+    min-height: 0;
+  }
+
+  .home-status {
+    grid-template-columns: 1fr;
+  }
+
+  .home-status > div + div,
+  .home-status > div:nth-child(3) {
+    border-top: 1px solid var(--home-border);
+    border-left: 0;
+  }
+
+  .home-status__item--meta {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 580px) {
+  .home-profile__content {
+    padding: 22px 18px;
+  }
+
+  .home-profile__about-cue {
+    top: 22px;
+    right: 18px;
+  }
+
+  .home-profile__identity {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 15px;
+  }
+
+  .home-profile h1 {
+    font-size: clamp(34px, 11vw, 46px);
+  }
+
+  .home-profile__role,
+  .home-profile__summary {
+    font-size: 12px;
+  }
+
+  .home-profile__count {
+    min-width: 90px;
+  }
+
+  .home-carousel {
+    padding: 20px 17px;
+  }
+
+  .home-carousel__header {
+    gap: 12px;
+  }
+
+  .home-carousel__content {
+    padding: 20px;
+  }
+
+  .home-carousel__content h3 {
+    max-width: 100%;
+    font-size: 22px;
+  }
+
+  .home-carousel__content > p {
+    max-width: 100%;
+  }
+
+  .home-carousel__dots {
+    right: 28px;
+    bottom: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-profile__about-link,
+  .home-profile__about-cue,
+  .home-profile,
+  .home-profile__avatar,
+  .home-profile__count,
+  .home-profile__count strong,
+  .home-profile__contact,
+  .home-utility__card,
+  .home-utility__controls button,
+  .home-carousel__section-link,
+  .home-carousel__card-link,
+  .home-carousel__dots span {
+    transition: none;
+  }
+
+  .home-utility__card:hover,
+  .home-carousel__card-link:hover,
+  .home-carousel__card-link:focus-visible {
+    transform: none;
+  }
+
+  .home-profile:hover,
+  .home-profile:hover .home-profile__avatar,
+  .home-profile__count:hover strong,
+  .home-profile__count:focus-visible strong,
+  .home-profile__contact:hover,
+  .home-profile__contact:focus-visible,
+  .home-profile:hover .home-profile__about-cue > span,
+  .home-profile__about-link:focus-visible .home-profile__about-cue > span {
+    transform: none;
+  }
+
+  .home-utility__music[data-state='playing'] .home-utility__cover img {
+    animation: none;
+  }
+}

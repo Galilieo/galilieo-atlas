@@ -1,5 +1,5 @@
 ---
-import { siteConfig } from '../../config/site';
+import { isNavigationPathActive, siteConfig } from '../../config/site';
 
 // 用途：输出桌面与移动端共用的主导航；数据来源：src/config/site.ts；后续统一修改配置。
 const currentPath = Astro.url.pathname;
@@ -8,13 +8,13 @@ const currentPath = Astro.url.pathname;
 <nav class="site-nav" id="site-navigation" aria-label="主导航">
   {
     siteConfig.navigation.map((item) => {
-      const itemPath = new URL(item.href, siteConfig.url).pathname;
-      const isActive =
-        item.href === '/'
-          ? currentPath === '/'
-          : !item.href.includes('#') && itemPath === currentPath;
+      const isActive = isNavigationPathActive(item.href, currentPath);
       return (
-        <a class:list={{ 'is-active': isActive }} href={item.href}>
+        <a
+          class:list={{ 'is-active': isActive }}
+          href={item.href}
+          aria-current={isActive ? 'page' : undefined}
+        >
           {item.label}
         </a>
       );

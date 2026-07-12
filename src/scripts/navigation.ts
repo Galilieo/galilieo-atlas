@@ -6,8 +6,14 @@ export function initNavigation(): Cleanup {
   const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
   const siteNav = document.querySelector<HTMLElement>('.site-nav');
   if (!header || !menuToggle || !siteNav) return () => {};
+  const navLinks = Array.from(siteNav.querySelectorAll<HTMLAnchorElement>('a'));
+  let focusFrame = 0;
 
   const closeMenu = () => {
+    if (focusFrame) {
+      cancelAnimationFrame(focusFrame);
+      focusFrame = 0;
+    }
     header.classList.remove('menu-open');
     siteNav.classList.remove('is-open');
     siteNav.style.removeProperty('clip-path');
@@ -17,7 +23,7 @@ export function initNavigation(): Cleanup {
     menuToggle.setAttribute('aria-label', '打开导航');
   };
 
-  const onToggle = () => {
+  const onToggle = (event: MouseEvent) => {
     const willOpen = !siteNav.classList.contains('is-open');
     header.classList.toggle('menu-open', willOpen);
     siteNav.classList.toggle('is-open', willOpen);
@@ -32,10 +38,18 @@ export function initNavigation(): Cleanup {
     }
     menuToggle.setAttribute('aria-expanded', String(willOpen));
     menuToggle.setAttribute('aria-label', willOpen ? '关闭导航' : '打开导航');
+    if (willOpen && event.detail === 0) {
+      focusFrame = requestAnimationFrame(() => {
+        focusFrame = 0;
+        navLinks[0]?.focus();
+      });
+    }
   };
 
   const onKeydown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') closeMenu();
+    if (event.key !== 'Escape' || !siteNav.classList.contains('is-open')) return;
+    closeMenu();
+    menuToggle.focus();
   };
 
   const onPointerDown = (event: PointerEvent) => {
@@ -49,7 +63,6 @@ export function initNavigation(): Cleanup {
     header.classList.toggle('is-scrolled', window.scrollY > 16);
   };
 
-  const navLinks = Array.from(siteNav.querySelectorAll<HTMLAnchorElement>('a'));
   navLinks.forEach((link) => link.addEventListener('click', closeMenu));
   menuToggle.addEventListener('click', onToggle);
   document.addEventListener('keydown', onKeydown);

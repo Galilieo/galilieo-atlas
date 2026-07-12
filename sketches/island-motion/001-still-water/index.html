@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>心屿动效原型 A · 静水呼吸</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        --paper: #f5f1e9;
+        --soft: #f8f5ee;
+        --ink: #1f211f;
+        --muted: #6d7068;
+        --line: rgba(31, 33, 31, 0.18);
+        --blue: #3c61c9;
+        --blue-soft: #e7ecfa;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 34px;
+        color: var(--ink);
+        background: var(--paper);
+        font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+      }
+      .prototype {
+        width: min(100%, 1020px);
+      }
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .toolbar button {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 14px;
+        color: inherit;
+        background: transparent;
+        cursor: pointer;
+      }
+      .card {
+        position: relative;
+        min-height: 700px;
+        overflow: hidden;
+        border: 1px solid rgba(31, 33, 31, 0.22);
+        background: rgba(248, 245, 238, 0.92);
+        box-shadow: 0 26px 70px rgba(58, 54, 46, 0.07);
+        transition:
+          transform 420ms var(--ease),
+          box-shadow 420ms var(--ease),
+          border-color 300ms ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(60, 97, 201, 0.46);
+        box-shadow: 0 34px 84px rgba(58, 54, 46, 0.11);
+      }
+      .copy {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 44px 42px 0;
+      }
+      h1 {
+        margin: 0;
+        font-family: Georgia, 'Times New Roman', serif;
+        font-weight: 400;
+        font-size: clamp(42px, 6vw, 65px);
+        line-height: 0.95;
+        letter-spacing: -0.055em;
+      }
+      h1 span {
+        margin-left: 8px;
+        font-family: 'Microsoft YaHei', sans-serif;
+        font-size: 0.54em;
+        letter-spacing: -0.04em;
+      }
+      .subtitle {
+        margin: 18px 0 0;
+        color: #343733;
+        font-family: Georgia, 'Microsoft YaHei', serif;
+        font-size: 18px;
+      }
+      .arrow {
+        width: 52px;
+        height: 52px;
+        display: grid;
+        place-items: center;
+        flex: none;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        font-size: 24px;
+        transition:
+          transform 240ms var(--ease),
+          background 240ms ease;
+      }
+      .card:hover .arrow {
+        transform: rotate(8deg) translate(2px, -2px);
+        background: var(--blue-soft);
+      }
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 30px 42px 0;
+      }
+      .tag {
+        padding: 8px 13px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: #575b54;
+        font-size: 11px;
+        opacity: 0;
+        transform: translateY(6px);
+        animation: tag-in 650ms var(--ease) forwards;
+      }
+      .tag:nth-child(1) {
+        animation-delay: 220ms;
+      }
+      .tag:nth-child(2) {
+        animation-delay: 260ms;
+      }
+      .tag:nth-child(3) {
+        animation-delay: 300ms;
+      }
+      .tag:nth-child(4) {
+        animation-delay: 340ms;
+      }
+      .scene {
+        position: absolute;
+        inset: 250px 0 58px;
+        overflow: hidden;
+        background: radial-gradient(ellipse at 50% 51%, rgba(255, 255, 255, 0.6), transparent 43%);
+      }
+      .scene::after {
+        position: absolute;
+        top: 54%;
+        left: 50%;
+        width: 72%;
+        height: 29%;
+        border: 1px solid rgba(31, 33, 31, 0.055);
+        border-radius: 50%;
+        content: '';
+        transform: translate(-50%, -50%) scale(0.84);
+        animation: echo 6.4s ease-out infinite;
+      }
+      .island {
+        position: absolute;
+        top: 47%;
+        left: 50%;
+        width: min(92%, 760px);
+        transform: translate(-50%, -50%);
+        animation:
+          island-in 900ms var(--ease) 400ms both,
+          island-float 7.2s ease-in-out 1.3s infinite;
+      }
+      .island img {
+        width: 100%;
+        height: auto;
+        display: block;
+        filter: contrast(1.09) saturate(0.82);
+      }
+      .haze {
+        position: absolute;
+        inset: 38% 7% 8%;
+        opacity: 0.34;
+        background:
+          radial-gradient(circle at 18% 64%, rgba(74, 79, 75, 0.14) 0 1px, transparent 4px),
+          radial-gradient(circle at 76% 48%, rgba(74, 79, 75, 0.1) 0 1px, transparent 5px),
+          radial-gradient(circle at 54% 78%, rgba(74, 79, 75, 0.1) 0 1px, transparent 4px);
+        animation: haze 9s ease-in-out infinite;
+        pointer-events: none;
+      }
+      .footer {
+        position: absolute;
+        inset: auto 0 0;
+        min-height: 58px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 22px;
+        border-top: 1px solid var(--line);
+        color: #96988f;
+        font-family: Consolas, monospace;
+        font-size: 10px;
+      }
+      .paused * {
+        animation-play-state: paused !important;
+      }
+      @keyframes tag-in {
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      @keyframes island-in {
+        from {
+          opacity: 0;
+          transform: translate(-50%, calc(-50% + 8px));
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, -50%);
+        }
+      }
+      @keyframes island-float {
+        0%,
+        100% {
+          transform: translate(-50%, -50%);
+        }
+        50% {
+          transform: translate(-50%, calc(-50% - 2px));
+        }
+      }
+      @keyframes echo {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.84);
+        }
+        18% {
+          opacity: 0.18;
+        }
+        72%,
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(1.08);
+        }
+      }
+      @keyframes haze {
+        0%,
+        100% {
+          transform: translateX(-3px);
+          opacity: 0.28;
+        }
+        50% {
+          transform: translateX(3px);
+          opacity: 0.38;
+        }
+      }
+      @media (max-width: 640px) {
+        body {
+          padding: 14px;
+        }
+        .card {
+          min-height: 560px;
+        }
+        .copy {
+          padding: 28px 22px 0;
+        }
+        h1 {
+          font-size: 40px;
+        }
+        h1 span {
+          display: block;
+          margin: 9px 0 0;
+        }
+        .tags {
+          padding: 22px 22px 0;
+        }
+        .scene {
+          inset: 225px 0 50px;
+        }
+        .island {
+          width: 112%;
+        }
+        .footer {
+          font-size: 8px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+        .tag {
+          opacity: 1;
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="prototype">
+      <div class="toolbar">
+        <span>A / 静水呼吸 · 最克制</span><button id="toggle">暂停动效</button>
+      </div>
+      <article class="card" id="card">
+        <div class="copy">
+          <div>
+            <h1>heart-island <span>心屿</span></h1>
+            <p class="subtitle">AI 情绪记录与匿名互助社区</p>
+          </div>
+          <span class="arrow">↗</span>
+        </div>
+        <div class="tags">
+          <span class="tag">Spring Boot</span><span class="tag">Vue 3</span
+          ><span class="tag">MySQL</span><span class="tag">LLM API</span>
+        </div>
+        <div class="scene">
+          <div class="haze"></div>
+          <div class="island">
+            <img src="../../src/assets/svg/island-reference-no-heart-vector.svg" alt="" />
+          </div>
+        </div>
+        <footer class="footer"><span>Building with purpose</span><span>demo v0.1</span></footer>
+      </article>
+    </main>
+    <script>
+      const b = document.querySelector('#toggle'),
+        c = document.querySelector('#card');
+      b.onclick = () => {
+        const p = c.classList.toggle('paused');
+        b.textContent = p ? '播放动效' : '暂停动效';
+      };
+    </script>
+  </body>
+</html>

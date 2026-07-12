@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import IslandArtwork from './IslandArtwork.astro';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<section
+  class="dashboard-card home-carousel home-projects reveal"
+  id="projects"
+  aria-labelledby="featured-projects-title"
+  aria-roledescription="carousel"
+  data-home-carousel
+  data-home-autoplay="7000"
+  style="--delay: 180ms"
+>
+  <a class="home-carousel__section-link" href="/projects/" aria-label="查看全部项目"></a>
+  <header class="home-carousel__header">
+    <div>
+      <p>Featured works</p>
+      <h2 id="featured-projects-title">项目轮播</h2>
+    </div>
+  </header>
+
+  {
+    projects.length > 0 ? (
+      <div class="home-carousel__viewport">
+        {projects.map((project, index) => (
+          <article
+            class="home-carousel__slide"
+            data-home-slide
+            hidden={index !== 0}
+            role="group"
+            aria-roledescription="slide"
+            aria-label={`${index + 1} / ${projects.length}`}
+          >
+            <a class="home-carousel__card-link" href={`/projects/${project.id}/`}>
+              <div
+                class:list={[
+                  'home-carousel__media',
+                  `home-carousel__media--tone-${index % 3}`,
+                  { 'home-carousel__media--island': project.id === 'heart-island' },
+                ]}
+                data-island-controller={project.id === 'heart-island' ? '' : undefined}
+              >
+                {project.data.cover ? (
+                  <Image
+                    class="home-carousel__cover"
+                    src={project.data.cover}
+                    alt=""
+                    widths={[480, 720, 960]}
+                    sizes="(max-width: 999px) 100vw, 64vw"
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                  />
+                ) : project.id === 'heart-island' ? (
+                  <IslandArtwork idPrefix="homepage-featured-heart-island" />
+                ) : (
+                  <span class="home-carousel__placeholder" aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                )}
+              </div>
+              <div class="home-carousel__scrim" aria-hidden="true" />
+              <div class="home-carousel__content home-projects__content">
+                <div class="home-carousel__eyebrow">
+                  <span>{project.data.typeLabel}</span>
+                  <span>{project.data.statusLabel ?? project.data.status}</span>
+                </div>
+                <h3>{project.data.title}</h3>
+                <p>{project.data.subtitle}</p>
+                <ul aria-label="技术栈">
+                  {project.data.stack.slice(0, 3).map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="home-carousel__empty">项目内容正在整理中。</p>
+    )
+  }
+
+  {
+    projects.length > 1 && (
+      <div class="home-carousel__dots" aria-label="选择项目">
+        {projects.map((project, index) => (
+          <button
+            type="button"
+            data-home-dot
+            data-home-index={index}
+            aria-label={`显示项目：${project.data.title}`}
+            aria-current={index === 0 ? 'true' : 'false'}
+          >
+            <span />
+          </button>
+        ))}
+      </div>
+    )
+  }
+</section>

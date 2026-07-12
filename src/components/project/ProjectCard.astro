@@ -7,22 +7,38 @@ interface Props {
 }
 
 const { project } = Astro.props;
+const monograms: Record<string, string> = {
+  'heart-island': 'HI',
+  'ai-chat-app': 'AI',
+  'galilieo-portfolio': 'GA',
+};
+const monogram = monograms[project.id] ?? project.data.title.slice(0, 2).toUpperCase();
 ---
 
-<article class="project-entry project-card reveal">
-  <div class="project-entry__index">{String(project.data.order).padStart(2, '0')}</div>
-  <div class="project-entry__body">
-    <div class="project-entry__meta">
-      <span>{project.data.typeLabel}</span>
-      <span>{project.data.role}</span>
+<article class="project-matrix-card reveal">
+  <a class="project-matrix-card__link" href={`/projects/${project.id}/`}>
+    <div class="project-matrix-card__visual" aria-hidden="true">
+      {
+        project.data.cover ? (
+          <img class="project-matrix-card__cover" src={project.data.cover.src} alt="" />
+        ) : (
+          <span class="project-matrix-card__monogram">{monogram}</span>
+        )
+      }
     </div>
-    <h2><a href={`/projects/${project.id}/`}>{project.data.title}</a></h2>
-    <p>{project.data.description}</p>
-    <TagList items={project.data.stack} label={`${project.data.title}技术栈`} />
-  </div>
-  <a
-    class="project-entry__action"
-    href={`/projects/${project.id}/`}
-    aria-label={`查看${project.data.title}项目详情`}>→</a
-  >
+    <div class="project-matrix-card__body">
+      <div class="project-matrix-card__topline">
+        <span>{String(project.data.order).padStart(2, '0')}</span>
+        <span>{project.data.typeLabel}</span>
+      </div>
+      <h2>{project.data.title}</h2>
+      <p class="project-matrix-card__description">{project.data.description}</p>
+      <TagList items={project.data.stack.slice(0, 4)} label={`${project.data.title}技术栈`} />
+      <footer class="project-matrix-card__footer">
+        <span>{project.data.role}</span>
+        <span>{project.data.status}</span>
+        <span class="project-matrix-card__arrow" aria-hidden="true">→</span>
+      </footer>
+    </div>
+  </a>
 </article>

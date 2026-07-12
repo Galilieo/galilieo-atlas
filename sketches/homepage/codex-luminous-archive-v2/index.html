@@ -1,0 +1,1877 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="day">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f2ed" />
+    <title>Galilieo Atlas · Works, Notes & Explorations</title>
+    <script>
+      document.documentElement.classList.add('js');
+    </script>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f3f2ed;
+        --sky: #dce7ee;
+        --sky-soft: #eef2ef;
+        --sea: #afc3cd;
+        --sea-deep: #7898a6;
+        --ink: #182235;
+        --ink-2: #596675;
+        --muted: #73808d;
+        --line: rgba(83, 105, 124, 0.18);
+        --line-strong: rgba(88, 108, 129, 0.32);
+        --glass-light: rgba(255, 255, 255, 0.46);
+        --glass: rgba(248, 248, 245, 0.72);
+        --glass-strong: rgba(255, 255, 252, 0.9);
+        --glass-edge: rgba(255, 255, 255, 0.72);
+        --glass-edge-soft: rgba(255, 255, 255, 0.34);
+        --accent: #4b62cf;
+        --accent-hover: #3851bf;
+        --accent-soft: #dfe5fb;
+        --accent-rgb: 75, 98, 207;
+        --warm: #b88952;
+        --shadow: 0 24px 80px rgba(67, 82, 98, 0.13);
+        --shadow-soft: 0 14px 40px rgba(67, 82, 98, 0.09);
+        --ambient-a: rgba(129, 146, 235, 0.26);
+        --ambient-b: rgba(132, 196, 214, 0.2);
+        --display: Georgia, 'Times New Roman', 'Noto Serif SC', 'Songti SC', serif;
+        --sans: Inter, 'Plus Jakarta Sans', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        --mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+        --max: 1400px;
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      html[data-theme='night'] {
+        color-scheme: dark;
+        --bg: #06101e;
+        --sky: #030a16;
+        --sky-soft: #0b1b32;
+        --sea: #102944;
+        --sea-deep: #07182b;
+        --ink: #eef3fc;
+        --ink-2: #a5b0c2;
+        --muted: #7f8da3;
+        --line: rgba(138, 163, 203, 0.16);
+        --line-strong: rgba(137, 164, 208, 0.3);
+        --glass-light: rgba(15, 34, 56, 0.38);
+        --glass: rgba(13, 27, 45, 0.68);
+        --glass-strong: rgba(18, 34, 56, 0.88);
+        --glass-edge: rgba(188, 205, 255, 0.15);
+        --glass-edge-soft: rgba(188, 205, 255, 0.07);
+        --accent: #7d8cff;
+        --accent-hover: #9aa6ff;
+        --accent-soft: #1c2852;
+        --accent-rgb: 125, 140, 255;
+        --warm: #d6aa68;
+        --shadow: 0 28px 90px rgba(0, 4, 14, 0.42);
+        --shadow-soft: 0 18px 48px rgba(0, 4, 14, 0.28);
+        --ambient-a: rgba(109, 91, 220, 0.32);
+        --ambient-b: rgba(73, 164, 198, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+        background: var(--bg);
+      }
+      body {
+        margin: 0;
+        min-width: 320px;
+        overflow-x: clip;
+        color: var(--ink);
+        background: var(--bg);
+        font-family: var(--sans);
+        line-height: 1.65;
+        transition:
+          color 800ms ease,
+          background 900ms ease;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        color: inherit;
+        font: inherit;
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 3px solid var(--accent);
+        outline-offset: 4px;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 100;
+        padding: 10px 14px;
+        border-radius: 10px;
+        color: white;
+        background: var(--accent);
+        transform: translateY(-160%);
+      }
+      .skip-link:focus {
+        transform: translateY(0);
+      }
+
+      .world {
+        --scene-x: 0px;
+        --scene-y: 0px;
+        position: fixed;
+        inset: -22px;
+        z-index: -5;
+        overflow: hidden;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 74% 8%, var(--ambient-a), transparent 25rem),
+          radial-gradient(circle at 18% 28%, var(--ambient-b), transparent 28rem),
+          linear-gradient(
+            155deg,
+            color-mix(in srgb, var(--sky) 86%, #c9c0df),
+            var(--sky-soft) 42%,
+            var(--bg) 78%
+          );
+        transform: translate3d(var(--scene-x), var(--scene-y), 0) scale(1.035);
+        transition:
+          background 900ms ease,
+          transform 700ms var(--ease);
+      }
+      .world::before {
+        position: absolute;
+        top: -18%;
+        left: -8%;
+        width: 88%;
+        height: 78%;
+        content: '';
+        background: linear-gradient(
+          112deg,
+          transparent 30%,
+          rgba(255, 255, 255, 0.32) 48%,
+          transparent 65%
+        );
+        filter: blur(18px);
+        transform: rotate(-5deg);
+        opacity: 0.68;
+      }
+      [data-theme='night'] .world::before {
+        left: 46%;
+        opacity: 0.22;
+        background: linear-gradient(
+          112deg,
+          transparent 30%,
+          rgba(161, 179, 255, 0.3) 48%,
+          transparent 65%
+        );
+      }
+      .world::after {
+        position: absolute;
+        inset: 32% -10% -35%;
+        content: '';
+        border-radius: 50% 50% 0 0;
+        background:
+          repeating-radial-gradient(ellipse at 50% 0%, transparent 0 38px, var(--line) 39px 40px),
+          linear-gradient(180deg, color-mix(in srgb, var(--sea) 54%, transparent), var(--sea-deep));
+        opacity: 0.8;
+      }
+      .mist {
+        position: fixed;
+        inset: 25% -20% auto;
+        z-index: -4;
+        height: 42vh;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse at 32% 50%,
+            color-mix(in srgb, var(--glass-strong) 80%, transparent),
+            transparent 52%
+          ),
+          radial-gradient(
+            ellipse at 72% 62%,
+            color-mix(in srgb, var(--glass) 70%, transparent),
+            transparent 48%
+          );
+        filter: blur(24px);
+        opacity: 0.76;
+        animation: mist-drift 18s ease-in-out infinite alternate;
+      }
+      @keyframes mist-drift {
+        to {
+          translate: 2.5% 1.5%;
+          opacity: 0.56;
+        }
+      }
+
+      .ambient-field {
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        overflow: hidden;
+        pointer-events: none;
+        mask-image: linear-gradient(to bottom, black 0 66%, transparent 96%);
+      }
+      .ambient-field i {
+        --size: 4px;
+        --delay: 0s;
+        --duration: 14s;
+        position: absolute;
+        left: var(--x);
+        top: var(--y);
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--accent) 84%, white);
+        box-shadow:
+          0 0 8px 2px rgba(var(--accent-rgb), 0.42),
+          0 0 22px 6px rgba(var(--accent-rgb), 0.16);
+        opacity: 0.16;
+        animation: firefly var(--duration) ease-in-out var(--delay) infinite;
+      }
+      .ambient-field i:nth-child(3n) {
+        background: color-mix(in srgb, var(--warm) 72%, white);
+      }
+      body[data-paused='true'] .ambient-field i,
+      body[data-paused='true'] .mist,
+      body[data-paused='true'] .island-glow {
+        animation-play-state: paused;
+      }
+      @keyframes firefly {
+        0%,
+        100% {
+          opacity: 0.08;
+          transform: translate3d(0, 10px, 0) scale(0.7);
+        }
+        35% {
+          opacity: 0.72;
+          transform: translate3d(14px, -16px, 0) scale(1);
+        }
+        68% {
+          opacity: 0.26;
+          transform: translate3d(-9px, -30px, 0) scale(0.82);
+        }
+      }
+
+      .grain {
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        pointer-events: none;
+        opacity: 0.035;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
+      }
+
+      .shell {
+        width: min(calc(100% - 36px), var(--max));
+        margin-inline: auto;
+      }
+      .glass-light,
+      .glass,
+      .glass-strong {
+        border: 1px solid var(--line);
+        backdrop-filter: blur(18px) saturate(1.24);
+        -webkit-backdrop-filter: blur(18px) saturate(1.24);
+        box-shadow: inset 0 1px 0 var(--glass-edge-soft);
+        transition:
+          background 900ms ease,
+          border-color 800ms ease,
+          box-shadow 800ms ease,
+          transform 220ms var(--ease);
+      }
+      .glass-light {
+        background: linear-gradient(
+          145deg,
+          color-mix(in srgb, var(--glass-light) 88%, white 4%),
+          var(--glass-light)
+        );
+      }
+      .glass {
+        background: linear-gradient(
+          145deg,
+          color-mix(in srgb, var(--glass) 92%, white 3%),
+          var(--glass)
+        );
+        box-shadow:
+          var(--shadow-soft),
+          inset 0 1px 0 var(--glass-edge);
+      }
+      .glass-strong {
+        background: linear-gradient(
+          145deg,
+          color-mix(in srgb, var(--glass-strong) 94%, white 3%),
+          var(--glass-strong)
+        );
+        box-shadow:
+          var(--shadow),
+          inset 0 1px 0 var(--glass-edge);
+      }
+      .glass:hover,
+      .glass-strong:hover {
+        border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+      }
+
+      .shine {
+        position: relative;
+        overflow: hidden;
+      }
+      .shine::after {
+        position: absolute;
+        inset: -80% auto -80% -50%;
+        width: 34%;
+        content: '';
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        rotate: 16deg;
+        translate: -180% 0;
+        transition: translate 720ms var(--ease);
+        pointer-events: none;
+      }
+      .shine:hover::after {
+        translate: 560% 0;
+      }
+
+      .site-header {
+        position: sticky;
+        top: 14px;
+        z-index: 30;
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        min-height: 66px;
+        margin-top: 14px;
+        padding: 0 12px 0 20px;
+        border-radius: 22px;
+      }
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 11px;
+        width: fit-content;
+        font-weight: 750;
+      }
+      .brand-symbol {
+        display: grid;
+        place-items: center;
+        width: 30px;
+        height: 30px;
+        border: 1px solid var(--line-strong);
+        border-radius: 50%;
+        color: var(--accent);
+        font: 600 0.62rem/1 var(--mono);
+        background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+      }
+      .nav {
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--glass-light);
+      }
+      .nav a {
+        padding: 8px 13px;
+        border-radius: 999px;
+        color: var(--ink-2);
+        font-size: 0.82rem;
+      }
+      .nav a:hover,
+      .nav a[aria-current='page'] {
+        color: var(--ink);
+        background: var(--glass-strong);
+      }
+      .header-end {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+      }
+      .archive-state {
+        color: var(--muted);
+        font: 650 0.65rem/1 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .menu-toggle,
+      .theme-toggle {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--line-strong);
+        border-radius: 50%;
+        background: var(--glass-strong);
+        cursor: pointer;
+        transition:
+          transform 220ms var(--ease),
+          border-color 220ms ease;
+      }
+      .menu-toggle {
+        display: none;
+      }
+      .menu-icon {
+        position: relative;
+        width: 17px;
+        height: 12px;
+      }
+      .menu-icon::before,
+      .menu-icon::after,
+      .menu-icon span {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 1.5px;
+        border-radius: 99px;
+        background: currentColor;
+        content: '';
+        transition:
+          transform 180ms var(--ease),
+          top 180ms var(--ease),
+          opacity 180ms ease;
+      }
+      .menu-icon::before {
+        top: 0;
+      }
+      .menu-icon span {
+        top: 5px;
+      }
+      .menu-icon::after {
+        top: 10px;
+      }
+      html[data-menu-open='true'] .menu-icon::before {
+        top: 5px;
+        transform: rotate(45deg);
+      }
+      html[data-menu-open='true'] .menu-icon span {
+        opacity: 0;
+      }
+      html[data-menu-open='true'] .menu-icon::after {
+        top: 5px;
+        transform: rotate(-45deg);
+      }
+      .menu-toggle:hover {
+        border-color: var(--accent);
+      }
+      .theme-toggle:hover {
+        transform: rotate(12deg);
+        border-color: var(--accent);
+      }
+
+      .hero {
+        position: relative;
+        min-height: 700px;
+        display: grid;
+        grid-template-columns: minmax(250px, 0.7fr) minmax(500px, 1.48fr) minmax(230px, 0.6fr);
+        gap: 16px;
+        align-items: center;
+        padding: 28px 0 20px;
+        perspective: 1200px;
+      }
+      .hero-intro {
+        align-self: center;
+        margin-top: 42px;
+        padding: 21px;
+        border-radius: 20px;
+      }
+      .hero-intro:hover {
+        transform: translateY(-3px);
+      }
+      .folio {
+        color: var(--accent);
+        font: 650 0.7rem/1.2 var(--mono);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .hero-intro h1 {
+        margin: 20px 0 10px;
+        font: 500 clamp(3.25rem, 4.5vw, 5.4rem)/0.88 var(--display);
+        letter-spacing: -0.06em;
+      }
+      .hero-intro h1 > span {
+        display: block;
+        color: var(--accent);
+      }
+      .hero-intro h1 em {
+        display: block;
+        margin-top: 15px;
+        color: var(--accent);
+        font: italic 500 0.31em/1 var(--display);
+        letter-spacing: 0;
+      }
+      .hero-intro p {
+        margin: 18px 0 0;
+        color: var(--ink-2);
+        font-size: 0.82rem;
+      }
+      .hero-card-link {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        border-radius: inherit;
+      }
+      .hero-intro > :not(.hero-card-link) {
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .hero-stat-links,
+      .hero-contact-links,
+      .hero-actions {
+        pointer-events: auto !important;
+      }
+      .hero-stat-links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: 18px;
+        padding-top: 15px;
+        border-top: 1px solid var(--line);
+      }
+      .hero-stat-links a {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+        align-items: end;
+        padding: 8px;
+        border-radius: 10px;
+        background: var(--glass-light);
+      }
+      .hero-stat-links strong {
+        color: var(--accent);
+        font: 500 1.3rem/1 var(--display);
+      }
+      .hero-stat-links span {
+        color: var(--muted);
+        font: 650 0.55rem/1.25 var(--mono);
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .hero-stat-links a:hover {
+        background: var(--accent-soft);
+      }
+      .hero-contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .hero-contact-links a {
+        padding: 7px 9px;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        color: var(--ink-2);
+        font-size: 0.59rem;
+        background: var(--glass-light);
+      }
+      .hero-contact-links a:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 21px;
+      }
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        min-height: 42px;
+        padding: 0 14px;
+        border: 1px solid var(--line-strong);
+        border-radius: 11px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        transition:
+          transform 200ms var(--ease),
+          border-color 200ms ease;
+      }
+      .button:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+      }
+      .button.primary {
+        color: white;
+        border-color: var(--accent);
+        background: var(--accent);
+      }
+      [data-theme='night'] .button.primary {
+        color: #06101e;
+      }
+
+      .island-window {
+        position: relative;
+        min-height: 630px;
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        border-radius: 30px;
+      }
+      .island-window:hover {
+        box-shadow:
+          var(--shadow),
+          inset 0 1px 0 var(--glass-edge),
+          0 0 74px rgba(var(--accent-rgb), 0.13);
+      }
+      .island-window::before {
+        position: absolute;
+        inset: 0;
+        content: '';
+        background:
+          radial-gradient(circle at 50% 42%, rgba(var(--accent-rgb), 0.25), transparent 24%),
+          radial-gradient(
+            ellipse at 50% 72%,
+            color-mix(in srgb, var(--glass-strong) 56%, transparent),
+            transparent 48%
+          ),
+          linear-gradient(180deg, transparent, color-mix(in srgb, var(--sea) 22%, transparent));
+      }
+      .island-window::after {
+        position: absolute;
+        right: 8%;
+        bottom: 12%;
+        left: 8%;
+        height: 24%;
+        content: '';
+        border-top: 1px solid var(--line-strong);
+        border-radius: 50%;
+        background: repeating-linear-gradient(178deg, transparent 0 14px, var(--line) 15px 16px);
+      }
+      .window-meta {
+        position: absolute;
+        top: 24px;
+        right: 26px;
+        left: 26px;
+        z-index: 3;
+        display: flex;
+        justify-content: space-between;
+      }
+      .micro {
+        color: var(--muted);
+        font: 650 0.65rem/1.3 var(--mono);
+        letter-spacing: 0.11em;
+        text-transform: uppercase;
+      }
+      .island-halo {
+        position: absolute;
+        z-index: 1;
+        width: 70%;
+        aspect-ratio: 1;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: repeating-radial-gradient(circle, transparent 0 48px, var(--line) 49px 50px);
+        opacity: 0.72;
+      }
+      .island-glow {
+        position: absolute;
+        z-index: 1;
+        width: 42%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.82),
+          rgba(var(--accent-rgb), 0.35) 12%,
+          transparent 64%
+        );
+        filter: blur(3px);
+        animation: breathe 6.5s ease-in-out infinite;
+      }
+      @keyframes breathe {
+        50% {
+          transform: scale(1.055);
+          opacity: 0.72;
+        }
+      }
+      .protected-island {
+        position: relative;
+        z-index: 2;
+        width: 112%;
+        translate: 0 28px;
+        filter: drop-shadow(0 24px 34px color-mix(in srgb, var(--sea-deep) 42%, transparent));
+      }
+      .island-caption {
+        position: absolute;
+        right: 22px;
+        bottom: 20px;
+        left: 22px;
+        z-index: 4;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 15px 17px;
+        border-radius: 15px;
+      }
+      .island-caption strong {
+        display: block;
+        font: 500 1rem/1.2 var(--display);
+      }
+      .island-caption span {
+        color: var(--muted);
+        font-size: 0.7rem;
+      }
+      .island-caption a {
+        color: var(--accent);
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .utility-rail {
+        display: grid;
+        grid-template-areas: 'weather' 'music' 'github';
+        gap: 10px;
+        align-self: center;
+        margin-top: 42px;
+      }
+      .utility-card {
+        position: relative;
+        padding: 15px;
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .utility-card:hover {
+        transform: translateY(-3px);
+      }
+      .utility-card::after {
+        position: absolute;
+        inset: auto -20% -55% 38%;
+        height: 92px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(var(--accent-rgb), 0.17), transparent 68%);
+        content: '';
+        pointer-events: none;
+      }
+      .utility-weather {
+        grid-area: weather;
+        min-height: 112px;
+      }
+      .utility-music {
+        grid-area: music;
+        min-height: 166px;
+      }
+      .utility-github {
+        grid-area: github;
+        min-height: 118px;
+      }
+      .utility-state {
+        color: var(--muted);
+        font: 650 0.55rem/1.2 var(--mono);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .weather-line {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: end;
+        margin-top: 12px;
+      }
+      .weather-time {
+        font: 500 2.05rem/0.9 var(--display);
+        letter-spacing: -0.05em;
+      }
+      .weather-place {
+        color: var(--ink-2);
+        font-size: 0.66rem;
+        text-align: right;
+      }
+      .weather-note {
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 0.62rem;
+      }
+      .track-head {
+        display: grid;
+        grid-template-columns: 52px minmax(0, 1fr);
+        gap: 11px;
+        align-items: center;
+        margin-top: 11px;
+      }
+      .cover-placeholder {
+        display: grid;
+        place-items: center;
+        width: 52px;
+        aspect-ratio: 1;
+        border: 1px solid var(--line-strong);
+        border-radius: 12px;
+        color: var(--accent);
+        background:
+          radial-gradient(circle at 40% 35%, var(--accent-soft), transparent 38%),
+          repeating-radial-gradient(circle, transparent 0 6px, var(--line) 7px 8px);
+        font: 650 0.6rem/1 var(--mono);
+      }
+      .track-title {
+        margin: 0;
+        font: 500 0.92rem/1.2 var(--display);
+      }
+      .track-meta {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.6rem;
+      }
+      .track-progress {
+        height: 3px;
+        margin-top: 14px;
+        border-radius: 99px;
+        background: var(--line-strong);
+        overflow: hidden;
+      }
+      .track-progress::before {
+        display: block;
+        width: 34%;
+        height: 100%;
+        background: var(--accent);
+        opacity: 0.35;
+        content: '';
+      }
+      .track-controls {
+        display: flex;
+        justify-content: center;
+        gap: 9px;
+        margin-top: 12px;
+      }
+      .track-controls button {
+        display: grid;
+        place-items: center;
+        width: 29px;
+        height: 29px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        color: var(--muted);
+        background: var(--glass-light);
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+      .activity-grid {
+        height: 38px;
+        margin-top: 13px;
+        border-radius: 7px;
+        opacity: 0.68;
+        background-image:
+          linear-gradient(90deg, transparent 78%, var(--glass-strong) 78%),
+          linear-gradient(transparent 78%, var(--glass-strong) 78%);
+        background-size: 9px 9px;
+        background-color: rgba(var(--accent-rgb), 0.16);
+        mask-image: linear-gradient(90deg, #000 0 64%, transparent 92%);
+      }
+      .github-link {
+        position: relative;
+        z-index: 1;
+        display: inline-flex;
+        margin-top: 10px;
+        color: var(--ink-2);
+        font-size: 0.63rem;
+      }
+      .github-link:hover {
+        color: var(--accent);
+      }
+
+      .quick-overview {
+        display: grid;
+        grid-template-columns: 0.78fr 1.1fr 1fr 1fr;
+        border-radius: 24px;
+        overflow: hidden;
+      }
+      .quick {
+        min-height: 118px;
+        padding: 17px;
+        border-right: 1px solid var(--line);
+      }
+      .quick:hover {
+        background: color-mix(in srgb, var(--glass-strong) 78%, transparent);
+      }
+      .quick:last-child {
+        border-right: 0;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        align-items: center;
+      }
+      .stats strong {
+        display: block;
+        color: var(--accent);
+        font: 500 1.65rem/1 var(--display);
+      }
+      .stats span {
+        color: var(--muted);
+        font-size: 0.63rem;
+      }
+      .quick h3 {
+        margin: 10px 0 4px;
+        font-size: 0.78rem;
+      }
+      .quick p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.66rem;
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+
+      .section {
+        margin-top: 18px;
+        padding: 28px;
+        border-radius: 27px;
+      }
+      .section {
+        box-shadow:
+          var(--shadow-soft),
+          inset 0 1px 0 var(--glass-edge);
+      }
+      .section-head {
+        display: grid;
+        grid-template-columns: 0.48fr 1.2fr 0.38fr;
+        gap: 22px;
+        align-items: end;
+        padding-bottom: 21px;
+        margin-bottom: 23px;
+        border-bottom: 1px solid var(--line);
+      }
+      .section-head h2 {
+        margin: 0;
+        max-width: 720px;
+        font: 500 clamp(2rem, 3vw, 3.5rem)/0.99 var(--display);
+        letter-spacing: -0.04em;
+      }
+      .section-head p {
+        margin: 8px 0 0;
+        color: var(--ink-2);
+        font-size: 0.72rem;
+      }
+      .section-no {
+        align-self: start;
+        color: var(--muted);
+        font: 650 0.68rem/1.5 var(--mono);
+        text-align: right;
+      }
+
+      .collection {
+        display: grid;
+        grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+        gap: 16px;
+      }
+      .feature-project {
+        min-height: 390px;
+        display: grid;
+        grid-template-columns: 1.02fr 0.98fr;
+        overflow: hidden;
+        border-radius: 21px;
+      }
+      .project-visual {
+        position: relative;
+        min-height: 280px;
+        overflow: hidden;
+        background:
+          repeating-linear-gradient(135deg, transparent 0 20px, var(--line) 21px 22px),
+          radial-gradient(circle at 50% 48%, var(--accent-soft), transparent 52%),
+          linear-gradient(160deg, color-mix(in srgb, var(--sea) 26%, transparent), var(--sky-soft));
+      }
+      .project-visual::before {
+        position: absolute;
+        inset: 18%;
+        display: grid;
+        place-items: center;
+        border: 1px dashed var(--line-strong);
+        border-radius: 17px;
+        color: var(--muted);
+        background: color-mix(in srgb, var(--glass-light) 68%, transparent);
+        font: 650 0.66rem/1.7 var(--mono);
+        letter-spacing: 0.13em;
+        text-align: center;
+        white-space: pre;
+        content: 'PROJECT COVER\A PLACEHOLDER';
+      }
+      .project-visual::after {
+        position: absolute;
+        inset: 27%;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        content: '';
+        opacity: 0.68;
+      }
+      .project-copy {
+        display: flex;
+        flex-direction: column;
+        padding: 23px;
+      }
+      .project-copy h3 {
+        margin: 15px 0 8px;
+        font: 500 1.78rem/1.08 var(--display);
+      }
+      .project-copy p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.74rem;
+      }
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+        margin-top: 20px;
+      }
+      .chips span {
+        padding: 5px 9px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--muted);
+        background: var(--glass-light);
+        font-size: 0.63rem;
+      }
+      .project-foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: auto;
+        padding-top: 22px;
+        color: var(--muted);
+        font-size: 0.7rem;
+      }
+      .round-link {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--line-strong);
+        border-radius: 50%;
+      }
+      .side-projects {
+        display: grid;
+        gap: 16px;
+      }
+      .small-project {
+        min-height: 187px;
+        display: flex;
+        flex-direction: column;
+        padding: 19px;
+        border-radius: 19px;
+      }
+      .small-project h3 {
+        margin: 13px 0 6px;
+        font: 500 1.28rem/1.1 var(--display);
+      }
+      .small-project p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.69rem;
+      }
+
+      .notes-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
+        gap: 17px;
+      }
+      .notes {
+        display: grid;
+        gap: 10px;
+      }
+      .note {
+        display: grid;
+        grid-template-columns: 68px minmax(0, 1fr) auto;
+        gap: 13px;
+        align-items: center;
+        min-height: 94px;
+        padding: 12px;
+        border-radius: 16px;
+      }
+      .note-cover {
+        display: grid;
+        place-items: center;
+        align-self: stretch;
+        min-height: 68px;
+        border-radius: 10px;
+        color: var(--accent);
+        background:
+          repeating-linear-gradient(135deg, transparent 0 9px, var(--line) 10px 11px),
+          radial-gradient(circle, var(--accent-soft), transparent 68%);
+        font: 650 0.59rem/1.3 var(--mono);
+        text-align: center;
+      }
+      .note h3 {
+        margin: 0 0 4px;
+        font-size: 0.82rem;
+      }
+      .note p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.66rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .note-meta {
+        color: var(--muted);
+        font: 650 0.62rem/1.7 var(--mono);
+        text-align: right;
+      }
+      .editor-note {
+        display: grid;
+        align-content: space-between;
+        min-height: 100%;
+        padding: 24px;
+        border-radius: 22px;
+      }
+      .editor-note blockquote {
+        margin: 18px 0;
+        font: 500 1.4rem/1.25 var(--display);
+      }
+      .editor-note p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.75rem;
+      }
+
+      .closing {
+        display: grid;
+        grid-template-columns: 0.8fr 1.2fr;
+        gap: 22px;
+        margin-top: 22px;
+      }
+      .closing .section {
+        margin-top: 0;
+      }
+      .compact-head {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        align-items: start;
+        margin-bottom: 22px;
+      }
+      .compact-head h2 {
+        margin: 7px 0 0;
+        font: 500 clamp(1.8rem, 2.5vw, 2.8rem)/1 var(--display);
+        letter-spacing: -0.035em;
+      }
+      .archive-list,
+      .timeline {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .archive-list li {
+        display: grid;
+        grid-template-columns: 70px 1fr;
+        gap: 14px;
+        padding: 13px 0;
+        border-top: 1px solid var(--line);
+      }
+      .archive-list time {
+        color: var(--accent);
+        font: 650 0.63rem/1.5 var(--mono);
+      }
+      .archive-list a {
+        font-size: 0.76rem;
+      }
+      .about-summary {
+        display: grid;
+        gap: 18px;
+      }
+      .about-more {
+        display: inline-flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+        width: 100%;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--ink-2);
+        font-size: 0.7rem;
+        background: var(--glass-light);
+      }
+      .about-more:hover {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .timeline {
+        position: relative;
+        display: grid;
+        gap: 17px;
+        padding-left: 18px;
+      }
+      .timeline::before {
+        position: absolute;
+        top: 8px;
+        bottom: 8px;
+        left: 2px;
+        width: 1px;
+        background: var(--line-strong);
+        content: '';
+      }
+      .timeline li {
+        position: relative;
+        display: grid;
+        gap: 2px;
+      }
+      .timeline li::before {
+        position: absolute;
+        top: 7px;
+        left: -20px;
+        width: 7px;
+        height: 7px;
+        border: 2px solid var(--glass-strong);
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-soft);
+        content: '';
+      }
+      .timeline time {
+        color: var(--muted);
+        font: 650 0.61rem/1.4 var(--mono);
+      }
+      .timeline strong {
+        font-size: 0.78rem;
+      }
+      .timeline p {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 0.68rem;
+      }
+
+      footer {
+        min-height: 110px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        color: var(--muted);
+        font-size: 0.68rem;
+      }
+      .end-line {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font: 650 0.62rem/1 var(--mono);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .end-line::before {
+        width: 44px;
+        height: 1px;
+        background: var(--accent);
+        content: '';
+      }
+
+      @media (max-width: 1180px) {
+        .archive-state {
+          display: none;
+        }
+        .hero {
+          grid-template-columns: minmax(260px, 0.75fr) minmax(500px, 1.25fr);
+        }
+        .utility-rail {
+          grid-column: 1/-1;
+          grid-template-columns: repeat(3, 1fr);
+          grid-template-areas: 'weather music github';
+          margin: 0;
+        }
+        .quick-overview {
+          grid-template-columns: 1fr 1fr;
+        }
+        .quick:nth-child(2) {
+          border-right: 0;
+        }
+        .quick:nth-child(-n + 2) {
+          border-bottom: 1px solid var(--line);
+        }
+        .collection {
+          grid-template-columns: 1fr;
+        }
+        .side-projects {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 820px) {
+        .site-header {
+          grid-template-columns: 1fr auto;
+        }
+        .nav {
+          grid-column: 1/-1;
+          display: grid;
+          grid-template-columns: repeat(5, minmax(max-content, 1fr));
+          width: 100%;
+          margin: 0 0 10px;
+          overflow-x: auto;
+          border-radius: 15px;
+        }
+        .nav a {
+          text-align: center;
+        }
+        html.js .menu-toggle {
+          display: grid;
+        }
+        html.js .nav {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          left: 0;
+          display: none;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 5px;
+          width: 100%;
+          margin: 0;
+          padding: 10px;
+          overflow: visible;
+          border: 1px solid var(--line-strong);
+          border-radius: 17px;
+          background: var(--glass-strong);
+          box-shadow: var(--shadow);
+          backdrop-filter: blur(18px) saturate(1.24);
+        }
+        html.js[data-menu-open='true'] .nav {
+          display: grid;
+        }
+        html.js .nav a {
+          padding: 12px 14px;
+          border: 1px solid transparent;
+        }
+        html.js .nav a:last-child {
+          grid-column: 1/-1;
+        }
+        .hero {
+          grid-template-columns: 1fr;
+          min-height: auto;
+        }
+        .hero-intro {
+          align-self: auto;
+          margin: 30px 0 0;
+        }
+        .island-window {
+          min-height: 540px;
+        }
+        .utility-rail {
+          grid-template-columns: 1fr 1fr;
+          grid-template-areas: 'weather github' 'music music';
+        }
+        .section-head {
+          grid-template-columns: 1fr;
+        }
+        .section-no {
+          display: none;
+        }
+        .feature-project {
+          grid-template-columns: 1fr;
+        }
+        .notes-grid {
+          grid-template-columns: 1fr;
+        }
+        .closing {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 680px) {
+        .shell {
+          width: min(calc(100% - 20px), var(--max));
+        }
+        .site-header {
+          top: 8px;
+          min-height: 58px;
+          margin-top: 8px;
+          padding: 0 9px 0 14px;
+          border-radius: 17px;
+        }
+        .brand-symbol {
+          width: 25px;
+          height: 25px;
+        }
+        .menu-toggle,
+        .theme-toggle {
+          width: 40px;
+          height: 40px;
+        }
+        .hero {
+          gap: 10px;
+          padding-top: 8px;
+        }
+        .hero-intro {
+          margin-top: 20px;
+          padding: 19px 16px;
+        }
+        .hero-intro h1 {
+          font-size: clamp(3.35rem, 18vw, 4.7rem);
+        }
+        .hero-actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+        .button {
+          padding-inline: 12px;
+        }
+        .island-window {
+          min-height: 390px;
+          border-radius: 22px;
+        }
+        .protected-island {
+          width: 142%;
+          translate: 0 12px;
+        }
+        .island-halo {
+          width: 110%;
+        }
+        .island-caption {
+          right: 12px;
+          bottom: 12px;
+          left: 12px;
+        }
+        .utility-rail {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+        .utility-card {
+          padding: 13px;
+        }
+        .utility-weather,
+        .utility-github {
+          min-height: 126px;
+        }
+        .utility-music {
+          min-height: 156px;
+        }
+        .weather-time {
+          font-size: 1.65rem;
+        }
+        .quick-overview {
+          grid-template-columns: 1fr;
+        }
+        .quick,
+        .quick:nth-child(2) {
+          min-height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .quick:last-child {
+          border-bottom: 0;
+        }
+        .section {
+          padding: 20px 15px;
+          border-radius: 21px;
+        }
+        .section-head {
+          gap: 13px;
+          margin-bottom: 20px;
+          padding-bottom: 18px;
+        }
+        .section-head h2 {
+          font-size: 2.05rem;
+        }
+        .project-visual {
+          min-height: 220px;
+        }
+        .side-projects {
+          grid-template-columns: 1fr;
+        }
+        .note {
+          grid-template-columns: 62px minmax(0, 1fr);
+          gap: 11px;
+          padding: 11px;
+        }
+        .note-meta {
+          grid-column: 2;
+          text-align: left;
+        }
+        .note p {
+          white-space: normal;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
+        }
+        .about-summary {
+          gap: 15px;
+        }
+        footer {
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="world" aria-hidden="true"></div>
+    <div class="mist" aria-hidden="true"></div>
+    <div class="ambient-field" aria-hidden="true">
+      <i style="--x: 8%; --y: 18%; --size: 3px; --delay: -2s; --duration: 15s"></i>
+      <i style="--x: 16%; --y: 52%; --size: 5px; --delay: -9s; --duration: 18s"></i>
+      <i style="--x: 27%; --y: 31%; --size: 3px; --delay: -5s; --duration: 13s"></i>
+      <i style="--x: 38%; --y: 12%; --size: 4px; --delay: -12s; --duration: 20s"></i>
+      <i style="--x: 47%; --y: 56%; --size: 3px; --delay: -7s; --duration: 16s"></i>
+      <i style="--x: 55%; --y: 24%; --size: 5px; --delay: -3s; --duration: 19s"></i>
+      <i style="--x: 63%; --y: 45%; --size: 3px; --delay: -11s; --duration: 17s"></i>
+      <i style="--x: 71%; --y: 16%; --size: 4px; --delay: -6s; --duration: 14s"></i>
+      <i style="--x: 78%; --y: 61%; --size: 3px; --delay: -13s; --duration: 21s"></i>
+      <i style="--x: 86%; --y: 29%; --size: 5px; --delay: -4s; --duration: 18s"></i>
+      <i style="--x: 92%; --y: 48%; --size: 3px; --delay: -8s; --duration: 15s"></i>
+      <i style="--x: 33%; --y: 68%; --size: 4px; --delay: -15s; --duration: 22s"></i>
+    </div>
+    <div class="grain" aria-hidden="true"></div>
+    <a class="skip-link" href="#main">跳到主要内容</a>
+    <header class="site-header shell glass">
+      <a class="brand" href="#top"
+        ><span class="brand-symbol">G</span><span>Galilieo Atlas</span></a
+      >
+      <nav class="nav" id="mobile-nav" aria-label="主要导航">
+        <a href="#top" aria-current="page">首页</a><a href="#projects">项目</a
+        ><a href="#blog">博客</a><a href="#archive">归档</a><a href="#about">关于</a>
+      </nav>
+      <div class="header-end">
+        <span class="archive-state">Archive open · 2026</span
+        ><button
+          class="menu-toggle"
+          type="button"
+          aria-label="打开导航"
+          aria-controls="mobile-nav"
+          aria-expanded="false"
+        >
+          <span class="menu-icon" aria-hidden="true"><span></span></span></button
+        ><button
+          class="theme-toggle"
+          type="button"
+          aria-label="切换为夜间主题"
+          aria-pressed="false"
+        >
+          <span aria-hidden="true">◐</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="main" class="shell">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-intro glass-strong shine">
+          <a class="hero-card-link" href="#about" aria-label="查看关于 Galilieo 的成长摘要"></a>
+          <span class="folio">Keeper file · 001</span>
+          <h1 id="hero-title">Galilieo <span>Atlas</span><em>Works · Notes · Explorations</em></h1>
+          <p>
+            AI 应用开发者 / 软件工程学生。专注 AI 应用、Agent、RAG
+            与全栈产品实践，在真实实习和个人项目中持续构建可落地的产品能力。
+          </p>
+          <nav class="hero-stat-links" aria-label="内容入口">
+            <a href="#projects"
+              ><strong>3</strong><span>Works<br />查看项目</span></a
+            ><a href="#blog"
+              ><strong>4</strong><span>Notes<br />阅读笔记</span></a
+            >
+          </nav>
+          <nav class="hero-contact-links" aria-label="联系方式">
+            <a href="https://github.com/Galilieo">GitHub</a
+            ><a href="mailto:jiangdavis021@gmail.com">Email</a
+            ><a href="https://heart-island.cn">Heart Island</a>
+          </nav>
+          <div class="hero-actions">
+            <a class="button primary" href="#projects">查看馆藏 <span>↗</span></a
+            ><a class="button" href="#blog">阅读手记 <span>→</span></a>
+          </div>
+        </div>
+
+        <div class="island-window glass-light" aria-label="Heart Island 心屿雾海场景">
+          <div class="window-meta">
+            <span class="micro">Luminous archive · Heart Island</span
+            ><span class="micro">Collection 01</span>
+          </div>
+          <div class="island-halo" aria-hidden="true"></div>
+          <div class="island-glow" aria-hidden="true"></div>
+          <img
+            class="protected-island"
+            src="../../../src/assets/svg/island-reference-no-heart-vector.svg"
+            alt=""
+          />
+          <div class="island-caption glass-strong">
+            <div>
+              <strong>heart-island 心屿</strong><span>AI 情绪记录与匿名互助社区 · 持续开发</span>
+            </div>
+            <a href="#projects">进入档案 →</a>
+          </div>
+        </div>
+
+        <aside class="utility-rail" aria-label="未来功能卡片预览">
+          <section class="utility-card utility-weather glass">
+            <span class="utility-state">Local presence · reserved</span>
+            <div class="weather-line">
+              <strong class="weather-time">--:--</strong
+              ><span class="weather-place">Shanghai<br />天气待接入</span>
+            </div>
+            <p class="weather-note">布局预留，不显示虚构实时数据。</p>
+          </section>
+          <section class="utility-card utility-music glass">
+            <span class="utility-state">Listening shelf · reserved</span>
+            <div class="track-head">
+              <div class="cover-placeholder" aria-hidden="true">♪</div>
+              <div>
+                <h2 class="track-title">音乐卡片预留</h2>
+                <p class="track-meta">曲目与来源尚未确定</p>
+              </div>
+            </div>
+            <div class="track-progress" aria-hidden="true"></div>
+            <div class="track-controls" aria-label="音乐功能尚未接入">
+              <button type="button" disabled aria-label="上一首，尚未接入">‹</button
+              ><button type="button" disabled aria-label="播放，尚未接入">▶</button
+              ><button type="button" disabled aria-label="下一首，尚未接入">›</button>
+            </div>
+          </section>
+          <section class="utility-card utility-github glass">
+            <span class="utility-state">GitHub activity · planned</span>
+            <div class="activity-grid" aria-hidden="true"></div>
+            <a class="github-link" href="https://github.com/Galilieo">github.com/Galilieo ↗</a>
+          </section>
+        </aside>
+      </section>
+
+      <section class="quick-overview glass" aria-label="快速概览">
+        <div class="quick stats">
+          <div><strong>03</strong><span>真实项目</span></div>
+          <div><strong>04</strong><span>公开文章</span></div>
+          <div><strong>01</strong><span>长期重点</span></div>
+        </div>
+        <a class="quick shine" href="#blog"
+          ><span class="micro">Latest note</span>
+          <h3>一次 Android 返回手势问题的完整排查过程</h3>
+          <p>从路由栈、组件弹窗和系统返回事件三个层次复盘。</p></a
+        >
+        <a class="quick shine" href="#about"
+          ><span class="micro">Experience</span>
+          <h3>AI 产品开发实习</h3>
+          <p>参与跨平台 AI 聊天产品的前端与移动端开发。</p></a
+        >
+        <a class="quick shine" href="#projects"
+          ><span class="micro">Featured</span>
+          <h3>heart-island 心屿</h3>
+          <p>从情绪记录社区持续走向有记忆、有反馈的 AI 产品。</p></a
+        >
+      </section>
+
+      <section class="section glass" id="projects" aria-labelledby="projects-title">
+        <header class="section-head">
+          <div>
+            <span class="folio">Collection · 项目馆藏</span>
+            <p>真实完成、真实参与或正在持续开发。</p>
+          </div>
+          <h2 id="projects-title">每件作品，都是一段已经发生的解决过程。</h2>
+          <span class="section-no">02 / COLLECTION<br />3 RECORDS</span>
+        </header>
+        <div class="collection">
+          <article class="feature-project glass-strong shine">
+            <div class="project-visual" aria-hidden="true"></div>
+            <div class="project-copy">
+              <span class="folio">No.01 · 个人长期项目</span>
+              <h3>heart-island 心屿</h3>
+              <p>
+                基于 Spring Boot 与 Vue 3 开发的 AI
+                情绪记录与匿名互助社区，继续补充多轮对话、轻量记忆、情绪周报、RAG 和工具调用。
+              </p>
+              <div class="chips">
+                <span>Spring Boot</span><span>Vue 3</span><span>MySQL</span><span>LLM API</span>
+              </div>
+              <div class="project-foot">
+                <span>Product / Full Stack · 持续开发</span
+                ><a class="round-link" href="https://heart-island.cn" aria-label="访问心屿">↗</a>
+              </div>
+            </div>
+          </article>
+          <div class="side-projects">
+            <article class="small-project glass-strong shine">
+              <span class="folio">No.02 · 实习项目 · 非公开</span>
+              <h3>AI Chat App</h3>
+              <p>参与 Ionic、Vue 3 和 Capacitor 跨平台 AI 聊天产品开发与问题排查。</p>
+              <div class="project-foot"><span>Frontend / Mobile</span><span>02</span></div>
+            </article>
+            <article class="small-project glass-strong shine">
+              <span class="folio">No.03 · 个人网站</span>
+              <h3>Galilieo Portfolio</h3>
+              <p>整理个人项目、实习经历、技术文章和阶段性思考的长期网站。</p>
+              <div class="project-foot"><span>Astro · 持续维护</span><span>03</span></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section glass" id="blog" aria-labelledby="blog-title">
+        <header class="section-head">
+          <div>
+            <span class="folio">Field notes · 开发手记</span>
+            <p>保存问题背景、判断路径与最后得到的经验。</p>
+          </div>
+          <h2 id="blog-title">不把过程包装成标准答案，只留下真实判断。</h2>
+          <span class="section-no">03 / NOTES<br />4 PUBLIC</span>
+        </header>
+        <div class="notes-grid">
+          <div class="notes">
+            <article class="note glass-strong shine">
+              <div class="note-cover">NOTE<br />0711-A</div>
+              <div>
+                <h3>一次 Android 返回手势问题的完整排查过程</h3>
+                <p>从路由栈、组件弹窗和系统返回事件三个层次复盘统一处理。</p>
+              </div>
+              <div class="note-meta">实习复盘<br />6 MIN</div>
+            </article>
+            <article class="note glass-strong shine">
+              <div class="note-cover">NOTE<br />0711-B</div>
+              <div>
+                <h3>Ionic 缓存 Tab 中，怎样找到当前真正的滚动容器</h3>
+                <p>复盘页面缓存、嵌套 Tab 和多种滚动容器的识别与分流。</p>
+              </div>
+              <div class="note-meta">前端与移动端<br />7 MIN</div>
+            </article>
+            <article class="note glass-strong shine">
+              <div class="note-cover">NOTE<br />0711-C</div>
+              <div>
+                <h3>虚拟列表中，为什么组件看得见却仍会被下一项遮挡</h3>
+                <p>从真实高度、占位高度和 transform 布局语义复盘问题。</p>
+              </div>
+              <div class="note-meta">前端与移动端<br />6 MIN</div>
+            </article>
+          </div>
+          <aside class="editor-note glass-strong">
+            <span class="folio">Archive principle</span>
+            <blockquote>“记录当时如何抵达，而不只展示最后抵达哪里。”</blockquote>
+            <p>热门标签：Ionic · iOS · Android · Vue 3 · RAG · 心屿</p>
+          </aside>
+        </div>
+      </section>
+
+      <div class="closing">
+        <section class="section glass" id="archive" aria-labelledby="archive-title">
+          <header class="compact-head">
+            <div>
+              <span class="folio">Timeline · 时间索引</span>
+              <h2 id="archive-title">最近归档</h2>
+            </div>
+            <span class="section-no">04</span>
+          </header>
+          <ol class="archive-list">
+            <li><time>07.11</time><a href="#blog">一次 Android 返回手势问题的完整排查过程</a></li>
+            <li><time>07.11</time><a href="#blog">Ionic 缓存 Tab 中，怎样找到真正的滚动容器</a></li>
+            <li><time>07.11</time><a href="#blog">虚拟列表中组件为什么仍会被遮挡</a></li>
+            <li><time>07.10</time><a href="#blog">心屿为什么需要多轮对话和轻量长期记忆</a></li>
+          </ol>
+        </section>
+        <section class="section glass" id="about" aria-labelledby="about-title">
+          <header class="compact-head">
+            <div>
+              <span class="folio">Growth · 成长摘要</span>
+              <h2 id="about-title">从学习、实践到持续维护真实产品。</h2>
+            </div>
+            <span class="section-no">05</span>
+          </header>
+          <div class="about-summary">
+            <ol class="timeline">
+              <li>
+                <time>2026.06 — 至今</time><strong>AI 产品开发实习</strong>
+                <p>Ionic、Vue 3 与 Capacitor 跨平台开发和问题排查。</p>
+              </li>
+              <li>
+                <time>2026.05 — 至今</time><strong>heart-island 持续开发</strong>
+                <p>补充 AI 对话、记忆、情绪报告和工程化能力。</p>
+              </li>
+              <li>
+                <time>2024 — 至今</time><strong>软件工程学习</strong>
+                <p>通过课程、个人项目和实习积累工程经验。</p>
+              </li>
+            </ol>
+            <a class="about-more" href="/about/"><span>查看完整 About</span><span>→</span></a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer class="shell">
+      <span>© 2026 Galilieo Atlas · Luminous Island Archive Prototype</span
+      ><span class="end-line">Works · Notes · Explorations</span>
+    </footer>
+    <script>
+      const root = document.documentElement;
+      const toggle = document.querySelector('.theme-toggle');
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mobileNav = document.querySelector('#mobile-nav');
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      const world = document.querySelector('.world');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const finePointer = window.matchMedia('(pointer: fine)');
+      const narrowHeader = window.matchMedia('(max-width: 820px)');
+      let pointerFrame = 0;
+
+      const closeMenu = (restoreFocus = false) => {
+        root.removeAttribute('data-menu-open');
+        menuToggle?.setAttribute('aria-expanded', 'false');
+        menuToggle?.setAttribute('aria-label', '打开导航');
+        if (restoreFocus) menuToggle?.focus();
+      };
+
+      menuToggle?.addEventListener('click', () => {
+        const isOpen = root.dataset.menuOpen === 'true';
+        if (isOpen) {
+          closeMenu();
+          return;
+        }
+        root.dataset.menuOpen = 'true';
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', '关闭导航');
+        mobileNav?.querySelector('a')?.focus();
+      });
+      mobileNav
+        ?.querySelectorAll('a')
+        .forEach((link) => link.addEventListener('click', () => closeMenu()));
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && root.dataset.menuOpen === 'true') closeMenu(true);
+      });
+      narrowHeader.addEventListener('change', (event) => {
+        if (!event.matches) closeMenu();
+      });
+
+      toggle?.addEventListener('click', () => {
+        const night = root.dataset.theme === 'night';
+        root.dataset.theme = night ? 'day' : 'night';
+        toggle.setAttribute('aria-pressed', String(!night));
+        toggle.setAttribute('aria-label', night ? '切换为夜间主题' : '切换为日间主题');
+        themeColor?.setAttribute('content', night ? '#f3f2ed' : '#06101e');
+      });
+
+      const resetScene = () => {
+        if (pointerFrame) cancelAnimationFrame(pointerFrame);
+        pointerFrame = 0;
+        world?.style.setProperty('--scene-x', '0px');
+        world?.style.setProperty('--scene-y', '0px');
+      };
+
+      window.addEventListener(
+        'pointermove',
+        (event) => {
+          if (!world || reducedMotion.matches || !finePointer.matches || pointerFrame) return;
+          pointerFrame = requestAnimationFrame(() => {
+            pointerFrame = 0;
+            const x = (event.clientX / innerWidth - 0.5) * -7;
+            const y = (event.clientY / innerHeight - 0.5) * -4;
+            world.style.setProperty('--scene-x', `${x.toFixed(2)}px`);
+            world.style.setProperty('--scene-y', `${y.toFixed(2)}px`);
+          });
+        },
+        { passive: true },
+      );
+      reducedMotion.addEventListener('change', resetScene);
+      finePointer.addEventListener('change', resetScene);
+      document.addEventListener('visibilitychange', () => {
+        document.body.dataset.paused = String(document.hidden);
+        if (document.hidden) resetScene();
+      });
+    </script>
+  </body>
+</html>

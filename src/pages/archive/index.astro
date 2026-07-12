@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeading from '../../components/common/SectionHeading.astro';
+import SiteFooter from '../../components/layout/SiteFooter.astro';
+import SiteHeader from '../../components/layout/SiteHeader.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allEntries = (await getCollection('blog'))
+  .filter((entry) => !entry.data.draft)
+  .sort((a, b) => {
+    const dateA = a.data.publishedAt ?? '';
+    const dateB = b.data.publishedAt ?? '';
+    return dateB.localeCompare(dateA);
+  });
+
+// 按年月分组
+const grouped: Record<string, typeof allEntries> = {};
+for (const entry of allEntries) {
+  const key = (entry.data.publishedAt ?? '未归档').slice(0, 7);
+  if (!grouped[key]) grouped[key] = [];
+  grouped[key].push(entry);
+}
+---
+
+<BaseLayout
+  title="归档 — Galilieo"
+  description="按时间线浏览所有已发布文章。"
+  canonicalPath="/archive/"
+>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <SiteHeader />
+  <main class="page-main interior-page interior-page--archive" id="main-content">
+    <SectionHeading
+      eyebrow="Archive"
+      title="时间线归档"
+      description="按发布时间排列的所有已发布文章。"
+    />
+
+    {
+      allEntries.length > 0 ? (
+        <div class="archive-chain">
+          {Object.entries(grouped).map(([month, entries]) => (
+            <section class="archive-chain__month">
+              <h2 class="archive-chain__month-title">{month}</h2>
+              <ol class="archive-chain__list">
+                {entries.map((entry) => (
+                  <li class="archive-chain__item reveal">
+                    <a class="archive-chain__card" href={`/notes/${entry.id}/`}>
+                      <div class="archive-chain__meta">
+                        <time datetime={entry.data.publishedAt ?? ''}>
+                          {(entry.data.publishedAt ?? '').slice(0, 10)}
+                        </time>
+                        <span>{entry.data.category}</span>
+                      </div>
+                      <h3>{entry.data.title}</h3>
+                      <p class="archive-chain__description">{entry.data.description}</p>
+                    </a>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          ))}
+          <span class="archive-chain__end" aria-hidden="true">
+            End
+          </span>
+        </div>
+      ) : (
+        <div class="empty-state reveal">暂无已发布文章。</div>
+      )
+    }
+  </main>
+  <SiteFooter />
+</BaseLayout>

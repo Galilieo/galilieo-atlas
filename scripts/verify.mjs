@@ -1,0 +1,66 @@
+/* global console, process */
+
+import { spawnSync } from 'node:child_process';
+import { existsSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const checks = [
+  { name: 'ESLint', script: 'lint' },
+  { name: 'Astro check', script: 'check' },
+  { name: 'Astro build', script: 'build' },
+  { name: 'Homepage structure', script: 'check:home' },
+];
+
+function pnpmInvocation(script) {
+  if (process.platform === 'win32') {
+    return {
+      command: process.env.ComSpec || 'cmd.exe',
+      args: ['/d', '/s', '/c', `pnpm run ${script}`],
+    };
+  }
+
+  const npmExecPath = process.env.npm_execpath;
+
+  if (npmExecPath && existsSync(npmExecPath)) {
+    return {
+      command: process.execPath,
+      args: [npmExecPath, 'run', script],
+    };
+  }
+
+  return {
+    command: 'pnpm',
+    args: ['run', script],
+  };
+}
+
+console.log('Galilieo Portfolio verification');
+console.log(`Repository: ${repositoryRoot}`);
+
+for (const [index, check] of checks.entries()) {
+  const step = `${index + 1}/${checks.length}`;
+  console.log(`\n=== ${step} ${check.name}: pnpm run ${check.script} ===`);
+
+  const invocation = pnpmInvocation(check.script);
+  const result = spawnSync(invocation.command, invocation.args, {
+    cwd: repositoryRoot,
+    env: process.env,
+    stdio: 'inherit',
+  });
+
+  if (result.error) {
+    console.error(`\nVerification could not start ${check.name}: ${result.error.message}`);
+    process.exit(1);
+  }
+
+  if (result.status !== 0) {
+    console.error(`\nVerification failed at ${check.name} (exit ${result.status ?? 1}).`);
+    process.exit(result.status ?? 1);
+  }
+}
+
+console.log(
+  '\nVerification passed: lint, Astro check, build, and homepage structure checks completed successfully.',
+);
