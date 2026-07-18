@@ -1,15 +1,10 @@
 ---
 import HomeDashboard from '../components/home/HomeDashboard.astro';
-import SiteFooter from '../components/layout/SiteFooter.astro';
-import SiteHeader from '../components/layout/SiteHeader.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <SiteHeader />
   <main id="main-content">
     <HomeDashboard />
   </main>
-  <SiteFooter />
 </BaseLayout>

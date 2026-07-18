@@ -2,18 +2,11 @@
 import { getCollection } from 'astro:content';
 import TagList from '../../components/common/TagList.astro';
 import SectionHeading from '../../components/common/SectionHeading.astro';
-import SiteFooter from '../../components/layout/SiteFooter.astro';
-import SiteHeader from '../../components/layout/SiteHeader.astro';
 import { personalTimeline } from '../../data/personal-timeline';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedBlogArticles } from '../../lib/blog-directory';
 
-const allEntries = (await getCollection('blog'))
-  .filter((entry) => !entry.data.draft)
-  .sort((a, b) => {
-    const dateA = a.data.publishedAt ?? '';
-    const dateB = b.data.publishedAt ?? '';
-    return dateB.localeCompare(dateA);
-  });
+const allEntries = getPublishedBlogArticles(await getCollection('blog'));
 
 const grouped: Record<string, typeof allEntries> = {};
 for (const entry of allEntries) {
@@ -28,8 +21,6 @@ for (const entry of allEntries) {
   description="沿时间线浏览 Galilieo 的公开笔记与个人成长轨迹。"
   canonicalPath="/archive/"
 >
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <SiteHeader />
   <main class="page-main interior-page interior-page--archive" id="main-content">
     <SectionHeading
       eyebrow="Archive"
@@ -169,5 +160,4 @@ for (const entry of allEntries) {
       </section>
     </div>
   </main>
-  <SiteFooter />
 </BaseLayout>

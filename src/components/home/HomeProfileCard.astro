@@ -4,9 +4,10 @@ import { getCollection } from 'astro:content';
 import avatar from '../../assets/images/profile/galilieo-avatar.webp';
 import { siteConfig } from '../../config/site';
 import { homeProfile } from '../../data/home';
+import { getPublishedBlogArticles } from '../../lib/blog-directory';
 
 const workCount = (await getCollection('projects')).length;
-const noteCount = (await getCollection('blog')).filter((article) => !article.data.draft).length;
+const noteCount = getPublishedBlogArticles(await getCollection('blog')).length;
 ---
 
 <section class="home-profile dashboard-card reveal" id="profile" aria-labelledby="profile-title">
@@ -60,7 +61,7 @@ const noteCount = (await getCollection('blog')).filter((article) => !article.dat
           href={siteConfig.github}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="访问 Galilieo 的 GitHub"
+          aria-label={`访问 ${siteConfig.author.name} 的 GitHub`}
         >
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path

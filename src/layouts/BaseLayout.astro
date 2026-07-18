@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import GlobalControls from '../components/common/GlobalControls.astro';
+import SiteFooter from '../components/layout/SiteFooter.astro';
+import SiteHeader from '../components/layout/SiteHeader.astro';
 import { siteConfig } from '../config/site';
 import '../styles/tokens.css';
 import '../styles/reset.css';
@@ -120,7 +122,10 @@ const structuredData = [
   </head>
 
   <body id="top">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <SiteHeader />
     <slot />
+    <SiteFooter />
     <GlobalControls />
     <script>
       import '../scripts/main.ts';

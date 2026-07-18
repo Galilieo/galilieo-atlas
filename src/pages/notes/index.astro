@@ -2,8 +2,6 @@
 import { getCollection } from 'astro:content';
 import BlogDirectory from '../../components/blog/BlogDirectory.astro';
 import SectionHeading from '../../components/common/SectionHeading.astro';
-import SiteFooter from '../../components/layout/SiteFooter.astro';
-import SiteHeader from '../../components/layout/SiteHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublishedBlogArticles } from '../../lib/blog-directory';
 
@@ -15,8 +13,6 @@ const articles = getPublishedBlogArticles(await getCollection('blog'));
   description="记录项目开发、问题复盘、学习过程和生活片段。"
   canonicalPath="/blog/"
 >
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <SiteHeader />
   <main class="page-main interior-page interior-page--blog" id="main-content">
     <SectionHeading
       eyebrow="Notes"
@@ -31,5 +27,4 @@ const articles = getPublishedBlogArticles(await getCollection('blog'));
       )
     }
   </main>
-  <SiteFooter />
 </BaseLayout>

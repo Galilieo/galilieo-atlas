@@ -3,14 +3,13 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import {
   getBlogCategorySummaries,
+  getPublishedBlogArticles,
   type BlogCategorySummary,
 } from '../../lib/blog-directory';
 
 export async function getStaticPaths() {
   const allArticles = await getCollection('blog');
-  const publicArticles = import.meta.env.DEV
-    ? allArticles
-    : allArticles.filter((article) => !article.data.draft);
+  const publicArticles = import.meta.env.DEV ? allArticles : getPublishedBlogArticles(allArticles);
   const navigationArticles = [...publicArticles].sort((a, b) => a.data.order - b.data.order);
   const categorySummaries = getBlogCategorySummaries(publicArticles);
 

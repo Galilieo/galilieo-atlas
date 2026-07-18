@@ -5,8 +5,7 @@ import ArticleMeta from '../components/blog/ArticleMeta.astro';
 import ArticleNavigation from '../components/blog/ArticleNavigation.astro';
 import ArticleReadingNavigation from '../components/blog/ArticleReadingNavigation.astro';
 import TagList from '../components/common/TagList.astro';
-import SiteFooter from '../components/layout/SiteFooter.astro';
-import SiteHeader from '../components/layout/SiteHeader.astro';
+import { siteConfig } from '../config/site';
 import type { BlogCategorySummary } from '../lib/blog-directory';
 import BaseLayout from './BaseLayout.astro';
 
@@ -19,7 +18,7 @@ interface Props {
 }
 
 const { article, previous, next, categories, headings } = Astro.props;
-const title = `${article.data.title} — Galilieo`;
+const title = `${article.data.title} — ${siteConfig.author.name}`;
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -27,9 +26,9 @@ const jsonLd = {
   description: article.data.description,
   datePublished: article.data.publishedAt,
   dateModified: article.data.updatedAt ?? article.data.publishedAt,
-  author: { '@type': 'Person', name: 'Galilieo' },
+  author: { '@type': 'Person', name: siteConfig.author.name },
   inLanguage: 'zh-CN',
-  mainEntityOfPage: new URL(`/notes/${article.id}/`, 'https://galilieo.heart-island.cn').toString(),
+  mainEntityOfPage: new URL(`/notes/${article.id}/`, siteConfig.url).toString(),
 };
 ---
 
@@ -42,8 +41,6 @@ const jsonLd = {
   modifiedTime={article.data.updatedAt}
   jsonLd={jsonLd}
 >
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <SiteHeader />
   <main class="page-main interior-page interior-detail" id="main-content">
     <div class="article-reading-layout">
       <article class="article-page">
@@ -77,5 +74,4 @@ const jsonLd = {
       />
     </div>
   </main>
-  <SiteFooter />
 </BaseLayout>

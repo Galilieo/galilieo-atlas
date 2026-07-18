@@ -17,8 +17,15 @@ const categoryHref = currentCategoryEntry ? `/notes/#${currentCategoryEntry.id}`
 
 {
   variant === 'desktop' ? (
-    <aside class="article-reading-navigation article-reading-navigation--desktop" data-reading-navigation>
-      <a class="article-reading-navigation__category" href={categoryHref} data-current-category-link>
+    <aside
+      class="article-reading-navigation article-reading-navigation--desktop"
+      data-reading-navigation
+    >
+      <a
+        class="article-reading-navigation__category"
+        href={categoryHref}
+        data-current-category-link
+      >
         ← {currentCategory}
       </a>
       {tocHeadings.length > 0 && (
@@ -38,7 +45,10 @@ const categoryHref = currentCategoryEntry ? `/notes/#${currentCategoryEntry.id}`
     </aside>
   ) : (
     tocHeadings.length > 0 && (
-      <details class="article-reading-navigation article-reading-navigation--mobile" data-reading-navigation>
+      <details
+        class="article-reading-navigation article-reading-navigation--mobile"
+        data-reading-navigation
+      >
         <summary>
           <span>本文目录</span>
           <span>{tocHeadings.length} 节</span>

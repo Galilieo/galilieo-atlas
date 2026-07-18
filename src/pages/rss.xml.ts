@@ -1,11 +1,10 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { siteConfig } from '../config/site';
+import { getPublishedBlogArticles } from '../lib/blog-directory';
 
 export async function GET(context: { site?: URL }) {
-  const articles = (await getCollection('blog'))
-    .filter((article) => !article.data.draft && article.data.publishedAt)
-    .sort((a, b) => String(b.data.publishedAt).localeCompare(String(a.data.publishedAt)));
+  const articles = getPublishedBlogArticles(await getCollection('blog'));
 
   return rss({
     title: `${siteConfig.name} — Works, Notes & Explorations`,

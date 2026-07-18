@@ -78,7 +78,9 @@ export function initBlogDirectory(): Cleanup {
     if (tagsMode) showTag('');
     else {
       selectedTag = '';
-      tagEntries.forEach((entry) => { entry.hidden = false; });
+      tagEntries.forEach((entry) => {
+        entry.hidden = false;
+      });
       tagButtons.forEach((button) => {
         button.setAttribute('aria-pressed', String(!(button.dataset.blogTagFilter ?? '')));
       });
@@ -124,7 +126,9 @@ export function initBlogDirectory(): Cleanup {
     delete root.dataset.blogDirectoryMode;
     categoryGroups.hidden = false;
     tagResults.hidden = true;
-    tagEntries.forEach((entry) => { entry.hidden = false; });
+    tagEntries.forEach((entry) => {
+      entry.hidden = false;
+    });
     panels.forEach((panel) => {
       panel.hidden = panel.dataset.blogDirectoryPanel !== 'category';
     });

@@ -2,8 +2,6 @@
 import { getCollection } from 'astro:content';
 import SectionHeading from '../components/common/SectionHeading.astro';
 import TagList from '../components/common/TagList.astro';
-import SiteFooter from '../components/layout/SiteFooter.astro';
-import SiteHeader from '../components/layout/SiteHeader.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const projectIds = new Set(['heart-island', 'galilieo-portfolio']);
@@ -17,8 +15,6 @@ const learningProjects = (await getCollection('projects'))
   description="Galilieo 在软件工程学习期间形成的学习主线与实践记录。"
   canonicalPath="/campus/"
 >
-  <a class="skip-link" href="#main-content">跳到主要内容</a>
-  <SiteHeader />
   <main class="page-main interior-page interior-page--campus" id="main-content">
     <SectionHeading
       eyebrow="Campus Record"
@@ -124,5 +120,4 @@ const learningProjects = (await getCollection('projects'))
       </div>
     </div>
   </main>
-  <SiteFooter />
 </BaseLayout>
