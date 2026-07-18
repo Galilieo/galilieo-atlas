@@ -41,6 +41,37 @@ pnpm run dev
 
 开发服务器默认运行在 `http://localhost:4321`。
 
+## 启动博客后台
+
+Galilieo Studio 是仅在个人电脑运行的本地博客写作后台。首次使用先在仓库根目录安装依赖：
+
+```bash
+pnpm install
+```
+
+随后启动 Studio：
+
+```bash
+pnpm run studio
+```
+
+Windows Git Bash 如果无法直接调用 pnpm，可改用：
+
+```bash
+node scripts/blog-studio.mjs
+```
+
+启动器会优先复用当前仓库已经运行的 Astro 开发服务；没有可用预览时会自动启动一个。Studio 从默认端口开始寻找可用的 loopback 端口，因此请以终端实际输出为准，例如：
+
+```text
+Galilieo Studio: http://127.0.0.1:<动态端口>/
+Astro preview:   http://localhost:<预览端口>/
+```
+
+在浏览器打开终端显示的 `Galilieo Studio` 地址即可写作。按 `Ctrl+C` 停止 Studio；启动器只会清理本次由它启动的 Astro 预览，不会结束原本已经运行的开发服务。
+
+Studio 直接读写 `src/content/blog/*.md`，支持文章库、专注写作、真实页面预览、文章设置和发布检查。它只监听本机 loopback，不会进入 `dist/`；“发布”只更新本地 Markdown 状态并运行检查，不会自动 Commit、Push 或部署服务器。详细使用说明见[内容维护指南](docs/content-guide.md#使用本地-galilieo-studio)。
+
 ## 常用检查
 
 ```bash
