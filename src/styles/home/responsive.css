@@ -115,6 +115,12 @@
     min-height: 0;
   }
 
+  .home-carousel:has(.home-carousel__section-link:hover),
+  .home-carousel:has(.home-carousel__section-link:focus-visible),
+  .home-carousel:has(.home-carousel__section-link:active) {
+    transform: none;
+  }
+
   .home-status {
     grid-template-columns: 1fr;
   }
@@ -295,6 +301,7 @@
   .home-utility__github-footer,
   .home-utility__github-arrow,
   .home-utility__activity,
+  .home-carousel,
   .home-carousel__section-link,
   .home-carousel__card-link,
   .home-carousel__dots span {
@@ -304,6 +311,9 @@
   .home-utility__card:hover,
   .home-utility__github-footer:hover .home-utility__github-arrow,
   .home-utility__github-footer:focus-visible .home-utility__github-arrow,
+  .home-carousel:has(.home-carousel__section-link:hover),
+  .home-carousel:has(.home-carousel__section-link:focus-visible),
+  .home-carousel:has(.home-carousel__section-link:active),
   .home-carousel__card-link:hover,
   .home-carousel__card-link:focus-visible {
     transform: none;
