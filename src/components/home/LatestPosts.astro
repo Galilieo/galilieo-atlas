@@ -2,10 +2,9 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { createBlogCoverMap, getBlogCover } from '../../lib/blog-cover';
+import { getPublishedBlogArticles } from '../../lib/blog-directory';
 
-const publishedPosts = (await getCollection('blog'))
-  .filter((post) => !post.data.draft && post.data.publishedAt)
-  .sort((a, b) => String(b.data.publishedAt).localeCompare(String(a.data.publishedAt)));
+const publishedPosts = getPublishedBlogArticles(await getCollection('blog'));
 const selectedPosts = [
   ...publishedPosts.filter((post) => post.data.featured),
   ...publishedPosts.filter((post) => !post.data.featured),

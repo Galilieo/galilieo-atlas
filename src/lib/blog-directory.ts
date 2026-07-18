@@ -23,6 +23,12 @@ export function sortBlogArticles(articles: BlogArticle[]): BlogArticle[] {
   );
 }
 
+export function getPublishedBlogArticles(articles: BlogArticle[]): BlogArticle[] {
+  return sortBlogArticles(
+    articles.filter((article) => !article.data.draft && Boolean(article.data.publishedAt)),
+  );
+}
+
 export function getBlogCategoryId(category: string): string {
   const slug = category
     .trim()

@@ -8,8 +8,10 @@ const generatedPages = [
   resolve(distRoot, 'blog', 'index.html'),
   resolve(distRoot, 'archive', 'index.html'),
   resolve(distRoot, 'about', 'index.html'),
+  resolve(distRoot, 'notes', 'index.html'),
 ].map((file) => readFileSync(file, 'utf8'));
 const blogPage = generatedPages[1];
+const notesPage = generatedPages[4];
 const generatedCss = readdirSync(resolve(distRoot, '_astro'))
   .filter((file) => file.endsWith('.css'))
   .map((file) => readFileSync(resolve(distRoot, '_astro', file), 'utf8'))
@@ -89,6 +91,9 @@ if (homepageClockCount !== 2) {
 if (!generatedCss.includes('.header-clock')) {
   failures.push('Generated CSS must include the Header clock styles.');
 }
+if (!homepage.includes('data-home-time-label>Local time</span>')) {
+  failures.push('Homepage status clock must use the timezone-neutral Local time label.');
+}
 if (
   !/\.header-clock\{(?=[^}]*position:absolute)(?=[^}]*top:3px)(?=[^}]*right:0)(?=[^}]*display:inline-flex)/.test(
     generatedCss,
@@ -109,8 +114,10 @@ if (homepageBlogCovers.length !== 3) {
   );
 }
 for (const cover of homepageBlogCovers) {
-  if (!blogPage.includes(`data-blog-cover="${cover}"`)) {
-    failures.push(`Homepage and blog directory must share cover ${cover}.`);
+  for (const directoryPage of [blogPage, notesPage]) {
+    if (!directoryPage.includes(`data-blog-cover="${cover}"`)) {
+      failures.push(`Homepage and both article directories must share cover ${cover}.`);
+    }
   }
 }
 const homeNotesMarkup =

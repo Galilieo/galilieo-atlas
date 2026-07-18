@@ -5,14 +5,9 @@ import SectionHeading from '../../components/common/SectionHeading.astro';
 import SiteFooter from '../../components/layout/SiteFooter.astro';
 import SiteHeader from '../../components/layout/SiteHeader.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPublishedBlogArticles } from '../../lib/blog-directory';
 
-const articles = (await getCollection('blog'))
-  .filter((article) => !article.data.draft)
-  .sort((a, b) => {
-    const dateA = a.data.publishedAt ?? '';
-    const dateB = b.data.publishedAt ?? '';
-    return dateB.localeCompare(dateA);
-  });
+const articles = getPublishedBlogArticles(await getCollection('blog'));
 ---
 
 <BaseLayout
