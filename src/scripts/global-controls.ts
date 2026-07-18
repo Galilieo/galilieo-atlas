@@ -1,3 +1,10 @@
+import {
+  nextPlaybackMode,
+  playbackModes,
+  selectTrackIndex,
+  type PlaybackMode,
+} from './music-playback';
+
 interface MusicTrack {
   id: string;
   title: string;
@@ -15,6 +22,12 @@ interface GlobalMusicController {
 
 let musicController: GlobalMusicController | undefined;
 let persistentControlsReady = false;
+const musicModeStorageKey = 'galilieo:music-playback-mode';
+const playbackModeCopy: Record<PlaybackMode, { label: string; icon: string }> = {
+  list: { label: '列表循环', icon: '↻' },
+  single: { label: '单曲循环', icon: '↻¹' },
+  shuffle: { label: '随机播放', icon: '⇄' },
+};
 
 function isMusicTrack(value: unknown): value is MusicTrack {
   if (!value || typeof value !== 'object') return false;
@@ -57,6 +70,13 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
     0,
     tracks.findIndex((track) => track.playable),
   );
+  let playbackMode: PlaybackMode = 'list';
+  try {
+    const storedMode = localStorage.getItem(musicModeStorageKey) as PlaybackMode | null;
+    if (storedMode && playbackModes.includes(storedMode)) playbackMode = storedMode;
+  } catch {
+    // Storage can be unavailable in privacy modes; list loop remains the safe default.
+  }
 
   const currentTrack = () => tracks[currentIndex];
   const isAvailable = (track: MusicTrack) => track.playable && !failedTrackIds.has(track.id);
@@ -94,6 +114,18 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
     );
     setText('[data-music-orb-icon]', state === 'playing' ? 'Ⅱ' : '▶');
 
+    const modeCopy = playbackModeCopy[playbackMode];
+    document.querySelectorAll<HTMLButtonElement>('[data-music-mode-toggle]').forEach((button) => {
+      button.disabled = false;
+      button.dataset.musicMode = playbackMode;
+      button.setAttribute('aria-label', `播放模式：${modeCopy.label}，点击切换`);
+      button.title = `播放模式：${modeCopy.label}`;
+      const icon = button.querySelector<HTMLElement>('[data-music-mode-icon]');
+      const label = button.querySelector<HTMLElement>('[data-music-mode-label]');
+      if (icon) icon.textContent = modeCopy.icon;
+      if (label) label.textContent = modeCopy.label;
+    });
+
     document.querySelectorAll<HTMLImageElement>('[data-music-cover]').forEach((cover) => {
       if (cover.src !== track.cover) cover.src = track.cover;
       if (cover.closest('.global-music__now, [data-music-view]'))
@@ -123,6 +155,16 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
     syncViews();
   };
 
+  const setPlaybackMode = (mode: PlaybackMode) => {
+    playbackMode = mode;
+    try {
+      localStorage.setItem(musicModeStorageKey, mode);
+    } catch {
+      // The in-memory mode still works when storage is unavailable.
+    }
+    syncViews();
+  };
+
   const setTrack = (index: number, play = false) => {
     if (!tracks[index] || !isAvailable(tracks[index])) return;
     currentIndex = index;
@@ -133,22 +175,29 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
     if (play) audio.play().catch(() => setPlaybackState('paused'));
   };
 
-  const findAvailableIndex = (direction: -1 | 1) => {
-    for (let offset = 1; offset <= tracks.length; offset += 1) {
-      const candidate = (currentIndex + direction * offset + tracks.length) % tracks.length;
-      if (isAvailable(tracks[candidate])) return candidate;
-    }
-    return undefined;
-  };
-
-  const changeTrack = (direction: -1 | 1) => {
-    const wasPlaying = root.dataset.state === 'playing';
-    const target = findAvailableIndex(direction);
+  const changeTrack = (
+    direction: -1 | 1,
+    play = root.dataset.state === 'playing',
+    automatic = false,
+  ) => {
+    const target = selectTrackIndex({
+      mode: playbackMode,
+      currentIndex,
+      availableIndexes: tracks.flatMap((track, index) => (isAvailable(track) ? [index] : [])),
+      direction,
+      automatic,
+    });
     if (target === undefined) {
       setPlaybackState('unavailable');
       return;
     }
-    setTrack(target, wasPlaying);
+    if (target === currentIndex) {
+      audio.currentTime = 0;
+      if (play) audio.play().catch(() => setPlaybackState('paused'));
+      else setPlaybackState('paused');
+      return;
+    }
+    setTrack(target, play);
   };
 
   const setOpen = (open: boolean) => {
@@ -170,6 +219,8 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
       changeTrack(-1);
     } else if (action === 'next') {
       changeTrack(1);
+    } else if (action === 'mode') {
+      setPlaybackMode(nextPlaybackMode(playbackMode));
     }
 
     const trackButton = target.closest<HTMLButtonElement>('[data-music-track-index]');
@@ -219,7 +270,7 @@ function createMusicController(root: HTMLElement): GlobalMusicController | undef
   });
   audio.addEventListener('timeupdate', syncViews);
   audio.addEventListener('loadedmetadata', syncViews);
-  audio.addEventListener('ended', () => changeTrack(1));
+  audio.addEventListener('ended', () => changeTrack(1, true, true));
   audio.addEventListener('error', handleError);
 
   setTrack(currentIndex);

@@ -1,5 +1,6 @@
 ---
 import { homeMusicPlaylistUrl, homeMusicTracks } from '../../data/music';
+import MusicModeControl from './MusicModeControl.astro';
 
 const initialTrack = homeMusicTracks.find((track) => track.playable);
 const playableTracks = homeMusicTracks.filter((track) => track.playable);
@@ -125,7 +126,9 @@ const playableTracks = homeMusicTracks.filter((track) => track.playable);
 
       <div class="global-music__playlist">
         <div class="global-music__playlist-heading">
-          <span>歌单</span><span>{homeMusicTracks.length} tracks</span>
+          <span>歌单</span>
+          <MusicModeControl />
+          <span>{homeMusicTracks.length} tracks</span>
         </div>
         <ol>
           {

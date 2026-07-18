@@ -1,6 +1,7 @@
 ---
 import { siteConfig } from '../../config/site';
 import { homeMusicPlaylistUrl, homeMusicTracks } from '../../data/music';
+import MusicModeControl from '../common/MusicModeControl.astro';
 
 const initialTrack = homeMusicTracks.find((track) => track.playable);
 ---
@@ -94,13 +95,16 @@ const initialTrack = homeMusicTracks.find((track) => track.playable);
   >
     <div class="home-utility__music-header">
       <span>Listening shelf</span>
-      <a
-        class="home-utility__music-source"
-        href={homeMusicPlaylistUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-music-source>网易云 <span aria-hidden="true">↗</span></a
-      >
+      <div class="home-utility__music-actions">
+        <MusicModeControl />
+        <a
+          class="home-utility__music-source"
+          href={homeMusicPlaylistUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-music-source>网易云 <span aria-hidden="true">↗</span></a
+        >
+      </div>
     </div>
     <div class="home-utility__track">
       <figure class="home-utility__cover">
