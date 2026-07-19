@@ -363,6 +363,8 @@ body:has(.interior-page) {
 .about-dossier__story,
 .about-dossier__facts,
 .about-dossier__contact,
+.interior-detail .article-page__hero,
+.interior-detail .article-recommendations--mobile,
 .interior-detail .page-header,
 .interior-detail .prose,
 .interior-detail .article-navigation,
@@ -1979,6 +1981,63 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   width: 100%;
 }
 
+.article-page__hero {
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+.article-page__cover {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  border-bottom: 1px solid var(--interior-border);
+  background: var(--interior-surface-soft);
+}
+
+.article-page__cover::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 56%, var(--interior-surface-soft));
+  opacity: 0.42;
+}
+
+.article-page__cover-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(0.97);
+}
+
+.interior-detail .article-page .page-header {
+  max-width: none;
+  margin: 0;
+  padding: clamp(30px, 5vw, 52px);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.article-page__back {
+  width: fit-content;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 18px;
+  color: var(--home-text-secondary);
+  font-size: 12px;
+}
+
+.article-page__back:hover,
+.article-page__back:focus-visible {
+  color: var(--home-accent);
+}
+
 .article-reading-layout {
   width: min(100%, 1120px);
   display: grid;
@@ -2031,6 +2090,75 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   padding: 0 16px 16px;
 }
 
+.article-recommendations--mobile {
+  display: none;
+  max-width: 860px;
+  margin: 24px auto 0;
+  padding: 22px;
+  border-radius: 18px;
+  background: var(--interior-surface-strong);
+}
+
+.article-recommendations__eyebrow {
+  margin: 0;
+  color: var(--home-accent);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.article-recommendations h2 {
+  margin: 7px 0 0;
+  color: var(--home-text);
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.article-recommendations ol {
+  display: grid;
+  gap: 6px;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.article-recommendations a {
+  display: grid;
+  gap: 5px;
+  min-height: 54px;
+  padding: 10px 11px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: var(--home-text-secondary);
+  background: color-mix(in srgb, var(--home-accent-soft) 34%, transparent);
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    transform 220ms var(--ease);
+}
+
+.article-recommendations a:hover,
+.article-recommendations a:focus-visible {
+  border-color: var(--interior-border-strong);
+  color: var(--home-text);
+  transform: translateY(-2px);
+}
+
+.article-recommendations strong {
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.article-recommendations a span {
+  color: var(--home-text-muted);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .interior-detail .page-header {
   max-width: 980px;
   margin-inline: auto;
@@ -2054,6 +2182,7 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
 
 .interior-detail .prose {
   max-width: 860px;
+  margin-top: clamp(26px, 4vw, 42px);
   padding: clamp(30px, 5vw, 58px);
   border-radius: 24px;
   background: var(--interior-surface-strong);
@@ -2109,6 +2238,10 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   }
 
   .article-reading-navigation--mobile {
+    display: block;
+  }
+
+  .article-recommendations--mobile {
     display: block;
   }
 
@@ -2328,6 +2461,8 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   .about-dossier__story,
   .about-dossier__facts,
   .about-dossier__contact,
+  .interior-detail .article-page__hero,
+  .interior-detail .article-recommendations--mobile,
   .interior-detail .page-header,
   .interior-detail .prose,
   .interior-detail .article-navigation,
@@ -2356,6 +2491,19 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   .article-reading-navigation,
   .archive-view-switch {
     background: var(--interior-surface-strong);
+  }
+
+  .article-page__hero,
+  .article-recommendations--mobile {
+    background: var(--interior-surface-strong);
+  }
+
+  .article-page__cover {
+    aspect-ratio: 16 / 10;
+  }
+
+  .article-recommendations--mobile {
+    padding: 18px;
   }
 
   .blog-directory-navigation__panel {
@@ -2556,6 +2704,7 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   .project-matrix-card__arrow,
   .article-matrix-card__arrow,
   .blog-category-directory a,
+  .article-recommendations a,
   .article-toc a {
     transition: none;
   }
@@ -2583,6 +2732,11 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
 
   .archive-chain__item:hover .archive-chain__footer > span:last-child,
   .archive-chain__card:focus-visible .archive-chain__footer > span:last-child {
+    transform: none;
+  }
+
+  .article-recommendations a:hover,
+  .article-recommendations a:focus-visible {
     transform: none;
   }
 
