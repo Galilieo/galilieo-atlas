@@ -47,6 +47,10 @@ function recommendationLinks(markup) {
   return tagsWithMarker(markup, 'a', 'data-article-recommendation-link');
 }
 
+function recommendationIds(links) {
+  return links.map((link) => attribute(link, 'data-recommended-article'));
+}
+
 function compareTocTargets({ slug, label, headingIds, targets, failures }) {
   for (const id of headingIds) {
     if (!targets.has(id)) failures.push(`/notes/${slug}/ ${label} TOC is missing target #${id}.`);
@@ -58,8 +62,11 @@ function compareTocTargets({ slug, label, headingIds, targets, failures }) {
   }
 }
 
-export function checkGeneratedArticle({ slug, html }) {
+export function checkGeneratedArticle({ slug, html, availableRecommendationCount = 0 }) {
   const failures = [];
+  const normalizedCandidateCount = Number.isFinite(availableRecommendationCount)
+    ? Math.max(0, Math.trunc(availableRecommendationCount))
+    : 0;
   const bodyOpening = tagsWithMarker(html, 'div', 'data-article-body')[0] ?? '';
   const body = markedBlock(html, 'div', 'data-article-body');
   const bodyClasses = new Set(attribute(bodyOpening, 'class').split(/\s+/).filter(Boolean));
@@ -82,8 +89,12 @@ export function checkGeneratedArticle({ slug, html }) {
   );
   const desktopRecommendationLinks = recommendationLinks(desktopRecommendations);
   const mobileRecommendationLinks = recommendationLinks(mobileRecommendations);
+  const desktopRecommendationIds = recommendationIds(desktopRecommendationLinks);
+  const mobileRecommendationIds = recommendationIds(mobileRecommendationLinks);
   const desktopRecommendationCount = desktopRecommendationLinks.length;
   const mobileRecommendationCount = mobileRecommendationLinks.length;
+  const expectedDesktopRecommendationCount = Math.min(normalizedCandidateCount, 3);
+  const expectedMobileRecommendationCount = Math.min(normalizedCandidateCount, 2);
 
   if (html.includes('data-reading-tab') || html.includes('data-reading-panel')) {
     failures.push(`/notes/${slug}/ must not render the removed mobile Category / article tabs.`);
@@ -125,11 +136,26 @@ export function checkGeneratedArticle({ slug, html }) {
   if (mobileRecommendationCount > 2) {
     failures.push(`/notes/${slug}/ mobile Recommended must contain at most 2 articles.`);
   }
-  if (desktopRecommendationCount !== mobileRecommendationCount) {
-    const expectedMobileCount = Math.min(desktopRecommendationCount, 2);
-    if (mobileRecommendationCount !== expectedMobileCount) {
-      failures.push(`/notes/${slug}/ desktop and mobile Recommended lists must stay in sync.`);
-    }
+  if (desktopRecommendationCount !== expectedDesktopRecommendationCount) {
+    failures.push(
+      `/notes/${slug}/ desktop Recommended must contain ${expectedDesktopRecommendationCount} available article(s).`,
+    );
+  }
+  if (mobileRecommendationCount !== expectedMobileRecommendationCount) {
+    failures.push(
+      `/notes/${slug}/ mobile Recommended must contain ${expectedMobileRecommendationCount} available article(s).`,
+    );
+  }
+  if (desktopRecommendationIds.some((id) => !id) || mobileRecommendationIds.some((id) => !id)) {
+    failures.push(`/notes/${slug}/ Recommended links must identify their target article.`);
+  }
+  if (
+    JSON.stringify(mobileRecommendationIds) !==
+    JSON.stringify(desktopRecommendationIds.slice(0, expectedMobileRecommendationCount))
+  ) {
+    failures.push(
+      `/notes/${slug}/ mobile Recommended must preserve the leading desktop article order.`,
+    );
   }
   if (desktopRecommendations && desktopRecommendationCount === 0) {
     failures.push(`/notes/${slug}/ must not render an empty desktop Recommended section.`);

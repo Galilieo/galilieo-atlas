@@ -58,7 +58,13 @@ await runGeneratedSiteContract({
 
     for (const slug of articleDirectories) {
       const html = readPage('notes', slug, 'index.html');
-      failures.push(...checkGeneratedArticle({ slug, html }));
+      failures.push(
+        ...checkGeneratedArticle({
+          slug,
+          html,
+          availableRecommendationCount: Math.max(0, articleDirectories.length - 1),
+        }),
+      );
     }
 
     // Tag 统一结果区契约

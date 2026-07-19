@@ -48,7 +48,8 @@ describe('generated article reading contract', () => {
   });
 
   test('treats recommendation limits as upper bounds and still rejects overflow and self-links', () => {
-    const link = (slug) => `<a href="/notes/${slug}/" data-article-recommendation-link>${slug}</a>`;
+    const link = (slug) =>
+      `<a href="/notes/${slug}/" data-article-recommendation-link data-recommended-article="${slug}">${slug}</a>`;
     const section = (variant, slugs) =>
       `<section data-article-recommendations="${variant}">${slugs.map(link).join('')}</section>`;
     const desktopRecommendations = section('desktop', ['one', 'two', 'three']);
@@ -57,18 +58,74 @@ describe('generated article reading contract', () => {
       mobileNavigation: section('mobile', ['one', 'two']),
     });
 
-    assert.deepEqual(checkGeneratedArticle({ slug: 'current', html: validPage }), []);
+    assert.deepEqual(
+      checkGeneratedArticle({
+        slug: 'current',
+        html: validPage,
+        availableRecommendationCount: 3,
+      }),
+      [],
+    );
 
     const overflowDesktop = section('desktop', ['current', 'two', 'three', 'four']);
     const invalidPage = articlePage({
       desktopNavigation: `<aside class="article-reading-navigation--desktop" data-reading-navigation>${overflowDesktop}</aside>`,
       mobileNavigation: section('mobile', ['current', 'two', 'three']),
     });
-    const failures = checkGeneratedArticle({ slug: 'current', html: invalidPage });
+    const failures = checkGeneratedArticle({
+      slug: 'current',
+      html: invalidPage,
+      availableRecommendationCount: 4,
+    });
 
     assert.ok(failures.some((failure) => failure.includes('at most 3 articles')));
     assert.ok(failures.some((failure) => failure.includes('at most 2 articles')));
     assert.ok(failures.some((failure) => failure.includes('must not recommend itself')));
+  });
+
+  test('requires recommendation sections whenever public candidates exist', () => {
+    const failures = checkGeneratedArticle({
+      slug: 'current',
+      html: articlePage(),
+      availableRecommendationCount: 2,
+    });
+
+    assert.ok(failures.some((failure) => failure.includes('desktop Recommended must contain 2')));
+    assert.ok(failures.some((failure) => failure.includes('mobile Recommended must contain 2')));
+
+    const recommendation = (variant) =>
+      `<section data-article-recommendations="${variant}"><a href="/notes/only-candidate/" data-article-recommendation-link data-recommended-article="only-candidate">唯一候选</a></section>`;
+    const singleCandidatePage = articlePage({
+      desktopNavigation: `<aside class="article-reading-navigation--desktop" data-reading-navigation>${recommendation('desktop')}</aside>`,
+      mobileNavigation: recommendation('mobile'),
+    });
+    assert.deepEqual(
+      checkGeneratedArticle({
+        slug: 'current',
+        html: singleCandidatePage,
+        availableRecommendationCount: 1,
+      }),
+      [],
+    );
+  });
+
+  test('requires mobile recommendations to preserve the leading desktop IDs and order', () => {
+    const link = (slug) =>
+      `<a href="/notes/${slug}/" data-article-recommendation-link data-recommended-article="${slug}">${slug}</a>`;
+    const section = (variant, slugs) =>
+      `<section data-article-recommendations="${variant}">${slugs.map(link).join('')}</section>`;
+    const desktopRecommendations = section('desktop', ['one', 'two', 'three']);
+    const html = articlePage({
+      desktopNavigation: `<aside class="article-reading-navigation--desktop" data-reading-navigation>${desktopRecommendations}</aside>`,
+      mobileNavigation: section('mobile', ['two', 'one']),
+    });
+    const failures = checkGeneratedArticle({
+      slug: 'current',
+      html,
+      availableRecommendationCount: 3,
+    });
+
+    assert.ok(failures.some((failure) => failure.includes('leading desktop article order')));
   });
 });
 
