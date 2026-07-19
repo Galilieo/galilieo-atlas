@@ -137,4 +137,65 @@ describe('Recommended Article selection', () => {
     );
     assert.deepEqual(getRecommendedBlogArticles(articles, currentArticle, 0), []);
   });
+
+  test('uses the article ID as a deterministic final tie-break', () => {
+    const articles = [
+      article('z-last', {
+        category: currentArticle.data.category,
+        tags: ['Astro'],
+        draft: false,
+        publishedAt: '2026-07-01',
+      }),
+      article('a-first', {
+        category: currentArticle.data.category,
+        tags: ['CSS'],
+        draft: false,
+        publishedAt: '2026-07-01',
+      }),
+    ];
+
+    assert.deepEqual(
+      getRecommendedBlogArticles(articles, currentArticle).map(({ id }) => id),
+      ['a-first', 'z-last'],
+    );
+  });
+
+  test('normalizes fractional, negative, and omitted limits', () => {
+    const articles = [
+      article('first', {
+        category: currentArticle.data.category,
+        tags: ['Astro'],
+        draft: false,
+        publishedAt: '2026-07-04',
+      }),
+      article('second', {
+        category: currentArticle.data.category,
+        tags: ['Astro'],
+        draft: false,
+        publishedAt: '2026-07-03',
+      }),
+      article('third', {
+        category: currentArticle.data.category,
+        tags: ['Astro'],
+        draft: false,
+        publishedAt: '2026-07-02',
+      }),
+      article('fourth', {
+        category: currentArticle.data.category,
+        tags: ['Astro'],
+        draft: false,
+        publishedAt: '2026-07-01',
+      }),
+    ];
+
+    assert.deepEqual(
+      getRecommendedBlogArticles(articles, currentArticle, 1.9).map(({ id }) => id),
+      ['first'],
+    );
+    assert.deepEqual(getRecommendedBlogArticles(articles, currentArticle, -1), []);
+    assert.deepEqual(
+      getRecommendedBlogArticles(articles, currentArticle).map(({ id }) => id),
+      ['first', 'second', 'third'],
+    );
+  });
 });
