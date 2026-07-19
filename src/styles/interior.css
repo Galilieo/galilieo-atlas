@@ -2096,6 +2096,9 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   margin: 24px auto 0;
   padding: 22px;
   border-radius: 18px;
+}
+
+.interior-detail .article-recommendations--mobile {
   background: var(--interior-surface-strong);
 }
 
@@ -2493,8 +2496,8 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
     background: var(--interior-surface-strong);
   }
 
-  .article-page__hero,
-  .article-recommendations--mobile {
+  .interior-detail .article-page__hero,
+  .interior-detail .article-recommendations--mobile {
     background: var(--interior-surface-strong);
   }
 
