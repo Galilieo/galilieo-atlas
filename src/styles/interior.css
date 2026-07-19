@@ -2185,11 +2185,14 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
 
 .interior-detail .prose {
   max-width: 860px;
-  margin-top: clamp(26px, 4vw, 42px);
   padding: clamp(30px, 5vw, 58px);
   border-radius: 24px;
   background: var(--interior-surface-strong);
   color: var(--home-text-secondary);
+}
+
+.interior-detail .article-page > .prose {
+  margin-top: clamp(26px, 4vw, 42px);
 }
 
 .interior-detail .prose h2,
