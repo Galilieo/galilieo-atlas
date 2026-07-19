@@ -2030,14 +2030,66 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   min-height: 44px;
   display: inline-flex;
   align-items: center;
+  gap: 10px;
   margin-bottom: 18px;
-  color: var(--home-text-secondary);
-  font-size: 12px;
+  padding: 7px 15px 7px 7px;
+  border: 1px solid var(--interior-border-strong);
+  border-radius: 999px;
+  color: var(--home-text);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--interior-highlight) 68%, transparent),
+    color-mix(in srgb, var(--interior-surface-strong) 92%, var(--home-accent-soft))
+  );
+  box-shadow:
+    0 10px 24px color-mix(in srgb, var(--home-text) 10%, transparent),
+    inset 0 1px 0 var(--interior-highlight);
+  font-family: var(--sans);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 180ms var(--ease),
+    box-shadow 180ms ease;
+}
+
+.article-page__back-icon {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  color: var(--home-on-accent);
+  background: var(--home-accent);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--home-accent) 28%, transparent);
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 180ms var(--ease);
 }
 
 .article-page__back:hover,
 .article-page__back:focus-visible {
-  color: var(--home-accent);
+  border-color: var(--home-accent-border);
+  color: var(--home-accent-hover);
+  background: var(--interior-surface-strong);
+  box-shadow:
+    0 14px 30px color-mix(in srgb, var(--home-text) 13%, transparent),
+    inset 0 1px 0 var(--interior-highlight);
+  transform: translateY(-1px);
+}
+
+.article-page__back:hover .article-page__back-icon,
+.article-page__back:focus-visible .article-page__back-icon {
+  transform: translateX(-2px);
+}
+
+.article-page__back:focus-visible {
+  outline: 2px solid var(--home-accent);
+  outline-offset: 3px;
 }
 
 .article-reading-layout {
@@ -2726,7 +2778,9 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   .article-matrix-card__arrow,
   .blog-category-directory a,
   .article-recommendations a,
-  .article-toc a {
+  .article-toc a,
+  .article-page__back,
+  .article-page__back-icon {
     transition: none;
   }
 
@@ -2757,7 +2811,11 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   }
 
   .article-recommendations a:hover,
-  .article-recommendations a:focus-visible {
+  .article-recommendations a:focus-visible,
+  .article-page__back:hover,
+  .article-page__back:focus-visible,
+  .article-page__back:hover .article-page__back-icon,
+  .article-page__back:focus-visible .article-page__back-icon {
     transform: none;
   }
 

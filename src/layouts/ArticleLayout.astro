@@ -65,7 +65,10 @@ const jsonLd = {
             />
           </div>
           <header class="page-header">
-            <a class="article-page__back" href="/notes/" data-article-back-link> ← 返回博客 </a>
+            <a class="article-page__back" href="/notes/" data-article-back-link>
+              <span class="article-page__back-icon" aria-hidden="true">←</span>
+              <span>返回博客</span>
+            </a>
             <p class="section-kicker">Notes / {article.data.category}</p>
             <h1>{article.data.title}</h1>
             <p>{article.data.description}</p>
