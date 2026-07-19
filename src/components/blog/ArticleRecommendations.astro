@@ -1,0 +1,42 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  articles: CollectionEntry<'blog'>[];
+  variant: 'desktop' | 'mobile';
+}
+
+const { articles, variant } = Astro.props;
+const visibleArticles = articles.slice(0, variant === 'desktop' ? 3 : 2);
+const headingId = `article-recommendations-${variant}`;
+---
+
+{
+  visibleArticles.length > 0 && (
+    <section
+      class:list={['article-recommendations', `article-recommendations--${variant}`]}
+      aria-labelledby={headingId}
+      data-article-recommendations={variant}
+    >
+      <p class="article-recommendations__eyebrow">Recommended</p>
+      <h2 id={headingId}>继续阅读</h2>
+      <ol>
+        {visibleArticles.map((article) => (
+          <li>
+            <a
+              href={`/notes/${article.id}/`}
+              data-article-recommendation-link
+              data-recommended-article={article.id}
+            >
+              <strong>{article.data.title}</strong>
+              <span>
+                {article.data.category}
+                {article.data.readingTime ? ` · ${article.data.readingTime} 分钟` : ''}
+              </span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )
+}

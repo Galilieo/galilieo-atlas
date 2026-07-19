@@ -1,23 +1,27 @@
 ---
 import type { MarkdownHeading } from 'astro';
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import ArticleMeta from '../components/blog/ArticleMeta.astro';
 import ArticleNavigation from '../components/blog/ArticleNavigation.astro';
 import ArticleReadingNavigation from '../components/blog/ArticleReadingNavigation.astro';
+import ArticleRecommendations from '../components/blog/ArticleRecommendations.astro';
 import TagList from '../components/common/TagList.astro';
 import { siteConfig } from '../config/site';
-import type { BlogCategorySummary } from '../lib/blog-directory';
+import { getBlogCover } from '../lib/blog-cover';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
   article: CollectionEntry<'blog'>;
   previous?: CollectionEntry<'blog'>;
   next?: CollectionEntry<'blog'>;
-  categories: BlogCategorySummary[];
+  recommendations: CollectionEntry<'blog'>[];
   headings: MarkdownHeading[];
 }
 
-const { article, previous, next, categories, headings } = Astro.props;
+const { article, previous, next, recommendations, headings } = Astro.props;
+const artwork = getBlogCover(article);
+const coverAlt = artwork.key === 'custom' ? `${article.data.title}封面` : '';
 const title = `${article.data.title} — ${siteConfig.author.name}`;
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -44,33 +48,45 @@ const jsonLd = {
   <main class="page-main interior-page interior-detail" id="main-content">
     <div class="article-reading-layout">
       <article class="article-page">
-        <header class="page-header reveal">
-          <p class="section-kicker">Notes / {article.data.category}</p>
-          <h1>{article.data.title}</h1>
-          <p>{article.data.description}</p>
-          <ArticleMeta
-            category={article.data.category}
-            publishedAt={article.data.publishedAt}
-            updatedAt={article.data.updatedAt}
-            readingTime={article.data.readingTime}
-          />
-          <TagList items={article.data.tags} label="文章标签" />
-        </header>
-        <ArticleReadingNavigation
-          variant="mobile"
-          categories={categories}
-          currentCategory={article.data.category}
-          headings={headings}
-        />
-        <div class="prose reveal"><slot /></div>
-        <p class="back-link"><a href="/notes/">← 返回博客列表</a></p>
+        <section class="article-page__hero reveal" data-article-hero>
+          <div class="article-page__cover" data-article-cover>
+            <Image
+              src={artwork.image}
+              alt={coverAlt}
+              class:list={[
+                'article-page__cover-image',
+                `article-page__cover-image--${artwork.key}`,
+              ]}
+              style={`object-position: ${artwork.position}`}
+              widths={[480, 720, 960, 1280]}
+              sizes="(max-width: 1100px) calc(100vw - 72px), 860px"
+              loading="eager"
+              decoding="async"
+            />
+          </div>
+          <header class="page-header">
+            <a class="article-page__back" href="/notes/" data-article-back-link> ← 返回博客 </a>
+            <p class="section-kicker">Notes / {article.data.category}</p>
+            <h1>{article.data.title}</h1>
+            <p>{article.data.description}</p>
+            <ArticleMeta
+              category={article.data.category}
+              publishedAt={article.data.publishedAt}
+              updatedAt={article.data.updatedAt}
+              readingTime={article.data.readingTime}
+            />
+            <TagList items={article.data.tags} label="文章标签" />
+          </header>
+        </section>
+        <ArticleReadingNavigation variant="mobile" headings={headings} />
+        <div class="prose" data-article-body><slot /></div>
         <ArticleNavigation previous={previous} next={next} />
+        <ArticleRecommendations articles={recommendations} variant="mobile" />
       </article>
       <ArticleReadingNavigation
         variant="desktop"
-        categories={categories}
-        currentCategory={article.data.category}
         headings={headings}
+        recommendations={recommendations}
       />
     </div>
   </main>

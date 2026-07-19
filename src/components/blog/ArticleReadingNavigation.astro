@@ -1,33 +1,26 @@
 ---
 import type { MarkdownHeading } from 'astro';
-import type { BlogCategorySummary } from '../../lib/blog-directory';
+import type { CollectionEntry } from 'astro:content';
+import ArticleRecommendations from './ArticleRecommendations.astro';
 
 interface Props {
   variant: 'desktop' | 'mobile';
-  categories: BlogCategorySummary[];
-  currentCategory: string;
   headings: MarkdownHeading[];
+  recommendations?: CollectionEntry<'blog'>[];
 }
 
-const { variant, categories, currentCategory, headings } = Astro.props;
+const { variant, headings, recommendations = [] } = Astro.props;
 const tocHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3);
-const currentCategoryEntry = categories.find((category) => category.name === currentCategory);
-const categoryHref = currentCategoryEntry ? `/notes/#${currentCategoryEntry.id}` : '/notes/';
 ---
 
 {
   variant === 'desktop' ? (
     <aside
       class="article-reading-navigation article-reading-navigation--desktop"
+      aria-label="文章阅读辅助"
       data-reading-navigation
     >
-      <a
-        class="article-reading-navigation__category"
-        href={categoryHref}
-        data-current-category-link
-      >
-        ← {currentCategory}
-      </a>
+      <ArticleRecommendations articles={recommendations} variant="desktop" />
       {tocHeadings.length > 0 && (
         <nav class="article-toc" aria-label="本文目录">
           <p>本文目录</p>

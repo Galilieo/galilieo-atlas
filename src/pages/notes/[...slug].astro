@@ -1,17 +1,12 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import {
-  getBlogCategorySummaries,
-  getPublishedBlogArticles,
-  type BlogCategorySummary,
-} from '../../lib/blog-directory';
+import { getPublishedBlogArticles, getRecommendedBlogArticles } from '../../lib/blog-directory';
 
 export async function getStaticPaths() {
   const allArticles = await getCollection('blog');
   const publicArticles = import.meta.env.DEV ? allArticles : getPublishedBlogArticles(allArticles);
   const navigationArticles = [...publicArticles].sort((a, b) => a.data.order - b.data.order);
-  const categorySummaries = getBlogCategorySummaries(publicArticles);
 
   return navigationArticles.map((article, index) => ({
     params: { slug: article.id },
@@ -19,7 +14,7 @@ export async function getStaticPaths() {
       article,
       previous: navigationArticles[index - 1],
       next: navigationArticles[index + 1],
-      categorySummaries,
+      recommendations: getRecommendedBlogArticles(publicArticles, article, 3),
     },
   }));
 }
@@ -28,19 +23,13 @@ interface Props {
   article: CollectionEntry<'blog'>;
   previous?: CollectionEntry<'blog'>;
   next?: CollectionEntry<'blog'>;
-  categorySummaries: BlogCategorySummary[];
+  recommendations: CollectionEntry<'blog'>[];
 }
 
-const { article, previous, next, categorySummaries } = Astro.props;
+const { article, previous, next, recommendations } = Astro.props;
 const { Content, headings } = await render(article);
 ---
 
-<ArticleLayout
-  article={article}
-  previous={previous}
-  next={next}
-  categories={categorySummaries}
-  headings={headings}
->
+<ArticleLayout {article} {previous} {next} {recommendations} {headings}>
   <Content />
 </ArticleLayout>
