@@ -24,14 +24,14 @@
   --sun-glow: #fff7d6;
   --home-bg: #f3f2ed;
   --home-bg-secondary: #eaeff2;
-  --home-surface: rgba(248, 248, 245, 0.48);
-  --home-surface-strong: rgba(255, 255, 255, 0.56);
-  --home-surface-mobile: rgba(248, 248, 245, 0.68);
-  --home-surface-strong-mobile: rgba(255, 255, 255, 0.76);
+  --home-surface: rgba(248, 248, 245, 0.38);
+  --home-surface-strong: rgba(255, 255, 255, 0.48);
+  --home-surface-mobile: rgba(248, 248, 245, 0.54);
+  --home-surface-strong-mobile: rgba(255, 255, 255, 0.64);
   --home-surface-soft: #e5ebef;
-  --home-border: rgba(255, 255, 255, 0.4);
-  --home-border-strong: rgba(155, 174, 191, 0.48);
-  --home-panel-highlight: rgba(255, 255, 255, 0.52);
+  --home-border: rgba(255, 255, 255, 0.52);
+  --home-border-strong: rgba(155, 174, 191, 0.6);
+  --home-panel-highlight: rgba(255, 255, 255, 0.6);
   --home-panel-blur: 14px;
   --home-panel-saturation: 112%;
   --home-text: #182235;
@@ -56,9 +56,9 @@
   );
   --home-background-overlay: linear-gradient(
     180deg,
-    rgba(243, 242, 237, 0.34) 0%,
-    rgba(243, 242, 237, 0.46) 42%,
-    rgba(243, 242, 237, 0.66) 100%
+    rgba(243, 242, 237, 0.28) 0%,
+    rgba(243, 242, 237, 0.38) 42%,
+    rgba(243, 242, 237, 0.6) 100%
   );
   --home-panel-shadow:
     0 24px 64px rgba(52, 69, 82, 0.13), 0 8px 22px rgba(52, 69, 82, 0.07),
@@ -126,14 +126,14 @@ html[data-theme='dark'] {
   --sun-glow: #d6c793;
   --home-bg: #06101e;
   --home-bg-secondary: #091727;
-  --home-surface: rgba(10, 25, 43, 0.58);
-  --home-surface-strong: rgba(15, 32, 54, 0.7);
-  --home-surface-mobile: rgba(10, 25, 43, 0.58);
-  --home-surface-strong-mobile: rgba(15, 32, 54, 0.7);
+  --home-surface: rgba(10, 25, 43, 0.38);
+  --home-surface-strong: rgba(15, 32, 54, 0.5);
+  --home-surface-mobile: rgba(10, 25, 43, 0.46);
+  --home-surface-strong-mobile: rgba(15, 32, 54, 0.58);
   --home-surface-soft: #102034;
-  --home-border: rgba(178, 201, 237, 0.12);
-  --home-border-strong: rgba(138, 167, 211, 0.26);
-  --home-panel-highlight: rgba(194, 214, 247, 0.1);
+  --home-border: rgba(178, 201, 237, 0.18);
+  --home-border-strong: rgba(138, 167, 211, 0.34);
+  --home-panel-highlight: rgba(194, 214, 247, 0.22);
   --home-panel-blur: 18px;
   --home-panel-saturation: 116%;
   --home-text: #eef3fc;
@@ -158,9 +158,9 @@ html[data-theme='dark'] {
   );
   --home-background-overlay: linear-gradient(
     180deg,
-    rgba(6, 16, 30, 0.54) 0%,
-    rgba(6, 16, 30, 0.72) 42%,
-    rgba(6, 16, 30, 0.88) 100%
+    rgba(6, 16, 30, 0.38) 0%,
+    rgba(6, 16, 30, 0.54) 42%,
+    rgba(6, 16, 30, 0.8) 100%
   );
   --home-panel-shadow:
     0 28px 72px rgba(0, 5, 15, 0.32), 0 8px 24px rgba(0, 5, 15, 0.18),

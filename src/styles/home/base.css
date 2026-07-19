@@ -39,6 +39,8 @@ body:has(#main-content > .home-dashboard) .site-footer,
     --home-page: calc(100% - 28px);
     --home-surface: var(--home-surface-mobile);
     --home-surface-strong: var(--home-surface-strong-mobile);
+    --home-panel-blur: 10px;
+    --home-panel-saturation: 108%;
     background-attachment: scroll;
     background-position:
       center 8%,

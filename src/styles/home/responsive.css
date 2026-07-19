@@ -99,12 +99,6 @@
     grid-template-columns: 1fr;
   }
 
-  .home-utility__card,
-  .dashboard-card {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-  }
-
   .home-carousel__card-link,
   .home-carousel__content,
   .home-carousel__media .island-scene {
