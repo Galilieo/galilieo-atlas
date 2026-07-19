@@ -29,6 +29,34 @@ export function getPublishedBlogArticles(articles: BlogArticle[]): BlogArticle[]
   );
 }
 
+export function getRecommendedBlogArticles(
+  articles: BlogArticle[],
+  currentArticle: BlogArticle,
+  limit = 3,
+): BlogArticle[] {
+  const currentTags = new Set(currentArticle.data.tags);
+  const safeLimit = Math.max(0, Math.trunc(limit));
+
+  return getPublishedBlogArticles(articles)
+    .filter((article) => article.id !== currentArticle.id)
+    .map((article) => ({
+      article,
+      sameCategory: Number(article.data.category === currentArticle.data.category),
+      sharedTagCount: article.data.tags.filter((tag) => currentTags.has(tag)).length,
+    }))
+    .sort(
+      (candidateA, candidateB) =>
+        candidateB.sameCategory - candidateA.sameCategory ||
+        candidateB.sharedTagCount - candidateA.sharedTagCount ||
+        (candidateB.article.data.publishedAt ?? '').localeCompare(
+          candidateA.article.data.publishedAt ?? '',
+        ) ||
+        candidateA.article.id.localeCompare(candidateB.article.id),
+    )
+    .slice(0, safeLimit)
+    .map(({ article }) => article);
+}
+
 export function getBlogCategoryId(category: string): string {
   const slug = category
     .trim()
