@@ -16,7 +16,8 @@ export const personalTimeline: PersonalTimelineEntry[] = [
     period: '2026.06 — 至今',
     phase: '03 / Practice',
     title: 'AI 产品开发实习',
-    description: '参与跨平台 AI 聊天产品的页面维护、问题排查、移动端适配与自测协作。',
+    description:
+      '参与跨平台 AI 产品与 Web 媒体生成能力开发，持续处理异步任务、缓存页面生命周期、跨路由状态恢复与移动端验证。',
     href: '/projects/ai-chat-app/',
     destination: '查看实习项目',
   },
