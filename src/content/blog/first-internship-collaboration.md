@@ -1,16 +1,17 @@
 ---
 title: '进入第一份开发实习后，我对真实项目协作的理解'
 description: '从分支整合、产品规则确认、验证边界和提交范围出发，整理我进入真实项目后逐渐建立的协作方法。'
+publishedAt: 2026-08-04
 category: 实习复盘
 tags:
   - 实习
   - 协作
   - 工程实践
-draft: true
+draft: false
 featured: false
 readingTime: 7
 order: 6
-homepageState: 草稿
+homepageState: 已发布
 ---
 
 ## 刚开始时，我更关注自己改了多少代码
