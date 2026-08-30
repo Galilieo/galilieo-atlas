@@ -676,6 +676,13 @@ html:not(.js) .header-clock {
   color: inherit;
 }
 
+.beian-badge {
+  width: 12px;
+  height: 12px;
+  margin-right: 4px;
+  vertical-align: -2px;
+}
+
 @media (max-width: 920px) {
   .menu-toggle {
     display: block;
