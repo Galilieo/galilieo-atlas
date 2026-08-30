@@ -666,6 +666,16 @@ html:not(.js) .header-clock {
   justify-content: flex-end;
 }
 
+.site-footer__beian {
+  grid-column: 1 / -1;
+  justify-self: center;
+  padding-bottom: 14px;
+}
+
+.site-footer__beian a {
+  color: inherit;
+}
+
 @media (max-width: 920px) {
   .menu-toggle {
     display: block;
