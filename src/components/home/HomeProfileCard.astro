@@ -17,7 +17,7 @@ const noteCount = getPublishedBlogArticles(await getCollection('blog')).length;
     aria-label={`查看 ${siteConfig.author.name} 的完整个人资料`}
   >
     <span class="home-profile__about-cue">
-      查看完整档案 <span aria-hidden="true">→</span>
+      多了解我一点 <span aria-hidden="true">→</span>
     </span>
   </a>
 
@@ -32,7 +32,7 @@ const noteCount = getPublishedBlogArticles(await getCollection('blog')).length;
         loading="eager"
       />
       <div class="home-profile__copy">
-        <p class="home-profile__eyebrow">Keeper profile · 001</p>
+        <p class="home-profile__eyebrow">你好，我是</p>
         <h1 id="profile-title">{siteConfig.author.name}</h1>
         <p class="home-profile__role">{homeProfile.role}</p>
         <p class="home-profile__summary">{homeProfile.summary}</p>

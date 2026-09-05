@@ -2025,29 +2025,32 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
   -webkit-backdrop-filter: none;
 }
 
+.article-return-bar {
+  position: sticky;
+  top: 88px;
+  z-index: 30;
+  width: min(100%, 1120px);
+  margin: 0 auto 20px;
+  pointer-events: none;
+}
+
+.article-page .prose :is(h2, h3) {
+  scroll-margin-top: 152px;
+}
+
 .article-page__back {
-  width: fit-content;
-  min-height: 44px;
+  width: 40px;
+  height: 40px;
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 18px;
-  padding: 7px 15px 7px 7px;
+  justify-content: center;
+  pointer-events: auto;
+  padding: 0;
   border: 1px solid var(--interior-border-strong);
-  border-radius: 999px;
+  border-radius: 12px;
   color: var(--home-text);
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--interior-highlight) 68%, transparent),
-    color-mix(in srgb, var(--interior-surface-strong) 92%, var(--home-accent-soft))
-  );
-  box-shadow:
-    0 10px 24px color-mix(in srgb, var(--home-text) 10%, transparent),
-    inset 0 1px 0 var(--interior-highlight);
-  font-family: var(--sans);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  background: var(--interior-bg);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--home-text) 6%, transparent);
   transition:
     color 160ms ease,
     border-color 160ms ease,
@@ -2057,17 +2060,13 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
 }
 
 .article-page__back-icon {
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
+  width: 20px;
+  height: 20px;
   flex: 0 0 auto;
-  border-radius: 50%;
-  color: var(--home-on-accent);
-  background: var(--home-accent);
-  box-shadow: 0 6px 14px color-mix(in srgb, var(--home-accent) 28%, transparent);
-  font-size: 16px;
-  line-height: 1;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
   transition: transform 180ms var(--ease);
 }
 
@@ -2075,11 +2074,8 @@ html[data-theme='dark'] .archive-voyage__image--night.archive-voyage__image--foc
 .article-page__back:focus-visible {
   border-color: var(--home-accent-border);
   color: var(--home-accent-hover);
-  background: var(--interior-surface-strong);
-  box-shadow:
-    0 14px 30px color-mix(in srgb, var(--home-text) 13%, transparent),
-    inset 0 1px 0 var(--interior-highlight);
-  transform: translateY(-1px);
+  background: var(--interior-bg);
+  box-shadow: 0 3px 12px color-mix(in srgb, var(--home-text) 10%, transparent);
 }
 
 .article-page__back:hover .article-page__back-icon,

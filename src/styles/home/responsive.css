@@ -228,7 +228,7 @@
   }
 
   .home-profile__content {
-    padding: 22px 18px;
+    padding: 52px 18px 22px;
   }
 
   .home-profile__about-cue {
@@ -238,7 +238,25 @@
 
   .home-profile__identity {
     grid-template-columns: 64px minmax(0, 1fr);
-    gap: 15px;
+    gap: 0 15px;
+  }
+
+  .home-profile__copy {
+    display: contents;
+  }
+
+  .home-profile__avatar {
+    grid-row: 1 / 3;
+  }
+
+  .home-profile__eyebrow,
+  .home-profile h1 {
+    grid-column: 2;
+  }
+
+  .home-profile__role,
+  .home-profile__summary {
+    grid-column: 1 / -1;
   }
 
   .home-profile h1 {
@@ -318,6 +336,7 @@
   }
 
   .home-profile:hover,
+  .home-profile:has(.home-profile__about-link:focus-visible),
   .home-profile:hover .home-profile__avatar,
   .home-profile__count:hover strong,
   .home-profile__count:focus-visible strong,

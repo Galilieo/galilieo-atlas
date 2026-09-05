@@ -17,7 +17,7 @@ export const siteConfig = {
   name: 'Galilieo Atlas',
   title: 'Galilieo Atlas — Works, Notes & Explorations',
   description:
-    'Galilieo 的个人作品、开发笔记与探索记录，展示 AI 应用开发、真实项目、实习实践和持续学习。',
+    '我是 Galilieo，软件工程专业的学生，也在做 AI 产品开发。这里放着我的项目、开发笔记和一些日常记录。',
   url: 'https://galilieo.cn',
   email: 'jiangdavis021@gmail.com',
   qqEmail: '2930382766@qq.com',

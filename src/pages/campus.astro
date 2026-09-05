@@ -12,14 +12,14 @@ const learningProjects = (await getCollection('projects'))
 
 <BaseLayout
   title="在校经历 — Galilieo"
-  description="Galilieo 在软件工程学习期间形成的学习主线与实践记录。"
+  description="我在软件工程专业学些什么，以及用这些知识做过的项目。"
   canonicalPath="/campus/"
 >
   <main class="page-main interior-page interior-page--campus" id="main-content">
     <SectionHeading
       eyebrow="Campus Record"
       title="在校经历"
-      description="不罗列整张课表，只记录软件工程学习期间真正形成的能力与实践。"
+      description="记下在学校学的东西，也看看它们怎么用到项目里。"
     />
 
     <div class="campus-record">
@@ -27,7 +27,7 @@ const learningProjects = (await getCollection('projects'))
         <p>Page Index</p>
         <nav>
           <a href="#learning-focus"><span>学习主线</span><span>01</span></a>
-          <a href="#learning-practice"><span>实践入口</span><span>02</span></a>
+          <a href="#learning-practice"><span>动手做的项目</span><span>02</span></a>
           <a href="#current-focus"><span>当前关注</span><span>03</span></a>
         </nav>
         <a class="campus-record__back" href="/archive/?view=personal#personal-timeline">
@@ -45,23 +45,23 @@ const learningProjects = (await getCollection('projects'))
             <time datetime="2024-09">2024.09 — 至今</time>
           </header>
           <p class="campus-record__lead">
-            从前后端基础出发，持续理解页面、接口、数据与交付之间的完整关系；再把这些知识放进个人项目和真实产品问题中检验。
+            我从前后端基础开始学，再用项目把它们串起来：页面怎么拿到数据，接口怎么处理请求，出了问题又该从哪里查。
           </p>
           <div class="campus-record__focus-grid">
             <article>
               <span>01</span>
               <h3>前端与交互</h3>
-              <p>关注页面状态、响应式布局、移动端适配和完整交互验证。</p>
+              <p>练习写页面、处理交互，也检查它在手机上是否好用。</p>
             </article>
             <article>
               <span>02</span>
               <h3>后端与数据</h3>
-              <p>理解接口、业务流程、数据关系以及前后端之间的协作边界。</p>
+              <p>学习写接口、存取数据，弄清一次请求从页面到后端的过程。</p>
             </article>
             <article>
               <span>03</span>
               <h3>AI 产品实践</h3>
-              <p>把 AI 能力接入、问题排查和产品交付放进同一条实践链路。</p>
+              <p>尝试把模型接进应用，处理回复、对话记录和调用失败的情况。</p>
             </article>
           </div>
         </section>
@@ -70,12 +70,12 @@ const learningProjects = (await getCollection('projects'))
           <header class="campus-record__section-heading">
             <div>
               <p>Section 02 / Practice</p>
-              <h2>实践入口</h2>
+              <h2>动手做的项目</h2>
             </div>
             <span>Selected Works</span>
           </header>
           <p class="campus-record__lead">
-            学习过程最终落在可以持续维护的真实项目里；这里直接复用项目集合，不另写一份重复介绍。
+            心屿和这个网站，是我边学边做的两个项目。点进去可以看具体做了什么、还有什么想继续改。
           </p>
           <div class="campus-record__projects">
             {
@@ -106,8 +106,8 @@ const learningProjects = (await getCollection('projects'))
             <span>In Progress</span>
           </header>
           <p class="campus-record__lead">
-            当前继续沿 AI 应用开发、Agent 与 AI 全栈方向学习，把多轮对话、长期记忆、SSE、RAG 和 Tool
-            Calling 逐步放进可验证的产品实践。
+            最近在学多轮对话和长期记忆，也在了解 SSE、RAG
+            和工具调用。接下来想结合心屿，一项项试着做出来。
           </p>
           <div class="campus-record__topics" aria-label="当前学习主题">
             <span>AI Application</span>

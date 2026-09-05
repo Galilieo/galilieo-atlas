@@ -64,10 +64,10 @@
   gap: 8px;
   color: var(--home-text-muted);
   font-family: var(--mono);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.72;
+  opacity: 1;
   transition:
     color 180ms ease,
     opacity 180ms ease;
@@ -78,8 +78,8 @@
   transition: transform 180ms var(--ease);
 }
 
-.home-profile:hover {
-  transform: translateY(-2px) scale(1.004);
+.home-profile:has(.home-profile__about-link:focus-visible) {
+  transform: translateY(-2px);
 }
 
 .home-profile:hover .home-profile__about-link,
@@ -125,8 +125,10 @@
     box-shadow 220ms ease;
 }
 
-.home-profile:hover .home-profile__avatar {
-  transform: rotate(2deg);
+@media (hover: hover) and (pointer: fine) {
+  .home-profile:hover {
+    transform: translateY(-2px);
+  }
 }
 
 .home-profile__eyebrow,
@@ -148,7 +150,7 @@
   font-family: var(--display);
   font-size: clamp(40px, 4vw, 56px);
   font-weight: 400;
-  line-height: 0.96;
+  line-height: 1.08;
   letter-spacing: -0.035em;
 }
 
@@ -157,14 +159,17 @@
   color: var(--home-text);
   font-size: 15px;
   font-weight: 650;
+  line-height: 1.6;
+  text-wrap: balance;
 }
 
 .home-profile__summary {
-  max-width: 650px;
+  max-width: 36em;
   margin-top: 12px;
   color: var(--home-text-secondary);
   font-size: 14px;
-  line-height: 1.75;
+  line-height: 1.85;
+  text-wrap: pretty;
 }
 
 .home-profile__footer {

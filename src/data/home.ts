@@ -1,7 +1,7 @@
 export const homeProfile = {
   role: 'AI 应用开发者 / 软件工程学生',
   summary:
-    '专注 AI 应用、Agent、RAG 与全栈产品实践。目前正在通过真实实习与个人项目，持续构建可落地的 AI 产品能力。',
+    '我在读软件工程，也在实习中做 AI 产品。实习之外继续做「心屿」，在这里记下项目进展，以及开发中遇到的问题。',
   currentExperience: {
     title: 'AI 产品开发实习',
     period: '2026.06 — 至今',

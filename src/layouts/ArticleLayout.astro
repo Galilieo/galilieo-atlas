@@ -46,6 +46,19 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <main class="page-main interior-page interior-detail" id="main-content">
+    <nav class="article-return-bar" aria-label="返回博客列表">
+      <a
+        class="article-page__back"
+        href="/notes/"
+        aria-label="返回博客"
+        title="返回博客"
+        data-article-back-link
+      >
+        <svg class="article-page__back-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="m10 5-7 7 7 7M3 12h18"></path>
+        </svg>
+      </a>
+    </nav>
     <div class="article-reading-layout">
       <article class="article-page">
         <section class="article-page__hero reveal" data-article-hero>
@@ -65,10 +78,6 @@ const jsonLd = {
             />
           </div>
           <header class="page-header">
-            <a class="article-page__back" href="/notes/" data-article-back-link>
-              <span class="article-page__back-icon" aria-hidden="true">←</span>
-              <span>返回博客</span>
-            </a>
             <p class="section-kicker">Notes / {article.data.category}</p>
             <h1>{article.data.title}</h1>
             <p>{article.data.description}</p>

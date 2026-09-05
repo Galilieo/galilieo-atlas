@@ -23,7 +23,7 @@ const initialTrack = homeMusicTracks.find((track) => track.playable);
           </svg>
         </span>
         <span class="home-utility__github-title">
-          <span>GitHub snapshot</span>
+          <span>最近在 GitHub</span>
           <strong>@{siteConfig.githubUsername}</strong>
         </span>
       </div>
@@ -94,7 +94,7 @@ const initialTrack = homeMusicTracks.find((track) => track.playable);
     data-state={initialTrack ? 'paused' : 'unavailable'}
   >
     <div class="home-utility__music-header">
-      <span>Listening shelf</span>
+      <span>听听歌</span>
       <div class="home-utility__music-actions">
         <MusicModeControl />
         <a
